@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>期貨 on Rutopio</title>
+    <link>https://rutopio.github.io/tags/%E6%9C%9F%E8%B2%A8/</link>
+    <description>Recent content in 期貨 on Rutopio</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Sun, 18 Nov 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://rutopio.github.io/tags/%E6%9C%9F%E8%B2%A8/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Python筆記]何時買賣(2)：回溯</title>
+      <link>https://rutopio.github.io/code/2018-11-18-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%B2%B7%E8%B3%A32%E5%9B%9E%E6%BA%AF/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2018-11-18-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%B2%B7%E8%B3%A32%E5%9B%9E%E6%BA%AF/</guid>
+      <description>這篇的回溯方法目前有一點問題，我似乎沒有考慮到最後要平倉的時候，賣出還要再扣一筆手續費的情況啊QQ 在上一篇的動態規劃裡，我們已經得到最大的獲利了，但我們只知道最大的獲利，什麼時候要買、什麼時候要賣，什麼時候該都不做，也就是每天的行動我們還不知道，我們還要在做一個回溯的方法。 回溯的方法有百百種，每個人寫出來的方法都不一樣，我的寫法似乎不是最佳解ㄏ，感覺浪費的不少空間去存不會再用到的資料就是了。 變數定</description>
+    </item>
+    
+    <item>
+      <title>[Python筆記]何時該買賣(1)：動態規劃</title>
+      <link>https://rutopio.github.io/code/2018-11-17-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%A9%B2%E8%B2%B7%E8%B3%A31%E5%8B%95%E6%85%8B%E8%A6%8F%E5%8A%83/</link>
+      <pubDate>Sat, 17 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2018-11-17-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%A9%B2%E8%B2%B7%E8%B3%A31%E5%8B%95%E6%85%8B%E8%A6%8F%E5%8A%83/</guid>
+      <description>這幾天想這個題目寫的豆頁很痛= =，誰叫我動態規劃一直都沒有學好ㄞㄞㄞ，趁還沒忘記的時候趕快來做個筆記。 結果我發現其實這似乎不是最佳解啊哈哈哈^^。 條件與目標 目標 在我們的 function 裡，我們要在「知道證券的所有歷史資料」的設定下決定何時該買、何時該賣、或是什麼都不做，才能在「考慮手續費」的情況裡得到最大的獲利。 理論上來說，每一筆資料應該會有一個標準答案，也就是在最佳買點和賣點的考量下產生一個利潤極值。 變數定義</description>
+    </item>
+    
+    <item>
+      <title>[Python筆記]從csv求出期貨的OHLC</title>
+      <link>https://rutopio.github.io/code/2018-10-08-python%E7%AD%86%E8%A8%98%E5%BE%9Ecsv%E6%B1%82%E5%87%BA%E6%9C%9F%E8%B2%A8%E7%9A%84ohlc/</link>
+      <pubDate>Mon, 08 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2018-10-08-python%E7%AD%86%E8%A8%98%E5%BE%9Ecsv%E6%B1%82%E5%87%BA%E6%9C%9F%E8%B2%A8%E7%9A%84ohlc/</guid>
+      <description>這次的目標是台灣期貨交易所提供的前 30 個交易日期貨每筆成交資料，從裡面的csv求出當日的OHLC。 在這裡我們用代號 TX 的台指期大盤指數為計算的目標。 名詞與狀態定義 在一開始我們要先定義幾個名詞： Open：當日開盤價 High：當日最高價 Low：當日最低價 Close：當日收盤價 以及現實生活中的期貨交易狀態： 交易時間： 盤內交易（就是在交易所交易）：由 08:45:00 開盤至 13:45:00 收盤為止的所有交易，在一般的期貨網看到的 K 線圖多只</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="R語言, R Language, 爬蟲, Dcard, Dcard爬蟲, 教學" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="介紹 R 語言中最基本的爬蟲方式，以 Dcard 為例（使用 Dcard 官方的 API）。">
+  
+  <meta property="og:title" content="[Ｒ筆記] 爬蟲：以「Dcard」為例" />
+<meta property="og:description" content="介紹 R 語言中最基本的爬蟲方式，以 Dcard 為例（使用 Dcard 官方的 API）。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/code/2018-10-15-%EF%BD%92%E7%AD%86%E8%A8%98-%E7%88%AC%E8%9F%B2%E4%BB%A5dcard%E7%82%BA%E4%BE%8B/" /><meta property="article:published_time" content="2018-10-15T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-10-15T00:00:00&#43;00:00"/>
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       [Ｒ筆記] 爬蟲：以「Dcard」為例 | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/code/2018-10-15-%EF%BD%92%E7%AD%86%E8%A8%98-%E7%88%AC%E8%9F%B2%E4%BB%A5dcard%E7%82%BA%E4%BE%8B/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+      
+    
+    
+      
+        <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%EF%BD%92"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸Ｒ</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">[Ｒ筆記] 爬蟲：以「Dcard」為例</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Oct 15, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>3 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<p>雖然 Dcard 的素質大家有目共睹，就是那樣。但我們還是來練習一下吧。</p>
+
+<h2 id="1-先檢查dcard的小秘密">1. 先檢查Dcard的小秘密</h2>
+
+<p>把網頁扒開來看Dcard的小秘密：</p>
+
+<p><img src="https://i.imgur.com/SmMpQeN.png"  style="display:block; margin:auto;width:80%"></p>
+
+<p>可以看到Dcard把網頁裡面的標題、部份內容都寫在這個檔案裡面。</p>
+
+<p>因為Dcard沒有下一頁的按鈕，所以我們繼續往下滑，看看他是怎麼在滑到底後呼叫出多的內容。</p>
+
+<p><img src="https://i.imgur.com/QtJzpud.png"  style="display:block; margin:auto;width:80%"></p>
+
+<p>開始找到一個感覺，以圖片裡的Request URL而言：</p>
+
+<blockquote>
+<p><a href="https://www.dcard.tw/_api/forums/relationship/posts?popular=true&amp;limit=30&amp;before=229848524">https://www.dcard.tw/_api/forums/relationship/posts?popular=true&amp;limit=30&amp;before=229848524</a></p>
+</blockquote>
+
+<ul>
+<li><code>relationship</code>：代表我們在抓的看板，也就是感情<del>無病呻吟</del>板</li>
+<li><code>popular=true</code>：代表我們抓的是熱門文章，把 true 改成 false 的話會照時間順序把文章抓下來，等一下我會用照時間順序的方法來抓，因為這樣比較好找每篇文章的id，而且是否熱門我們也可以從 commentCount 和 likeCount 去篩選</li>
+<li><code>limit=30</code>：代表一次抓30篇文章，如果不加上這串的話預設就是抓30篇</li>
+<li><code>before=229848524</code>：代表抓取文章 id 是 229848524 之前的文章，因為我們只抓一個板，這個文章id可能不是連續的。</li>
+</ul>
+
+<h2 id="2-引入該引用的library">2. 引入該引用的library</h2>
+
+<pre><code class="language-r">library(httr)
+library(jsonlite)
+library(dplyr)
+
+# 先保留抓下來str還是str型態，而不是拆開
+options(stringsAsFactors = FALSE)
+
+# 設定編碼
+options(encoding = &quot;UTF-8&quot;)
+</code></pre>
+
+<h2 id="3-引入dcard的網址">3. 引入Dcard的網址</h2>
+
+<pre><code class="language-r"># 就是我們剛在小秘密裡面的開頭
+dcardurl &lt;- 'https://www.dcard.tw/_api/forums/'
+
+# 設定我們要抓的看板
+board &lt;- 'relationship'
+
+# 融合成一個網址，在這裡我們將抓的順序設定成照時間排序而非照熱門排序，所以用false
+mainurl &lt;- paste0(dcardurl,board,'/posts?popular=false')
+</code></pre>
+
+<h2 id="4-抽取裡面的json">4. 抽取裡面的json</h2>
+
+<pre><code class="language-r"># 抽出json，把他存入resdata這個data.frame裡，然後把用不到的col刪掉
+resdata &lt;- fromJSON(content(GET(mainurl), &quot;text&quot;))%&gt;%select(-anonymousSchool, -anonymousDepartment, -pinned, -meta, -mediaMeta, -layout, -withImages, -withVideos, -media, -reportReasonText)
+
+# 看看前幾筆的Dcard幻想文，檢查我們是否有抓到東西
+# 因為東西實在是太多了，我們就先看前兩個Column就好，下面亦同
+head(resdata[,1:2])
+</code></pre>
+
+<pre><code>        id      title
+        &lt;int&gt;   &lt;chr&gt;
+1   230077449   問感情解籤       
+2   230077445   復合這件事2 #問       
+3   230077436   還有機會嗎       
+4   230077433   虐待狂！？       
+5   230077429   朋友的故事       
+6   230077424   如果你願意回頭看在你身後的那個人
+</code></pre>
+
+<pre><code>
+# 還記得在上面分析小秘密的時候，我們提到before=id代表他讀取到這篇文章之前的文章
+# 所以為了讓我們繼續往下抓，我們要知道我們目前抓到的最後一篇文章id，然後把他設為before=id，才能繼續抓更早的文章
+tail(resdata[,1:2])
+</code></pre>
+
+<pre><code>        id      title
+        &lt;int&gt;   &lt;chr&gt;
+25  230077139   想找前陣的一篇文！       
+26  230077137   暗戀      
+27  230077104   每日往來訊息      
+28  230077084   復合這件事 #問        
+29  230077083   分手跟在一起的差別       
+30  230077069   文長)給失戀，覺得寂寞逛Dcard的你/妳
+</code></pre>
+
+<pre><code># 把最後一篇文章的id設為變數end
+end &lt;- resdata$id[length(resdata$id)]
+
+# 看一下是否就是最後一筆
+end
+</code></pre>
+
+<pre><code>[1] 230077069
+</code></pre>
+
+<h2 id="5-好了之後我們就開始抓我們要的文章數量">5. 好了之後我們就開始抓我們要的文章數量</h2>
+
+<pre><code class="language-r"># 假設我們要抓150篇文章
+n &lt;- 150
+
+# 因為我們不去改limit的值，所以他預設會每次抓30篇回來，我們把要抓的文章/30便是我們要抓的次數
+# 還要再減一，因為我們一開始就先抓了前30筆
+# 也可以不管前面我們抓了什麼，從頭開始抓就不用減一，但我比較喜歡這麼寫
+page &lt;- (150/30)-1
+
+# 寫一個loop，重複做page次
+for(i in 1:page){
+  # 從「目前抓到的最後一篇文章id」往前抓30篇 
+  url &lt;- paste0(mainurl,&quot;&amp;before=&quot;,end)
+  
+  # 測試時可以把url印出來檢查有沒有抓對
+  # print(url)
+  
+  # 把抓到存入暫存的tmpres，這只是暫存。一樣把用不到的刪掉
+  tmpres &lt;- fromJSON(content(GET(url), &quot;text&quot;))%&gt;%select(-anonymousSchool, -anonymousDepartment, -pinned, -meta, -mediaMeta, -layout, -withImages, -withVideos, -media, -reportReasonText)
+  
+  # 從tmpres裡更新「最後一篇文章的id」
+  end &lt;- tmpres$id[length(tmpres$id)]
+  
+  # 然後把我們新抓到的tmpres和之前已經有的resdata合併
+  resdata &lt;- bind_rows(resdata,tmpres)
+}
+</code></pre>
+
+<h2 id="6-清除剛剛的暫存">6. 清除剛剛的暫存</h2>
+
+<pre><code class="language-r"># 要不要做都可以，但做了可以省記憶體
+rm(tmpres)
+</code></pre>
+
+<h2 id="7-看看剛剛抓的東西">7. 看看剛剛抓的東西</h2>
+
+<pre><code class="language-r"># 看看前幾筆
+head(resdata[,1:2])
+</code></pre>
+
+<pre><code>        id      title
+        &lt;int&gt;   &lt;chr&gt;
+1   230077449   問感情解籤       
+2   230077445   復合這件事2 #問       
+3   230077436   還有機會嗎       
+4   230077433   虐待狂！？       
+5   230077429   朋友的故事       
+6   230077424   如果你願意回頭看在你身後的那個人
+</code></pre>
+
+<pre><code># 看看最後的幾筆
+tail(resdata[,1:2])
+</code></pre>
+
+<pre><code>        id      title
+        &lt;int&gt;   &lt;chr&gt;
+145 230074686   聖誕節🎄一起玩ㄦ        
+146 230074683   #求解 拜月老拜到好迷惘        
+147 230074647   互相折磨        
+148 230074636   有些人是來教會你離開的     
+149 230074618   這樣的男友我該如何調適     
+150 230074607   你是在萌幾點啦
+</code></pre>
+
+<pre><code># 看看總共有幾筆
+nrow(resdata)
+</code></pre>
+
+<pre><code>[1] 150
+</code></pre>
+
+<h2 id="8-看情況選擇寫入rds">8. 看情況選擇寫入rds</h2>
+
+<pre><code class="language-r"># 寫入dcard.rds的檔案
+saveRDS(resdata, file = &quot;dcard.rds&quot;)
+</code></pre>
+
+<p><img src="https://i.imgur.com/p8afZpa.png"  style="display:block; margin:auto;width:80%"></p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%88%AC%E8%9F%B2" role="button">爬蟲 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/r" role="button">R </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E8%B3%87%E6%96%99%E8%99%95%E7%90%86" role="button">資料處理 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/dcard" role="button">dcard </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/code/2018-10-09-%EF%BD%92%E7%AD%86%E8%A8%98-%E5%8F%B0%E7%81%A3%E5%8D%B3%E6%99%82-aqi-%E6%8C%87%E6%95%B8%E7%9A%84%E7%B9%AA%E8%A3%BD/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>[Ｒ筆記] 台灣即時 AQI 指數的繪製</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://rutopio.github.io/code/2018-10-22-%EF%BD%92%E7%AD%86%E8%A8%98-%E7%88%AC%E8%9F%B2%E4%BB%A5%E5%9C%B0%E7%90%83%E5%9C%96%E8%BC%AF%E9%9A%8A%E7%82%BA%E4%BE%8B/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>[Ｒ筆記] 爬蟲：以「地球圖輯隊」為例</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#1-%e5%85%88%e6%aa%a2%e6%9f%a5dcard%e7%9a%84%e5%b0%8f%e7%a7%98%e5%af%86">
+												 1. 先檢查Dcard的小秘密
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#2-%e5%bc%95%e5%85%a5%e8%a9%b2%e5%bc%95%e7%94%a8%e7%9a%84library">
+												 2. 引入該引用的library
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#3-%e5%bc%95%e5%85%a5dcard%e7%9a%84%e7%b6%b2%e5%9d%80">
+												 3. 引入Dcard的網址
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#4-%e6%8a%bd%e5%8f%96%e8%a3%a1%e9%9d%a2%e7%9a%84json">
+												 4. 抽取裡面的json
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#5-%e5%a5%bd%e4%ba%86%e4%b9%8b%e5%be%8c%e6%88%91%e5%80%91%e5%b0%b1%e9%96%8b%e5%a7%8b%e6%8a%93%e6%88%91%e5%80%91%e8%a6%81%e7%9a%84%e6%96%87%e7%ab%a0%e6%95%b8%e9%87%8f">
+												 5. 好了之後我們就開始抓我們要的文章數量
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#6-%e6%b8%85%e9%99%a4%e5%89%9b%e5%89%9b%e7%9a%84%e6%9a%ab%e5%ad%98">
+												 6. 清除剛剛的暫存
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#7-%e7%9c%8b%e7%9c%8b%e5%89%9b%e5%89%9b%e6%8a%93%e7%9a%84%e6%9d%b1%e8%a5%bf">
+												 7. 看看剛剛抓的東西
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#8-%e7%9c%8b%e6%83%85%e6%b3%81%e9%81%b8%e6%93%87%e5%af%ab%e5%85%a5rds">
+												 8. 看情況選擇寫入rds
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

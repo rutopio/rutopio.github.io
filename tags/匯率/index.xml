@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>匯率 on Rutopio</title>
+    <link>https://rutopio.github.io/tags/%E5%8C%AF%E7%8E%87/</link>
+    <description>Recent content in 匯率 on Rutopio</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Thu, 09 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://rutopio.github.io/tags/%E5%8C%AF%E7%8E%87/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>試論「匯率過度調整（Overshoot）」的發生時機</title>
+      <link>https://rutopio.github.io/essay/2019-05-09-%E8%A9%A6%E8%AB%96%E5%8C%AF%E7%8E%87%E9%81%8E%E5%BA%A6%E8%AA%BF%E6%95%B4overshoot%E7%9A%84%E7%99%BC%E7%94%9F%E6%99%82%E6%A9%9F/</link>
+      <pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/essay/2019-05-09-%E8%A9%A6%E8%AB%96%E5%8C%AF%E7%8E%87%E9%81%8E%E5%BA%A6%E8%AA%BF%E6%95%B4overshoot%E7%9A%84%E7%99%BC%E7%94%9F%E6%99%82%E6%A9%9F/</guid>
+      <description>When there is equilibrium in the money market, $M^{s}/P = L(R,Y)$, so $V = Y/L(R,Y)$. ($M^{s}/P$ is the money supply, $L(\cdot)$ is the money demand, $R$ and $Y$ are interest rate and real GNP respectively.) When $R$ increases, $L(R,Y)$ falls and thus velocity rises (vice versa). When $Y$ increases, $L(R,Y)$ rises by a smaller amount because the elasticity of aggregate money demand with respect to real output is smaller than 1. Thus velocity rises (vice versa). Because an increase in $R$ or increase in income causes the exchange rate to appreciate, an increase in velocity is associated with an appreciation of the exchange rate (vise versa). 簡單來說 分為兩個階段 $dM&amp;gt;0\Longrightarrow dR_{1}0$ $dY&amp;gt;0\Longrightarrow dR_{2}&amp;gt;0$ 首先 \begin{equation}\frac{M_{US}^{1}+dM}{P_{US}^{1}} = L+dL=L+\frac{\partial L}{\partial R}\cdot dR+\frac{\partial L}{\partial Y}\cdot dY\tag{0}\end{equation} 且$R$變動是$dR_{1}$，$dY=0$，故 \begin{equation} \begin{split} &amp;\frac{M_{US}^{1}+dM}{P_{US}^{1}}=L+\frac{\partial L}{\partial R}\cdot dR_{1}\\ &amp;\frac{dR_{1}}{dM}=\left(\frac{\partial R}{\partial L}\right)\left(\frac{M^{1}_{US}}{dM\cdot P^{1}_{US}}+\frac{1}{P^{1}_{US}}-\frac{L}{dM}\right) \end{split}\tag{a} \end{equation} $dY&amp;gt;0$，且$M^{s}$是外生給定，故$L$不再變動，</description>
+    </item>
+    
+  </channel>
+</rss>

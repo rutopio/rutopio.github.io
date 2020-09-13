@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="python, 金融工學, 技術指標, 機器學習, 決策數, 騙線" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="「交叉」這件事在每個不同的技術指標所做出的圖形中，都有不同的解釋方法。而對 MA 而言，「長期均線」常常被視為是價格的「支撐線」與「壓力線」，而「短期均線」都會嘗試突破壓力線、會是跌破這條支撐線，而這樣的想法就形成了一個買賣策略，那我們有沒有辦法透過只從「歷史價格」預測未來可能的「騙局」呢？本文將以 Python 搭配機器學習、決策數、技術指標實現。">
+  
+  <meta property="og:title" content="[Python筆記]我們能預測騙線的發生嗎？" />
+<meta property="og:description" content="「交叉」這件事在每個不同的技術指標所做出的圖形中，都有不同的解釋方法。而對 MA 而言，「長期均線」常常被視為是價格的「支撐線」與「壓力線」，而「短期均線」都會嘗試突破壓力線、會是跌破這條支撐線，而這樣的想法就形成了一個買賣策略，那我們有沒有辦法透過只從「歷史價格」預測未來可能的「騙局」呢？本文將以 Python 搭配機器學習、決策數、技術指標實現。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/code/2019-01-14-python%E7%AD%86%E8%A8%98%E6%88%91%E5%80%91%E8%83%BD%E9%A0%90%E6%B8%AC%E9%A8%99%E7%B7%9A%E7%9A%84%E7%99%BC%E7%94%9F%E5%97%8E/" /><meta property="article:published_time" content="2019-01-14T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-01-14T00:00:00&#43;00:00"/><meta property="og:see_also" content="https://rutopio.github.io/code/2020-01-16-python%E7%AD%86%E8%A8%98-2020%E5%8F%B0%E7%81%A3%E9%81%B8%E8%88%89%E7%B5%90%E6%9E%9C%E7%88%AC%E8%9F%B2%E4%BB%A5%E4%B8%8D%E5%88%86%E5%8D%80%E6%94%BF%E9%BB%A8%E7%A5%A8%E7%82%BA%E4%BE%8B/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-10-14-python%E7%AD%86%E8%A8%98pigeonhole-problem%E9%B4%BF%E7%B1%A0%E5%95%8F%E9%A1%8C%E4%BB%A5-cnf-%E6%AA%94%E6%A1%88%E8%BC%B8%E5%87%BA/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-06-11-python%E7%AD%86%E8%A8%98%E5%9C%96%E7%89%87%E9%82%8A%E7%95%8C%E5%81%B5%E6%B8%AC%E4%BB%A5-pgm-%E6%AA%94%E6%A1%88%E7%82%BA%E4%BE%8B/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-10-ml%E7%AD%86%E8%A8%98-logistic-regression/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-09-ml%E7%AD%86%E8%A8%98adeline-%E8%88%87%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-08-ml%E7%AD%86%E8%A8%98rossenblatt-%E6%84%9F%E7%9F%A5%E5%99%A8/" />
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       [Python筆記]我們能預測騙線的發生嗎？ | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/code/2019-01-14-python%E7%AD%86%E8%A8%98%E6%88%91%E5%80%91%E8%83%BD%E9%A0%90%E6%B8%AC%E9%A8%99%E7%B7%9A%E7%9A%84%E7%99%BC%E7%94%9F%E5%97%8E/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+      
+    
+    
+      
+        <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%E8%9B%87%E8%9B%87"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸蛇蛇</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">[Python筆記]我們能預測騙線的發生嗎？</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Jan 14, 2019</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>15 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<h2 id="寫在所有之前">寫在所有之前</h2>
+
+<h3 id="關於技術分析">關於技術分析</h3>
+
+<p>在所有的股票、標的、期貨市場中，主要有三大流派的投資分析方式：</p>
+
+<ul>
+<li>基本面：分析該物件的內在價值。以股票來說，就是看這間公司的財報健不健全，或是這間公司投資的未來產業動向為何。</li>
+<li>技術面：認為歷史會一再重演，主張可以從過去的資訊學習，進而了解未來。像是使用Ｋ線圖畫線、使用技術指標考慮買賣點、ML、DL 等方法去推測未來市場的變化。</li>
+<li>籌碼面：或稱新聞面、消息面。像三大法人的買賣方向，以及密技內線交易。</li>
+</ul>
+
+<p>那在這邊，我們要用的是技術指標，因為比起其他兩中方式，他是可以被「量化」的。以下是 S&amp;P 500 ETF（SPDR 標普 500 指數，代號：SPY）的日 K 圖，我們可以自己從圖加上自己想要使用的技術指標。</p>
+
+<div class="tradingview-widget-container">
+<div id="tradingview_96831"></div>
+<div class="tradingview-widget-copyright"><a href="https://tw.tradingview.com/symbols/AMEX-SPY/" rel="noopener" target="_blank"><span class="blue-text">SPY 圖表</span></a>由TradingView提供</div>
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+new TradingView.widget(
+{
+"width":800,
+"height": 600,
+"symbol": "AMEX:SPY",
+"interval": "D",
+"timezone": "Etc/UTC",
+"theme": "Light",
+"style": "1",
+"locale": "zh_TW",
+"toolbar_bg": "#f1f3f6",
+"enable_publishing": false,
+"allow_symbol_change": true,
+"container_id": "tradingview_96831"
+}
+);
+</script>
+</div>
+
+<p>舉最簡單的 Simple Moving Average （SMA）為例，他的算法就是在第 n+1 天算出過去 n 天的價格平均，然後和所有已算出的價格點做出一條平滑的曲線，如 SMA(5) 就是在第六天時算出第一天到第五天的價格平均，在第七天算出第二天到第六天的價格平均。以下是幾個常用的 MA （Moving Average）公式：</p>
+
+<p>
+\begin{equation}
+SMA_{n} = \frac{p_{n}+p_{n-1}+\dots+p_{2}+p_{1}}{n}
+\end{equation}
+</p>
+
+<p>
+\begin{equation}
+WMA_{n} = \frac{{n}{p_{n}}+(n-1)p_{n-1}+\dots+2p_{2}+p_{1}}{n+(n-1)+\dots+2+1}
+\end{equation}
+</p>
+
+<p>
+\begin{equation}
+EMA_{n} = \alpha p_{n}+(1-\alpha)EMA_{n-1}(Recurrence)
+\end{equation}
+</p>
+
+<p>
+\begin{equation}
+DEMA_{n} = 2EMA[p_{n}]-EMA[EMA[p_{n}]]
+\end{equation}
+</p>
+
+<p>
+\begin{equation}
+TEMA_{n} = 3EMA[p_{n}]-3EMA[EMA[p_{n}]]+EMA[EMA[EMA[p_{n}]]]
+\end{equation}
+</p>
+
+<h3 id="線圖交叉">線圖交叉</h3>
+
+<p><img src="https://i.imgur.com/fFaFpgL.png"  style="display:block; margin:auto;width:80%"></p>
+
+<p>「交叉」這件事在每個不同的技術指標所做出的圖形中，都有不同的解釋方法。</p>
+
+<p>而對 MA 而言，「長期均線」常常被視為是價格的「支撐線」與「壓力線」，而「短期均線」都會嘗試突破壓力線、會是跌破這條支撐線，而這樣的想法就形成了一個買賣策略，假設紅線是長期 MA，藍線是短期 MA，會有：</p>
+
+<ul>
+<li><p>黃金交叉：當短期均線由下往上突破長期均線（如上圖的 B），表示在短期之內多方較強，持續看多，是「買入訊號」。</p></li>
+
+<li><p>死亡交叉：當短期均線由上往下跌破長期均線（如上圖的 A），表示在短期之內空軍較強，持續看空，是「賣出訊號」。</p></li>
+</ul>
+
+<p>但只要我們在黃金交叉時買入，死亡交叉時賣出，就能發大財了嗎？</p>
+
+<p><img src="https://i.imgur.com/39eGm34.png" style="display:block; margin:auto;width:80%"></p>
+
+<p><center>▲ 使用資料：S&amp;P 500，2018/10/25 到 2018/11/21，SMA 分別用 5 天及 30 天畫出</center></p>
+
+<p>實際上要是這麼操作一定會失敗，因為市場才沒有這麼簡單的事情，「騙線」的誘殺與誘買存在於市場之中。如上圖中的 <sup>11</sup>&frasl;<sub>11</sub> 日，在這一天短期 MA 由下穿越了長期 MA，如果我們真的慣徹我們的交易策略，這個時候就會被套牢了。在數學上，因為每一筆的價格都是離散的，我們所看到的那條「平滑曲線」是把所有「離散的點」的位置算出來，然後用內插法滑順出來的，所以會有遲鈍、落後的現象發生；而在實務上，大戶們也常常利用散戶迷信技術分析和指標的心理，在事前故意吸貨或出貨，形成一種「人造（而非由自然市場造出）」的線型，引誘散戶在交叉時買進或賣出。</p>
+
+<p>在實務上，像這樣的「騙線」可以出現在各式各樣的技術指標裡，如果在使用一個技術指標前，沒有搞懂他背後的原理或是數學意義，常常會落入騙線陷阱。而要避免的方法除了弄清楚原理之外，最簡單的就是觀察交易量（如無量下殺的狀態），或是搭配別的指標一起看，或是通通不信，佛系投資。</p>
+
+<p>那有沒有辦法透過只從「歷史價格」預測未來可能的「騙局」呢？</p>
+
+<h2 id="使用方法">使用方法</h2>
+
+<p>這個模型主要分成幾個部份。</p>
+
+<h3 id="蒐集原始價格資訊">蒐集原始價格資訊</h3>
+
+<p>像是從這些地方抓資料下來：</p>
+
+<ul>
+<li><a href="https://finance.yahoo.com/">Yahoo Finance</a>：<a href="https://finance.yahoo.com/">https://finance.yahoo.com/</a></li>
+<li><a href="https://finance.yahoo.com/">台灣期貨交易所</a>：<a href="http://www.taifex.com.tw/">http://www.taifex.com.tw/</a></li>
+</ul>
+
+<h3 id="算出何時會出現交叉">算出何時會出現交叉</h3>
+
+<p>解釋有點複雜，看下面 code 的註解比較快，不過原則就是用 np.sign() 去看變號的情況，當變號前後出大事時，視為交叉。</p>
+
+<h3 id="定義何謂騙線">定義何謂騙線</h3>
+
+<p>「在怎樣的情況下，我可以說這條是騙線？」</p>
+
+<p>這其實是個開放式的問題，而要去定義的方法也很多，像是剛剛所說的，我們可以搭配別種技術指標、或是交易連同量一起分析、或是用當時市場的消息的這個方向去思考。<del>但因為這樣 code 會很長要模組化比較好看所以很麻煩&hellip;</del></p>
+
+<p>所以我的想法是，設想如果這是「騙線」，當短期 MA 由下而上穿越長期 MA 時，理應是買入訊號（就是黃金交叉），但這其實是大戶為了吸引散戶「買」，然後做空，藉機出貨，使讓股價「跌落」以獲利。所以「在出現交叉」後的「間隔幾次後的報價」，價格應該會比出現交叉時低。</p>
+
+<p>散戶看到的希望，其實是莊家設下的陷阱。</p>
+
+<h3 id="考慮特徵值-feature">考慮特徵值（feature）</h3>
+
+<p>跟剛剛的問題一樣，這也有很多種方法，在現實生活中也有可能是大戶放出消息這種非價格性的變因。</p>
+
+<p>但在這裡，我們只想也只能從「歷史價格」去「預測」騙線的出現，所以設想在出現「交叉」之前，線的變動受到人為操控或是影響，所以和「出現交叉時」的「歷史價格」有關係。當過去的價格呈現某種變動時，或許就是人為操作了。</p>
+
+<p>因為在後面的例子中，我們取的是 MA(5) ，也就是五天的平均價格，那我們取交叉前一次、兩次、三次、四次、五次報價之差當作特徵。</p>
+
+<h3 id="把定義和方法一起丟入模型中跑看看我們能預測多少">把定義和方法一起丟入模型中跑看看我們能預測多少</h3>
+
+<p>我們已經知道所有「過去的歷史價格」了，我們可以對所有的特徵貼標（label）籤去做監督學習（Supervised learning）。</p>
+
+<p>如果只透過單一特徵（feature），可以用 Logistic Regression 去分類（Classification）。在這邊要碎碎念一下 Logistic Regression 其實是一個用來做分類的工具（如分成 T 或 F），而非用來回歸的工具，只能說這個名稱常常讓人誤會就是了。</p>
+
+<p>因為我們在剛剛提到用前五次的報價之差當作「特徵」值，所以種一棵決策樹（Decision tree）來建構決策邊界（Decision Boundary），即「是不是騙局」比較好。在這裡，使用 xgboost 種樹。</p>
+
+<h2 id="模型結論">模型結論</h2>
+
+<p>本模型為「能否只透過歷史價格資料的學習，成功預測騙線的發生？」。因為我們會把整體的資料分成兩個部份：training set 跟 test set，在 training 完一個模型後，我們會用剩下的 test set 去做「模型的預測」跟「實際的情況」。最後，我們會得到一個 Accuracy Score。介於零和一之間。</p>
+
+<p>舉個例子，如果我今天輸入一筆資料跑出 0.7 這樣的結果，那麼他代表的意思是</p>
+
+<blockquote>
+<p>如果今天出現了交叉，我把過去的資料丟給電腦做決策，電腦會告訴我「這是騙線喔」，或是「這不是騙線吧」，而事實上命中的機率是 0,7；也就是說，如果今天電腦告訴我「這是騙線」，那麼有 70% 的可能他真的是騙線（電腦答對了），30% 的可能這不是騙線（電腦答錯了），又或者相反，今天電腦告訴我「這不是騙線」，事實上這並非騙線的機率是 70%（電腦答對了），這是騙線的機率是 30% （電腦答錯了）。</p>
+</blockquote>
+
+<p>數字愈大代表模型「越能預測這是不是騙線」，數字愈少代表「越難預測這是不是騙線」。</p>
+
+<p>使用資料時間：任一標的上市日～2018/01/11 為止。</p>
+
+<h3 id="對綜合加權指數而言">對綜合加權指數而言：</h3>
+
+<ul>
+<li><p>平均值：0.6221375，明顯過半。</p></li>
+
+<li><p>因為是「大盤」的加權指數，要控制大盤的指數必須控制大多數權值股，因為單一的權值股很難真的影響整體指數，所以大戶要操弄「整體市場指數」的成本極大，很難在很短的時間內做出 P&amp;D （Pump and Dump）的現象，使得「製造」出一個線形的過程相對於個股而言還要來得長，所以有機會用過去的資料找出一個價格變動的趨勢。</p></li>
+</ul>
+
+<h3 id="對單一個個股而言">對單一個個股而言：</h3>
+
+<ul>
+<li><p>平均值：0.49641428，跟丟硬幣一樣，所以很難說可以預測&hellip;</p></li>
+
+<li><p>相較於大盤的整體指數，操縱個股所需的成本較少，可以在短時間內迅速做出拉抬價格、做空的現象，藉此來製造出「交叉」的線圖，而這個過程可以極短，也可以極長，所以很難以從現有的日 K 資料去做預測。此外，個別的標的價格也常常受限於基本面或是消息面的影響，這使得「只用過去的價格資料」對預測未來的買點沒什麼幫助。</p></li>
+</ul>
+
+<h3 id="對-cryptocurrency-市場而言">對 Cryptocurrency 市場而言：</h3>
+
+<ul>
+<li><p>有的非常高，有的非常低，各自獨立。</p></li>
+
+<li><p>吐嘈一下，Cryptocurrency 翻成「密碼貨幣」或「數位通貨」都比「加密貨幣」還要好，因為區塊練的本質只有透過橢圓曲線做「簽章跟驗章」的動作，而不是「加密跟解密」。</p></li>
+
+<li><p>很遺憾的，當今 Cryptocurrency 市場本質就是誰有錢就炒幣，所以別想在這個一天振盪 20% 的市場作預測，別人喊上車就上車吧，後果自付。在 Cryptocurrency 市場的 P&amp;D （最有名的就是糞幣雙霸 XVG 跟 TRX）實在太多了，大戶或是開發者手上可以控制超過整體在外流通的半數，想怎麼玩就怎麼玩，假新聞也常常以訛傳訛的影響市場和未來看法。</p></li>
+</ul>
+
+<h2 id="實作">實作</h2>
+
+<ul>
+<li><p>Using Language Version &amp; Platform：</p>
+
+<ul>
+<li>Python 3.6.7 @ Linux Kernel 4.15.0-42-generic</li>
+</ul></li>
+
+<li><p>Using Library Version：</p>
+
+<ul>
+<li>pandas 0.23.4</li>
+<li>numpy 1.15.4</li>
+<li>Ta-Lib 0.4.17</li>
+<li>sklearn 0.20.0</li>
+<li>xgboost 0.81</li>
+</ul></li>
+</ul>
+
+<h3 id="先整理出我們要的東西">先整理出我們要的東西</h3>
+
+<p>引入會用到的函式庫。</p>
+
+<pre><code class="language-python">import sys
+import pandas as pd
+import numpy as np
+import xgboost as xgb
+import talib
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+filename = sys.argv[1]
+original_data = pd.read_csv(filename, index_col = 'Date')
+df = original_data.copy() # 把csv讀成一個dataframe
+df.index = pd.to_datetime(df.index) # 把時間當成 index
+
+df = df.dropna(how='any') # 其實插值比較好，但我很懶= =，這裡直接刪掉有 NaN 的任何一 row 
+print(df.tail()) # 印出來看看有什麼
+</code></pre>
+
+<p>終端輸出：</p>
+
+<pre><code class="language-terminal">	   Open         High          Low        Close    Adj Close      Volume
+Date                                                                                   
+2019-01-02  2476.959961  2519.489990  2467.469971  2510.030029  2510.030029  3733160000
+2019-01-03  2491.919922  2493.139893  2443.959961  2447.889893  2447.889893  3822860000
+2019-01-04  2474.330078  2538.070068  2474.330078  2531.939941  2531.939941  4213410000
+2019-01-07  2535.610107  2566.159912  2524.560059  2549.689941  2549.689941  4104710000
+2019-01-08  2568.110107  2579.820068  2547.560059  2574.409912  2574.409912  4083030000
+</code></pre>
+
+<p>畫粗乃。</p>
+
+<pre><code class="language-python">df.plot(grid=True, figsize=(8, 5))
+plt.show()
+</code></pre>
+
+<p><img src="https://i.imgur.com/k4VRBEp.png" style="display:block; margin:auto;width:80%"></p>
+
+<p>導入歷史資料，算出長 MA 跟短 MA。</p>
+
+<pre><code class="language-python">df = df.drop(['Open','High','Low','Close','Volume'],axis=1) 
+# 在這裡，為了簡化模型訓練的過程，先用 Adj Close 做討論就好
+
+ma_short_period = # 設定短線日期
+ma_long_period  = # 設定長線日期
+# 要考慮資料裡每根 candle ohlcv 的單位
+
+ma_short_type =  # 設定短線使用的計算方式
+ma_long_type =  # 設定長線使用的計算方式
+# 在 talib 的 MA 函數裡，0 代表 SMA，1 代表 EMA，2 代表 WMA，3 代表 DEMA，4 代表 TEMA
+
+df['ma_short'] = talib.MA(df['Adj Close'], timeperiod = ma_short_period, matype = ma_short_type)
+df['ma_long'] = talib.MA(df['Adj Close'], timeperiod = ma_long_period, matype = ma_long_type)
+</code></pre>
+
+<p>畫粗乃。</p>
+
+<pre><code class="language-python">df[['Adj Close', 'ma_short', 'ma_long']][-100:-1].plot(grid = True, figsize = (20, 10)) 
+# 畫最新的 100 天出來
+plt.show()
+</code></pre>
+
+<p><img src="https://i.imgur.com/rdRR7kj.png"  style="display:block; margin:auto;width:80%"></p>
+
+<p>計算出黃金交叉（Golden Cross）：</p>
+
+<pre><code class="language-python">df['diff'] = df['ma_short'] - df['ma_long'] # 計算「短線」減去「長線」之差
+ 
+asign = np.sign(df['diff']) # asign 會在這個數大於 0 時回傳 +1，小於 0 時回傳-1
+# 換句話說，asign 裡的 +1 就是當短線高於長線時，而 -1 就是長線高於短線時
+
+# 而黃金交叉（短線從長線下面穿越到長線）就是在 -1 到 +1 之時
+# 也就是 -1 - (+1) = -2 時發生
+cross_signal = ((np.roll(asign, 1) - asign) == (-2)).astype(int) 
+# 這會回傳 T(1) 或 F(0)
+
+df['golden_cross'] = cross_signal # 把結果存到 golden_cross 裡面
+</code></pre>
+
+<p>計算出死亡交叉（Death Cross）：</p>
+
+<pre><code class="language-python">asign = np.sign(df['diff']) # 大於 0 時回傳 +1，小於 0 時回傳-1
+# 換句話說，asign 裡的 +1 就是當短線高於長線時，而 -1 就是長線高於短線時
+
+# 而死亡交叉（短線從長線上面跌落到長線）就是在 +1 到 -1 之時
+# 也就是 +1 - (-1) = 2 時發生
+death_signal = ((np.roll(asign, 1) - asign) == 2).astype(int) 
+# 一樣會回傳 T(1) 或 F(0)
+
+df['death_cross'] = death_signal # 把結果存到 death_cross 裡面
+
+df['death_cross'][df['death_cross'] == 1] = (-1)
+# 為了和黃金交叉有分別，把本來的 1 改成 -1
+# 另外其實可以把交叉都存在同一個資料結構裡面就是了，因為不可能同時黃金交叉又死亡交叉
+
+print(&quot;Golden Cross 黃金交叉總共有:&quot;,df['golden_cross'].sum(),&quot;次&quot;)
+print(&quot;Death Cross 死亡交叉總共有:&quot;,df['death_cross'].sum(),&quot;次&quot;)
+# 理論上要一樣多或是只差一，因為穿越上去要再穿越下來，才能再穿越上去
+
+print(df[(ma_long_period-5):(ma_long_period+5)]) 
+# 檢查是否到第 ma_long_period 筆資料時（array[ma_long_period-1]）才出現 ma_long
+</code></pre>
+
+<p>終端輸出：</p>
+
+<pre><code class="language-terminal">Golden Cross 黃金交叉總共有: 409 次
+Death Cross 死亡交叉總共有: -410 次
+
+	    Adj Close  	ma_short   ma_long      diff  golden_cross  death_cross
+Date                                                                            
+1950-02-07  17.230000     17.224        NaN       NaN             0            0
+1950-02-08  17.209999     17.256        NaN       NaN             0            0
+1950-02-09  17.280001     17.266        NaN       NaN             0            0
+1950-02-10  17.240000     17.256        NaN       NaN             0            0
+1950-02-14  17.059999     17.204  16.976667  0.227333             0            0
+1950-02-15  17.059999     17.170  16.990000  0.180000             0            0
+1950-02-16  16.990000     17.126  16.994667  0.131333             0            0
+1950-02-17  17.150000     17.100  17.002000  0.098000             0            0
+1950-02-20  17.200001     17.092  17.009333  0.082666             0            0
+</code></pre>
+
+<h3 id="開始用-xgboost-找特徵">開始用 xgboost 找特徵</h3>
+
+<p>特徵就是和什麼東西有關，用來分支樹。</p>
+
+<p><img src="https://i.imgur.com/uHtoKKj.png"  style="display:block; margin:auto;width:80%"></p>
+
+<p>舉例來說，這是一顆 max_depth=2 的樹（使用 graphviz 畫出）</p>
+
+<p>一百個人會有一百種寫法去找特徵，但這裡就用延遲的概念。在這裡，我們假定「未來的股價」會和這些東西有關：</p>
+
+<ul>
+<li>出現交叉時的「價格」、「當下的短 MA」、「當下的長 MA」</li>
+<li>出現交叉時，「前幾次報價的價格」相對於現在的走勢</li>
+<li>出現交叉時，「前幾次報價時的短 MA 和長 MA」</li>
+</ul>
+
+<pre><code class="language-python"># 位移「當次報價之前的」前五次報價，開心的話也可以用 function 位移100次
+df['Close_Pre_1'] = df['Adj Close'].shift(1)
+df['Close_Pre_2'] = df['Adj Close'].shift(2)
+df['Close_Pre_3'] = df['Adj Close'].shift(3)
+df['Close_Pre_4'] = df['Adj Close'].shift(4)
+df['Close_Pre_5'] = df['Adj Close'].shift(5)
+
+df['Diff_Pre_1'] = df['diff'].shift(1)
+df['Diff_Pre_1'] = df['diff'].shift(2)
+df['Diff_Pre_1'] = df['diff'].shift(3)
+df['Diff_Pre_1'] = df['diff'].shift(4)
+df['Diff_Pre_1'] = df['diff'].shift(5)
+
+# 計算出位移之間的 diff
+df['Close_Pre_1'] = df['Adj close'] - df['Close_Pre_1']
+df['Close_Pre_2'] = df['Adj close'] - df['Close_Pre_2']
+df['Close_Pre_3'] = df['Adj close'] - df['Close_Pre_3']
+df['Close_Pre_4'] = df['Adj close'] - df['Close_Pre_4']
+df['Close_Pre_5'] = df['Adj close'] - df['Close_Pre_5']
+
+df['Diff_Pre_1'] = df['diff'] - df['Diff_Pre_1']
+df['Diff_Pre_2'] = df['diff'] - df['Diff_Pre_2']
+df['Diff_Pre_3'] = df['diff'] - df['Diff_Pre_3']
+df['Diff_Pre_4'] = df['diff'] - df['Diff_Pre_4']
+df['Diff_Pre_5'] = df['diff'] - df['Diff_Pre_5']
+</code></pre>
+
+<p>考慮什麼叫做「被騙」？</p>
+
+<p>如何定義被騙是一件很困難的事情&hellip; <del>跟定義遊戲一樣難</del>，這裡用「延遲」交易策略看會不會賺錢的想法去定義被騙。</p>
+
+<pre><code class="language-python"># 在看到「買賣指標」之後，再等幾次「報價」再買賣
+delay_period = 2 # 這裡，設成延遲兩次「再買」，看會不會賺錢
+df['Price_delay'] = df['Adj Close'].shift(-delay_period)
+df['Profit'] = df['Price_delay'] - df['Adj Close']
+# 如果是騙線，那延遲兩次報價後不會賺錢，反之則是真的
+
+# 延遲策略成功（賺）得到 1，失敗（被騙）得到 0，回傳到 result 這個 col
+df.loc[df['Profit'] &gt; 0, 'result'] = 1
+df.loc[df['Profit'] &lt;= 0, 'result'] = 0
+</code></pre>
+
+<p>換句話說，result 就是在延遲買賣的情況下會不會讓價格更好，會（代表延遲後的價格比現在還好，黃金交叉這個信號有準）是 1 ，不會（代表延遲的價格比交叉還糟，這條線有問題）是 0。</p>
+
+<p>好啦，這下我們就找到所有的黃金交叉點</p>
+
+<pre><code class="language-python">df_golden_cross = df[df['golden_cross'] == 1] # 定義黃金交叉的df
+df_golden = df_golden.drop(['diff','golden_cross','death_cross','Profit','Price_delay'],axis=1) # 刪掉沒用的
+print(df_golden_cross.tail())
+</code></pre>
+
+<p>終端輸出：</p>
+
+<pre><code class="language-terminal">      Adj Close     ma_short     ma_long   Close_Pre_1   Close_Pre_20   ...      Diff_Pre_2    Diff_Pre_3    Diff_Pre_4    Diff_Pre_5  result
+Date                                                                      ...                                                      
+2018-05-01  2654.800049  2655.819971  2651.959652   6.750000 -15.109863   ...     5.002661   7.537337   5.050683  -4.600310     0.0
+2018-05-07  2672.629883  2651.249951  2649.980648   9.209961  42.899903   ...     0.147974  -4.554020  -2.591015   3.394312     1.0
+2018-07-10  2793.840088  2757.532031  2749.164030   9.670166  34.020020   ...    22.288656  30.106323  37.096696  35.788346     1.0
+2018-11-12  2726.219971  2776.679981  2774.208000 -54.790039 -80.610107   ...    20.216642  37.080965  60.580282  80.481299     0.0
+2018-11-30  2760.169922  2719.475977  2716.939657  22.369873  16.379883   ...    45.763330  68.347689  68.923014  59.481665     0.0
+
+[5 rows x 14 columns]
+</code></pre>
+
+<p>開始進行訓練囉～</p>
+
+<pre><code class="language-python">data_array = df_golden_cross.value
+
+set_size = df_golden.shape[0]
+set_property = df_golden.shape[1]
+
+print(df_golden.shape)
+# .shape 可以回傳 matrix 的 dimension
+</code></pre>
+
+<p>終端輸出：</p>
+
+<pre><code class="language-terminal">(409, 14)
+</code></pre>
+
+<p>在 2-dimension matrix 裡，代表有 409 個 row ，14 個 column。</p>
+
+<p>接著考慮要分割多少資料</p>
+
+<p>理論上要進行 train，應該要有 train set、validation set 跟 test set，但是我還沒想好要怎麼分比較好，就分成 train 跟 test set 就好八。</p>
+
+<pre><code class="language-python"># 在決定要用多少的比例 (x%) 去trian，在這裡會把前 x% 拿來 train，後 1-x% 拿來 test
+train_data_account_percent = 
+
+# 決定要 train set 的範圍
+train_start = 0
+train_end = int(np.floor(train_data_account_percent*set_size)) # 取底
+train_set = data_array[np.arange(train_start, train_end), :] # 訓練集
+
+# 決定要 test set 的範圍
+test_start = train_end + 1 # 前面取底
+test_end = set_size
+test_set = data_array[np.arange(test_start, test_end), :] # 測試集
+</code></pre>
+
+<p>取得 Train Set 跟 Test Set 的特徵</p>
+
+<pre><code class="language-python"># 特徵（就是剛剛的 result）
+# [:, :set_property-1] # 就是在上面除了 result 的所有 col
+# [-1] # 就是最後一個 col ，也就是 result 那一個
+x_train = train_set[:, :set_property-1] 
+y_train = train_set[:, -1] 
+x_test = test_set[:, :set_property-1]
+y_test = test_set[:, -1]
+
+# 考慮遇到 nan 時的狀態，不過基本上一個好的資料來源不會有原始資料是 null 的狀態
+# 畢竟不會有開市卻沒有價格的狀態，而且一開始我們就刪去了有 null 的 row 就是
+y_train = np.where(np.isnan(y_train), 0, y_train)
+y_test = np.where(np.isnan(y_test), 0, y_test)
+
+# 把資料印出來看看有什麼
+print(x_train[0], '／', y_train[0]) # 印出第一筆就好
+print('y_train.sum() =', y_train.sum()) # 因為每筆都是 1 ，所以 .sum() 相當於回傳有幾筆
+print('y_test.sum() =', y_test.sum())
+</code></pre>
+
+<p>終端輸出：</p>
+
+<pre><code class="language-terminal">[ 1.74900000e+01  1.72800004e+01  1.72136668e+01  3.99990000e-02
+2.40000000e-01  3.69999000e-01  4.00000000e-01  4.20000000e-01
+6.93333000e-02  1.06999933e-01  1.02666400e-01  4.96665667e-02
+-2.00030000e-03] ／ 0.0
+y_train.sum() = 206.0
+y_test.sum() = 22.0	
+</code></pre>
+
+<p>代表對於 result 這個 col 而言，train set 有 206 個「1」，而 test set 有 22 個「1」。這裡的 result 的「1」代表延遲再買會有利，也就是說這是「不會被騙的」信號。</p>
+
+<h3 id="xgboost-的-hyperparameter-調整">xgboost 的 hyperparameter 調整</h3>
+
+<p><del>其實我也沒仔細看懂 document 的參數說明</del>，這真的是玄學</p>
+
+<pre><code class="language-python"># 參數範圍調整
+param_range_setting = {
+	'booster': 'gbtree' # 種一棵樹
+	'n_estimators': 我問天, # 樹有幾棵
+	'max_depth': 我問天, # 樹有多深，太深會 overfit 也不好
+	'subsample': 我問天, # 控制種一顆樹需要多少樣本，避免 overfit
+	'learning_rate':我問天, 
+	'objective': ['binary:logistic'], # 以二元分配的模型為目標
+	'seed':我問天, # 隨機種子
+	'gamma':我問天, # 每次節點分裂的影響
+	'min_child_weight':我問天, # 每個葉子節點的權重
+}
+
+train_model = xgb.XGBClassifier() # 創建模型
+
+# GridSearchCV 會自動用暴力方法在設定的參數範圍內找出一個最佳的參數
+# 搜尋所需的時間正比於你給定的參數
+# 其中，param_grid 代表要找出最佳解的參數集合；cv代表交叉驗證的份數
+grid_set = GridSearchCV(trian_model, param_grid = param_range_setting, cv=5,
+	scoring='accuracy', verbose=1)
+grid_set.fit(x_train, y_train)
+print(grid_set.fit(x_train, y_train)) # 訓練算法
+</code></pre>
+
+<p>終端輸出：</p>
+
+<pre><code class="language-terminal">Fitting 5 folds for each of 66 candidates, totalling 330 fits
+[Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
+[Parallel(n_jobs=1)]: Done 330 out of 330 | elapsed:  1.3min finished
+</code></pre>
+
+<p>輸出在原本給定的參數 set 裡面最佳參數和模型！</p>
+
+<pre><code class="language-python"># 輸出最佳參數
+print('輸出最佳參數：')
+print(grid_set.best_params_,'\n')
+print('訓練出的模型參數：')
+print(train_model.fit(x_train, y_train)) ＃　訓練出模型！
+</code></pre>
+
+<p>終端輸出：（這個參數只對當下樣本有利，不一定能 match 所有模型）</p>
+
+<pre><code class="language-terminal">輸出最佳參數：
+{'gamma': 0.1, 'learning_rate': 0.1, 'max_depth': 6, 'min_child_weight': 1, 
+'n_estimators': 1, 'objective': 'binary:logistic', 'seed': 42, 'subsample': 0.8}
+
+訓練出的模型參數：
+XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
+       colsample_bytree=1, gamma=0, learning_rate=0.1, max_delta_step=0,
+       max_depth=3, min_child_weight=1, missing=None, n_estimators=100,
+       n_jobs=1, nthread=None, objective='binary:logistic', random_state=0,
+       reg_alpha=0, reg_lambda=1, scale_pos_weight=1, seed=None,
+       silent=True, subsample=1) 
+</code></pre>
+
+<p>得到 confusion_matrix 和 accuracy_score</p>
+
+<pre><code class="language-python"># 用這個模型，帶入 test set 的資料
+test_pred = train_model.predict(x_test)
+
+# 輸出我們最關心的 confusion_matrix
+print('Confusion_Matrix：')
+print(confusion_matrix(y_test, test_pred, labels = [1, 0]))	
+print('合格率：', accuracy_score(y_test, test_pred))
+</code></pre>
+
+<p>終端輸出：</p>
+
+<pre><code class="language-terminal">Confusion_Matrix：
+[[ 6 16]
+[ 4 14]]
+合格率：0.5956006768189509 
+</code></pre>
+
+<p>這個準確率代表當我們用前面的特徵（即延遲購買）去回測單純的黃金交叉策略時，這個預測的命中率（或者是成功預測到夠入時會賺的機率）是 59% 左右。</p>
+
+<p>最後看看每次交叉時，是騙線的機率有多大</p>
+
+<pre><code class="language-python"># .predict_prob 可以得到每次的預測機率
+test_proba = train_model.predict_proba(x_test)
+print(test_proba)
+</code></pre>
+
+<p>終端輸出：</p>
+
+<pre><code class="language-terminal">[[0.40458286 0.59541714]
+[0.5594511  0.4405489 ]
+[0.7140273  0.2859727 ]
+[0.83432186 0.16567817]
+[0.72231513 0.27768487]
+[0.62787116 0.3721288 ]
+[0.3985058  0.6014942 ]
+[0.5562488  0.44375125]
+[0.7112555  0.2887445 ]
+[0.83307344 0.16692656]
+[0.7246734  0.27532664]
+[0.5521201  0.4478799 ]
+[0.80195713 0.19804288]
+[0.8019974  0.19800258]
+[0.81596893 0.18403105]
+[0.65097004 0.34902996]
+[0.46870983 0.5312902 ]
+[0.44175458 0.5582454 ]
+[0.3883825  0.6116175 ]
+[0.54778194 0.45221803]
+[0.4057086  0.5942914 ]
+[0.6797961  0.3202039 ]
+[0.94970256 0.05029746]
+[0.40510046 0.59489954]
+[0.8096373  0.1903627 ]
+[0.589704   0.41029602]
+[0.5193044  0.48069564]
+[0.8591655  0.1408345 ]
+[0.2689609  0.7310391 ]
+[0.78016144 0.21983854]
+[0.71896935 0.28103063]
+[0.6333045  0.3666955 ]
+[0.8591923  0.1408077 ]
+[0.73931825 0.26068175]
+[0.5170562  0.48294377]
+[0.48753816 0.51246184]
+[0.54306793 0.4569321 ]
+[0.8238885  0.1761115 ]
+[0.92991114 0.07008887]
+[0.41912127 0.58087873]] 
+</code></pre>
+
+<h2 id="寫在所有之後">寫在所有之後</h2>
+
+<h3 id="那些還沒做的事">那些還沒做的事</h3>
+
+<ul>
+<li><p>剛剛所用到的資料主要都是用到日 K 棒，如果用時 K 棒會不會比較好？甚至用到分 K 棒會更好嗎？當時間間隔愈來愈短時，模型能測出更敏銳的參數嗎？</p></li>
+
+<li><p>綜合 MACD、RSI、KD、DMI、BBands 等指標一起用會更好嗎？</p></li>
+
+<li><p>和公司的股本大小、Marketcap 有沒有關係？或許小股本的公司會更好操作價格，而大股本的公司因為股權分散所以比較難操作，這之間的關聯性真的很大嗎？</p></li>
+</ul>
+
+<h3 id="所以這個能幹嘛">所以這個能幹嘛？</h3>
+
+<blockquote>
+<p>證明「如果我只想用 MA 的交叉來做分析，那麼我想用機器學習的方法，去猜測這個是不是騙人的騙線，那麼大盤的預測效果比對個股還要好」。</p>
+</blockquote>
+
+<p>對，就是這樣，但儘管如此，這個模型最主要還是在預測能不能「識破」騙線，而不是什麼時候會交叉，更不是能不能賺錢，別作夢惹好ㄇ。</p>
+
+<h3 id="那用技術分析可以發大財嗎">那用技術分析可以發大財嗎？</h3>
+
+<blockquote>
+<p>如果真的有模型可以穩穩的獲利我自己操作養老就好惹啊 ^q^</p>
+</blockquote>
+
+<p>技術分析就是一種信者恒信，不信者恒不信，或是說在賺的時候都說我相信，陪的時候都說我不相信的東西。就我而言，我認為技術分析只能提供一個讓人選擇「合理下注時間點的工具」，就像讓我們知道一個遊戲的勝率，但知道勝率就該賺錢嗎？如果今天有一個遊戲，官方告訴你給我 $1 之後，會有 60% 的機率我退你 $2 ，40% 的機率拿不到任何錢，那此時期望值為正，所以我們就應該賭身家嗎？</p>
+
+<p>就像倍壓法（這次如果輸，下次就壓注這次輸掉的錢的兩倍）在統計學上「一定會賺錢」，但是真的會有人這樣做嗎？當然不可能，因為這下注的賭金會以 2 的次方項成長，假設一直輸的話，下注的金額會是 $1 -&gt; $2 -&gt; $4 -&gt; $8 -&gt; $16 -&gt; $32 -&gt; $64 -&gt; $128 這樣成長，如果第一次賭了 $1000 元，連輸五次後要拿 $32000 來賭第六次，股票也是，我可以告訴你這有 60% 的可能性和我預測的一樣，那就真的該買嗎？在賺錢之前，會不會就把身家賭光了？市場的勝者永遠都是本多終勝的那一方。</p>
+
+<p>但如果，我是說如果啦，如果愈多人相信同一套「工具」，市場「或許」就會自我實現。如果所有人都認為在黃金交叉的時候是一個買點，那麼當愈多人在這個交叉點掛出買單，在大量買壓之下價格自然會上揚；而當所有人都認為死亡交叉應該要賣出時，大量的賣壓也會讓價格真的跳水，這就是市場的預言自我實現。但相反的，一定也會有人反著操作（可能是開槓桿放空之類的），所以市場就是個大型的賽局，明明所有人都同步大家都能賺錢，但卻不會合作，因為「不合作」可以讓人賺得更多。</p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/python" role="button">Python </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E9%87%91%E8%9E%8D%E5%B7%A5%E5%AD%B8" role="button">金融工學 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92" role="button">機器學習 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%B1%BA%E7%AD%96%E6%A8%B9" role="button">決策樹 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/code/2018-11-18-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%B2%B7%E8%B3%A32%E5%9B%9E%E6%BA%AF/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>[Python筆記]何時買賣(2)：回溯</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://rutopio.github.io/code/2019-03-08-ml%E7%AD%86%E8%A8%98rossenblatt-%E6%84%9F%E7%9F%A5%E5%99%A8/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>[ML筆記]Rossenblatt 感知器</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%af%ab%e5%9c%a8%e6%89%80%e6%9c%89%e4%b9%8b%e5%89%8d">
+												 寫在所有之前
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%97%9c%e6%96%bc%e6%8a%80%e8%a1%93%e5%88%86%e6%9e%90">
+												 關於技術分析
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%b7%9a%e5%9c%96%e4%ba%a4%e5%8f%89">
+												 線圖交叉
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%bd%bf%e7%94%a8%e6%96%b9%e6%b3%95">
+												 使用方法
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%92%90%e9%9b%86%e5%8e%9f%e5%a7%8b%e5%83%b9%e6%a0%bc%e8%b3%87%e8%a8%8a">
+												 蒐集原始價格資訊
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%ae%97%e5%87%ba%e4%bd%95%e6%99%82%e6%9c%83%e5%87%ba%e7%8f%be%e4%ba%a4%e5%8f%89">
+												 算出何時會出現交叉
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%ae%9a%e7%be%a9%e4%bd%95%e8%ac%82%e9%a8%99%e7%b7%9a">
+												 定義何謂騙線
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%80%83%e6%85%ae%e7%89%b9%e5%be%b5%e5%80%bc-feature">
+												 考慮特徵值（feature）
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%8a%8a%e5%ae%9a%e7%be%a9%e5%92%8c%e6%96%b9%e6%b3%95%e4%b8%80%e8%b5%b7%e4%b8%9f%e5%85%a5%e6%a8%a1%e5%9e%8b%e4%b8%ad%e8%b7%91%e7%9c%8b%e7%9c%8b%e6%88%91%e5%80%91%e8%83%bd%e9%a0%90%e6%b8%ac%e5%a4%9a%e5%b0%91">
+												 把定義和方法一起丟入模型中跑看看我們能預測多少
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%a8%a1%e5%9e%8b%e7%b5%90%e8%ab%96">
+												 模型結論
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8d%e7%b6%9c%e5%90%88%e5%8a%a0%e6%ac%8a%e6%8c%87%e6%95%b8%e8%80%8c%e8%a8%80">
+												 對綜合加權指數而言：
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8d%e5%96%ae%e4%b8%80%e5%80%8b%e5%80%8b%e8%82%a1%e8%80%8c%e8%a8%80">
+												 對單一個個股而言：
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8d-cryptocurrency-%e5%b8%82%e5%a0%b4%e8%80%8c%e8%a8%80">
+												 對 Cryptocurrency 市場而言：
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%af%a6%e4%bd%9c">
+												 實作
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%85%88%e6%95%b4%e7%90%86%e5%87%ba%e6%88%91%e5%80%91%e8%a6%81%e7%9a%84%e6%9d%b1%e8%a5%bf">
+												 先整理出我們要的東西
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%96%8b%e5%a7%8b%e7%94%a8-xgboost-%e6%89%be%e7%89%b9%e5%be%b5">
+												 開始用 xgboost 找特徵
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#xgboost-%e7%9a%84-hyperparameter-%e8%aa%bf%e6%95%b4">
+												 xgboost 的 hyperparameter 調整
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%af%ab%e5%9c%a8%e6%89%80%e6%9c%89%e4%b9%8b%e5%be%8c">
+												 寫在所有之後
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%82%a3%e4%ba%9b%e9%82%84%e6%b2%92%e5%81%9a%e7%9a%84%e4%ba%8b">
+												 那些還沒做的事
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%89%80%e4%bb%a5%e9%80%99%e5%80%8b%e8%83%bd%e5%b9%b9%e5%98%9b">
+												 所以這個能幹嘛？
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%82%a3%e7%94%a8%e6%8a%80%e8%a1%93%e5%88%86%e6%9e%90%e5%8f%af%e4%bb%a5%e7%99%bc%e5%a4%a7%e8%b2%a1%e5%97%8e">
+												 那用技術分析可以發大財嗎？
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="python, 金融工學, 技術指標, RSI, 程式交易, 教學" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="以 Python 執行買賣策略，本文介紹以動態規劃方式決定何時該買賣。">
+  
+  <meta property="og:title" content="[Python筆記]何時該買賣(1)：動態規劃" />
+<meta property="og:description" content="以 Python 執行買賣策略，本文介紹以動態規劃方式決定何時該買賣。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/code/2018-11-17-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%A9%B2%E8%B2%B7%E8%B3%A31%E5%8B%95%E6%85%8B%E8%A6%8F%E5%8A%83/" /><meta property="article:published_time" content="2018-11-17T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-11-17T00:00:00&#43;00:00"/><meta property="og:see_also" content="https://rutopio.github.io/code/2020-01-16-python%E7%AD%86%E8%A8%98-2020%E5%8F%B0%E7%81%A3%E9%81%B8%E8%88%89%E7%B5%90%E6%9E%9C%E7%88%AC%E8%9F%B2%E4%BB%A5%E4%B8%8D%E5%88%86%E5%8D%80%E6%94%BF%E9%BB%A8%E7%A5%A8%E7%82%BA%E4%BE%8B/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-10-14-python%E7%AD%86%E8%A8%98pigeonhole-problem%E9%B4%BF%E7%B1%A0%E5%95%8F%E9%A1%8C%E4%BB%A5-cnf-%E6%AA%94%E6%A1%88%E8%BC%B8%E5%87%BA/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-06-11-python%E7%AD%86%E8%A8%98%E5%9C%96%E7%89%87%E9%82%8A%E7%95%8C%E5%81%B5%E6%B8%AC%E4%BB%A5-pgm-%E6%AA%94%E6%A1%88%E7%82%BA%E4%BE%8B/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-10-ml%E7%AD%86%E8%A8%98-logistic-regression/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-09-ml%E7%AD%86%E8%A8%98adeline-%E8%88%87%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-08-ml%E7%AD%86%E8%A8%98rossenblatt-%E6%84%9F%E7%9F%A5%E5%99%A8/" />
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       [Python筆記]何時該買賣(1)：動態規劃 | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/code/2018-11-17-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%A9%B2%E8%B2%B7%E8%B3%A31%E5%8B%95%E6%85%8B%E8%A6%8F%E5%8A%83/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+      
+    
+    
+      
+        <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%E8%9B%87%E8%9B%87"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸蛇蛇</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">[Python筆記]何時該買賣(1)：動態規劃</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Nov 17, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>4 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<p>這幾天想這個題目寫的豆頁很痛= =，誰叫我動態規劃一直都沒有學好ㄞㄞㄞ，趁還沒忘記的時候趕快來做個筆記。</p>
+
+<p><strong>結果我發現其實這似乎不是最佳解啊哈哈哈^^。</strong></p>
+
+<h2 id="條件與目標">條件與目標</h2>
+
+<h3 id="目標">目標</h3>
+
+<p>在我們的 function 裡，我們要在「知道證券的所有歷史資料」的設定下決定何時該買、何時該賣、或是什麼都不做，才能在「考慮手續費」的情況裡得到最大的獲利。</p>
+
+<p>理論上來說，每一筆資料應該會有一個標準答案，也就是在最佳買點和賣點的考量下產生一個利潤極值。</p>
+
+<h3 id="變數定義">變數定義</h3>
+
+<pre><code>priceVec
+</code></pre>
+
+<ul>
+<li>是一個矩陣。</li>
+<li>裡面會是一筆價格的歷史資料（等一下會用的是 SPY ETF 每日 Adj Close 的價格）。</li>
+</ul>
+
+<pre><code>transFeeRate
+</code></pre>
+
+<ul>
+<li>是一個數字。</li>
+<li>每次交易所需的手續費，測試用的時候常用 <code>0.01</code> ，代表每次「買、賣」都要多付出 1% 的手續費給第三方（如政府）。</li>
+</ul>
+
+<h3 id="交易條件">交易條件</h3>
+
+<ul>
+<li>每天在看到價格時，只能做一次「買」或「賣」，或是什麼都不做。</li>
+<li>每次買賣都是歐硬，不留倉、不建倉、不分散風險，要買就是用手頭現金全買證券，要賣就是全賣掉手上持有的證券換現金。<strong>所以每天我們身上只會有「全部都是現金」跟「全部都是證券」。</strong></li>
+<li><strong>這並「不是」什麼技術分析之類的去「預估」未來的股價</strong>，因為我們在一開始就知道全部的歷史價格（放在<code>priceVec</code>裡面）。這是要用過去的資料去、考慮交易會有手續費的情況下去推得何時該買賣以求得罪大收益。</li>
+<li>動態規劃只是其中一種方法而已，或許會有更好的方法。</li>
+</ul>
+
+<h2 id="思緒">思緒</h2>
+
+<p>因為條件告訴我們：</p>
+
+<blockquote>
+<p>每天我們身上只會有「全部都是現金」跟「全部都是證券」。</p>
+</blockquote>
+
+<p>所以在每天都考慮兩種持有狀態（現金或證券），共四種情況：</p>
+
+<ol>
+<li><p>我今天「結束時」持有現金：</p>
+
+<ul>
+<li>是因為我昨天結束時也持有現金（意思就是我今天什麼都不做）。</li>
+<li>我在今天還沒結束時把昨天結束時持有的證券全部賣了，換成現金。</li>
+</ul></li>
+
+<li><p>我今天「結束時」持有證券：</p>
+
+<ul>
+<li>是因為我昨天結束時也持有證券（意思就是我今天什麼都不做）。</li>
+<li>我在今天還沒結束時把昨天結束時持有的現金全部拿去買了，換成證券。</li>
+</ul></li>
+</ol>
+
+<p>我們每天要取的極值是以下兩種：</p>
+
+<ol>
+<li><p>在「今天結束時持有現金」狀況的前提下：</p>
+
+<ul>
+<li>如果我們算出「我今天什麼都不做」比「把昨天的證券賣了」還要好（就是擁有現金比較多），那我們今天就什麼都不做。</li>
+<li>反之，如果賣了證券可以讓今天結束時的我擁有更多的現金，那我應該要今天賣掉。</li>
+</ul></li>
+
+<li><p>在「今天結束時持有證券」狀況的前提下：</p>
+
+<ul>
+<li>如果我們算出「我今天什麼都不做」比「把昨天的現金拿來買證券」還要好（就是擁有證券「淨值」比較多），那我們今天就什麼都不做。</li>
+<li>反之，如果買了證券可以讓今天結束時的我擁有的證券「淨值」較多，那我應該在今天買入。</li>
+</ul></li>
+</ol>
+
+<h2 id="概念">概念</h2>
+
+<h3 id="動態規劃">動態規劃</h3>
+
+<p>度的，有了以上的想法，就把他換成程式碼惹。</p>
+
+<p>我們假設一開始第零天的預設狀況：</p>
+
+<ol>
+<li>我們有一塊錢（持有現金）。這樣最後跑出的數值可以直接當變成幾倍來用。</li>
+<li>我們沒有證券。</li>
+</ol>
+
+<p>所以初始的狀態會是：</p>
+
+<pre><code class="language-python">cash = 1 # 持有的現金量（單位是元）
+stock = 0 # 持有的證券張數（單位是張）
+</code></pre>
+
+<p>於是，在第 i 天時：</p>
+
+<p>對上面 1. 的情況而言：</p>
+
+<pre><code class="language-python">cash = max(cash , stock*(priceVec[i]*(1-transFeeRate)))
+</code></pre>
+
+<ul>
+<li>等號左邊是「今天結束後」更新的持有現金量</li>
+<li>等號右邊取兩者極大值，對應我們今天到底該「什麼都不做（持有跟昨天一樣的現金量）」或「全賣債券」的狀態。在這裡，每次賣掉證券所得到的現金要考慮手續費的扣減，實得：</li>
+</ul>
+
+<p>$$
+cash = \frac {stock  \cdot priceVec[i]}{1-transFeeRate}
+$$</p>
+
+<p>對上面的 2. 的情況而言：</p>
+
+<pre><code class="language-python">stock = max(stock, cash/(priceVec[i]*(1+transFeeRate)))		
+</code></pre>
+
+<ul>
+<li>等號左邊是「今天結束後」更新的持有的證券張數</li>
+<li>等號右邊取兩者極大值，對應我們今天到底該「什麼都不做（持有跟昨天一樣的證券）」或「全買債券」的狀態。在這裡，每次花現金買入證券所得到的張數要考慮手續費的扣減，實得：</li>
+</ul>
+
+<p>$$
+stock = \frac {cash}{priceVec[i] \cdot (1+transFeeRate)}
+$$</p>
+
+<p><img src="https://i.imgur.com/o29F2D9.png" style="display:block; margin:auto;width:80%"></p>
+
+<h3 id="最後比較的極值">最後比較的極值</h3>
+
+<p>到了最後一天結束時，我們比較手上持有的「現金」和「證券淨值」何者比較大，比較大的就是我們可以在這次的交易過程獲得的最大利潤。</p>
+
+<p>其中，證券淨值就是無論如何都要在最後一天賣出所有的證券張數所得到的現金，即：</p>
+
+<p>$$
+stockvalue = stock \cdot priceVec[-1] \cdot (1-transFeeRate)
+$$</p>
+
+<pre><code class="language-python"># 證券淨值
+stockvalue = stock*priceVec[-1]*(1-transFeeRate)
+
+# 比較
+maxvalue = max(cash, stockvalue)
+
+# 印出
+print(maxvalue)
+</code></pre>
+
+<p><img src="https://i.imgur.com/rgubQ72.png"  style="display:block; margin:auto;width:80%"></p>
+
+<h2 id="實作">實作</h2>
+
+<pre><code class="language-python">'''
+By ChingRu @ 2018-11-18
+'''
+
+def myOptimAction(priceVec, transFeeRate):
+	import numpy as np
+
+	# 先檢查共有幾筆資料
+	dataLen = len(priceVec)
+	
+	# set as default
+	cash = 1
+	stock = 0
+
+	for i in range(0, dataLen):	
+		# maximized two situation for each day
+		cash = max(cash,stock*(priceVec[i]*(1-transFeeRate)))
+		stock = max(stock, cash/(priceVec[i]*(1+transFeeRate)))		
+
+	# output maximum value
+	stockvalue = stock*priceVec[-1]*(1-transFeeRate)
+	maxvalue = max(cash, stockvalue)
+	print(maxvalue)
+</code></pre>
+
+<p>當用<a href="http://mirlab.org/jang/matlab/toolbox/fintech/SPY.csv">SPY ETF</a>這筆 csv 裡面的 Adj Close 價格試跑時，得到 216.64223869369437 ，相當於原本一塊錢增加 216 倍。</p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/python" role="button">Python </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E5%8B%95%E6%85%8B%E8%A6%8F%E5%8A%83" role="button">動態規劃 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E9%87%91%E8%9E%8D%E5%B7%A5%E5%AD%B8" role="button">金融工學 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%9C%9F%E8%B2%A8" role="button">期貨 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/code/2018-11-11-%EF%BD%92%E7%AD%86%E8%A8%98-%E5%88%87%E5%AD%97%E5%88%86%E6%9E%90%E4%BB%A5%E9%A2%B1%E9%A2%A8%E6%96%B0%E8%81%9E%E7%82%BA%E4%BE%8B/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>[Ｒ筆記] 切字分析：以「颱風新聞」為例</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://rutopio.github.io/code/2018-11-18-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%B2%B7%E8%B3%A32%E5%9B%9E%E6%BA%AF/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>[Python筆記]何時買賣(2)：回溯</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%a2%9d%e4%bb%b6%e8%88%87%e7%9b%ae%e6%a8%99">
+												 條件與目標
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%9b%ae%e6%a8%99">
+												 目標
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%ae%8a%e6%95%b8%e5%ae%9a%e7%be%a9">
+												 變數定義
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%ba%a4%e6%98%93%e6%a2%9d%e4%bb%b6">
+												 交易條件
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%80%9d%e7%b7%92">
+												 思緒
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%a6%82%e5%bf%b5">
+												 概念
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%8b%95%e6%85%8b%e8%a6%8f%e5%8a%83">
+												 動態規劃
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%9c%80%e5%be%8c%e6%af%94%e8%bc%83%e7%9a%84%e6%a5%b5%e5%80%bc">
+												 最後比較的極值
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%af%a6%e4%bd%9c">
+												 實作
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

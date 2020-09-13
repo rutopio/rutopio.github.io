@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="python, Pigeonhole Problem, 鴿籠問題, 鴿籠, CNF file, Pigeonhole" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="以 Python 實現 Pigeonhole Problem（鴿籠問題），並以 CNF 檔案輸出。">
+  
+  <meta property="og:title" content="[Python筆記]Pigeonhole Problem（鴿籠問題）以 CNF 檔案輸出" />
+<meta property="og:description" content="以 Python 實現 Pigeonhole Problem（鴿籠問題），並以 CNF 檔案輸出。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/code/2019-10-14-python%E7%AD%86%E8%A8%98pigeonhole-problem%E9%B4%BF%E7%B1%A0%E5%95%8F%E9%A1%8C%E4%BB%A5-cnf-%E6%AA%94%E6%A1%88%E8%BC%B8%E5%87%BA/" /><meta property="article:published_time" content="2019-10-14T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-10-14T00:00:00&#43;00:00"/><meta property="og:see_also" content="https://rutopio.github.io/code/2020-01-16-python%E7%AD%86%E8%A8%98-2020%E5%8F%B0%E7%81%A3%E9%81%B8%E8%88%89%E7%B5%90%E6%9E%9C%E7%88%AC%E8%9F%B2%E4%BB%A5%E4%B8%8D%E5%88%86%E5%8D%80%E6%94%BF%E9%BB%A8%E7%A5%A8%E7%82%BA%E4%BE%8B/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-06-11-python%E7%AD%86%E8%A8%98%E5%9C%96%E7%89%87%E9%82%8A%E7%95%8C%E5%81%B5%E6%B8%AC%E4%BB%A5-pgm-%E6%AA%94%E6%A1%88%E7%82%BA%E4%BE%8B/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-10-ml%E7%AD%86%E8%A8%98-logistic-regression/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-09-ml%E7%AD%86%E8%A8%98adeline-%E8%88%87%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-08-ml%E7%AD%86%E8%A8%98rossenblatt-%E6%84%9F%E7%9F%A5%E5%99%A8/" />
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       [Python筆記]Pigeonhole Problem（鴿籠問題）以 CNF 檔案輸出 | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/code/2019-10-14-python%E7%AD%86%E8%A8%98pigeonhole-problem%E9%B4%BF%E7%B1%A0%E5%95%8F%E9%A1%8C%E4%BB%A5-cnf-%E6%AA%94%E6%A1%88%E8%BC%B8%E5%87%BA/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+      
+    
+    
+      
+        <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%E8%9B%87%E8%9B%87"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸蛇蛇</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">[Python筆記]Pigeonhole Problem（鴿籠問題）以 CNF 檔案輸出</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Oct 14, 2019</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>2 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<h2 id="outline">Outline</h2>
+
+<p>設想，總共有 n 隻鴿子和 m 個籠子，每一隻鴿子都要有一個籠子可以住，但每個籠子只能住一隻鴿子，請問對於這些鴿子和籠子，是否有適合的安排方式？雖然可能有很多種，但我們可以直接知道，當鴿子的數量比籠子還要多的時候，這個問題是無解的。</p>
+
+<h2 id="variable">Variable</h2>
+
+<ul>
+<li>$n$，鴿子數量</li>
+<li>$m$，籠子數量</li>
+</ul>
+
+<h2 id="instruction">Instruction</h2>
+
+<p>假設 3 隻鴿子在 3 個籠子裡，即 $n=3, m=3$ ：</p>
+
+<pre><code class="language-cmd">$ python pigeonhole.py
+&gt; Enter the number of pigeons(n):3
+&gt; Enter the number of holes(m):3
+c
+c number of pigeons(n): 3 ,number of holes(m): 3
+c
+p cnf 9 12
+1 2 3 0
+4 5 6 0
+7 8 9 0
+-1 -4 0
+-1 -7 0
+-4 -7 0
+-2 -5 0
+-2 -8 0
+-5 -8 0
+-3 -6 0
+-3 -9 0
+-6 -9 0
+</code></pre>
+
+<h2 id="detail">Detail</h2>
+
+<h3 id="一隻鴿子一定住在任意一個鴿舍裡">一隻鴿子一定住在任意一個鴿舍裡</h3>
+
+<p>
+\begin{equation}
+p_{i1} \vee p_{i2} \vee \cdots \vee p_{im}
+\end{equation}
+</p>
+
+<p>代表鴿子 $i$ 號，要不住在一號鴿舍（ <span>$p_{i1}$</span> ）、或是二號鴿舍（ <span>$p_{i2}$</span> ）、&hellip;、或是 $m$ 號鴿舍（ <span>$p_{im}$</span> ），然後總共有 $n$ 隻鴿子。總之，給定一隻鴿子 $i$ ，牠一定住在共 $m$ 個鴿舍裡任意一個鴿舍裡（Given a pigeon $i$, there is exactly one hole $j$ for which <span>$p_{i,j}$</span> is true.）。</p>
+
+<pre><code class="language-python">for i in range(1, n+1):
+    for j in range(1, m+1):
+        print(m*(i-1)+j, end=' ')
+    print(&quot;0&quot;)
+</code></pre>
+
+<h3 id="一個鴿舍只會有一隻鴿子">一個鴿舍只會有一隻鴿子</h3>
+
+<blockquote>
+<p>This formula says that at most one pigeon lives in hole $k$.</p>
+</blockquote>
+
+<p>代表對於第 $k$ 號鴿舍，最多只會有一隻鴿子。（Given a hole $j$, there is at most one pigeon $i$ for which <span>$p_{ij}$</span> is true. ）。所以很明顯的，當鴿子數量比鴿舍數量多（$n&gt;m$）的時候，SAT 無解。</p>
+
+<p>
+\begin{equation}
+\bigwedge_{1\leq i < j \leq n} \neg p_{ik} \vee \neg p_{jk}\\
+= (\neg p_{1k} \vee \neg p_{2k})\wedge(\neg p_{2k} \vee \neg p_{3k})\wedge\cdots\wedge(\neg p_{(n-1)k} \vee \neg p_{nk})
+\end{equation}
+</p>
+
+<pre><code class="language-python">for j in range(1, m+1):
+    for i in range(1, m+1):
+        for k in range(i+1, n+1):
+            print(-(m*(i-1)+j), -(m*(k-1)+j), &quot;0&quot;)
+</code></pre>
+
+<p>最後再把全部的 clause 用 $\wedge$ 串在一起，得到一個 boolean function，在匯出成 .cnf 檔。</p>
+
+<h2 id="attachment">Attachment</h2>
+
+<pre><code class="language-python">import sys
+
+print(&quot;CAUTION : number of pigeons(n) and number of holes(m) can't be smaller than 0&quot;)
+
+while(1):
+    n = int(input(&quot;Enter the number of pigeons(n):&quot;))
+    m = int(input(&quot;Enter the number of holes(m):&quot;))
+    if (m*n &gt; 0):
+        break
+    else:
+        print(&quot;number of pigeons(n) or number of holes(m) can't be smaller than 0&quot;)
+        print(&quot;Please retry.&quot;)
+        continue
+
+variable = n*m
+clause = 0
+finseq = []
+
+for i in range(1, n+1):
+    for j in range(1, m+1):
+        continue
+    clause = clause + 1
+    
+for j in range(1, m+1):
+    for i in range(1, m+1):
+        for k in range(i+1, n+1):
+            clause = clause + 1
+
+# PRINT IN COMMAND LINE
+
+print(&quot;c&quot;)
+print(&quot;c number of pigeons(n):&quot;, n, &quot;,number of holes(m):&quot;, m)
+print(&quot;c&quot;)
+print(&quot;p cnf&quot;, variable, clause)
+
+for i in range(1, n+1):
+    tmp = []
+    for j in range(1, m+1):
+        print(m*(i-1)+j, end=' ')
+        tmp.append(str(m*(i-1)+j)+&quot; &quot;)
+    print(&quot;0&quot;)
+    tmp.append(&quot;0&quot;)
+    finseq.append(tmp)
+
+for j in range(1, m+1):
+    for i in range(1, m+1):
+        for k in range(i+1, n+1):
+            finseq.append(str(-(m*(i-1)+j)) + &quot; &quot; + str(-(m*(k-1)+j)) + &quot; 0&quot;)
+            print(-(m*(i-1)+j), -(m*(k-1)+j), &quot;0&quot;)
+
+# OUTPUT .CNF FILE
+
+outputfilename = str(n) + &quot;_pigeons_in_&quot;+ str(m) +&quot;_holes.cnf&quot;
+file = open(outputfilename, &quot;w&quot;)
+
+file.writelines(&quot;c\n&quot;)
+file.writelines(&quot;c number of pigeons(n): &quot; + str(n) + &quot; ,number of holes(m): &quot; + str(m) + &quot;\n&quot;)
+file.writelines(&quot;c\n&quot;)
+file.writelines(&quot;p cnf &quot; + str(variable) + &quot; &quot; + str(clause) + &quot;\n&quot;)
+for index in range(len(finseq)):
+    file.writelines(finseq[index])
+    file.writelines(&quot;\n&quot;)
+file.close()
+</code></pre>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/python" role="button">Python </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E9%B4%BF%E7%B1%A0%E5%95%8F%E9%A1%8C" role="button">鴿籠問題 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/code/2019-06-11-python%E7%AD%86%E8%A8%98%E5%9C%96%E7%89%87%E9%82%8A%E7%95%8C%E5%81%B5%E6%B8%AC%E4%BB%A5-pgm-%E6%AA%94%E6%A1%88%E7%82%BA%E4%BE%8B/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>[Python筆記]圖片邊界偵測，以 PGM 檔案為例</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://rutopio.github.io/code/2020-01-16-python%E7%AD%86%E8%A8%98-2020%E5%8F%B0%E7%81%A3%E9%81%B8%E8%88%89%E7%B5%90%E6%9E%9C%E7%88%AC%E8%9F%B2%E4%BB%A5%E4%B8%8D%E5%88%86%E5%8D%80%E6%94%BF%E9%BB%A8%E7%A5%A8%E7%82%BA%E4%BE%8B/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>[Python筆記] 2020台灣選舉結果爬蟲：以不分區政黨票為例</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#outline">
+												 Outline
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#variable">
+												 Variable
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#instruction">
+												 Instruction
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#detail">
+												 Detail
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%b8%80%e9%9a%bb%e9%b4%bf%e5%ad%90%e4%b8%80%e5%ae%9a%e4%bd%8f%e5%9c%a8%e4%bb%bb%e6%84%8f%e4%b8%80%e5%80%8b%e9%b4%bf%e8%88%8d%e8%a3%a1">
+												 一隻鴿子一定住在任意一個鴿舍裡
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%b8%80%e5%80%8b%e9%b4%bf%e8%88%8d%e5%8f%aa%e6%9c%83%e6%9c%89%e4%b8%80%e9%9a%bb%e9%b4%bf%e5%ad%90">
+												 一個鴿舍只會有一隻鴿子
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#attachment">
+												 Attachment
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

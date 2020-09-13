@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Json on Rutopio</title>
+    <link>https://rutopio.github.io/tags/json/</link>
+    <description>Recent content in Json on Rutopio</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Tue, 09 Oct 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://rutopio.github.io/tags/json/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Ｒ筆記] 整理格式很糟的 json 檔</title>
+      <link>https://rutopio.github.io/code/2018-10-09-%EF%BD%92%E7%AD%86%E8%A8%98-%E6%95%B4%E7%90%86%E6%A0%BC%E5%BC%8F%E5%BE%88%E7%B3%9F%E7%9A%84-json-%E6%AA%94/</link>
+      <pubDate>Tue, 09 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2018-10-09-%EF%BD%92%E7%AD%86%E8%A8%98-%E6%95%B4%E7%90%86%E6%A0%BC%E5%BC%8F%E5%BE%88%E7%B3%9F%E7%9A%84-json-%E6%AA%94/</guid>
+      <description>有時候吼，有些 json 檔的格式其實很奇葩，尤其是政府的，所以我們要弄成 dataframe 格式去分析前需要先整理一下。舉例來說下面這幾個檔案，直接用 json 的方法去讀是讀不出來的。 違規藥品廣告資料 (https://data.gov.tw/dataset/14196) 違規化妝品廣告資料（https://data.gov.tw/dataset/14198） 健康食品資料集（https://data.gov.tw/dataset/6951) 這裡選擇用健康食品資料集（https://data.gov.t</description>
+    </item>
+    
+  </channel>
+</rss>

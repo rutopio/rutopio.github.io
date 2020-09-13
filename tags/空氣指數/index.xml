@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>空氣指數 on Rutopio</title>
+    <link>https://rutopio.github.io/tags/%E7%A9%BA%E6%B0%A3%E6%8C%87%E6%95%B8/</link>
+    <description>Recent content in 空氣指數 on Rutopio</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Tue, 09 Oct 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://rutopio.github.io/tags/%E7%A9%BA%E6%B0%A3%E6%8C%87%E6%95%B8/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Ｒ筆記] 台灣即時 AQI 指數的繪製</title>
+      <link>https://rutopio.github.io/code/2018-10-09-%EF%BD%92%E7%AD%86%E8%A8%98-%E5%8F%B0%E7%81%A3%E5%8D%B3%E6%99%82-aqi-%E6%8C%87%E6%95%B8%E7%9A%84%E7%B9%AA%E8%A3%BD/</link>
+      <pubDate>Tue, 09 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2018-10-09-%EF%BD%92%E7%AD%86%E8%A8%98-%E5%8F%B0%E7%81%A3%E5%8D%B3%E6%99%82-aqi-%E6%8C%87%E6%95%B8%E7%9A%84%E7%B9%AA%E8%A3%BD/</guid>
+      <description>1. 引入必要的library # 沒安裝的要安裝，這兩個專門畫圖的 # install.packages(&#39;ggplot2&#39;) # install.packages(&#39;ggmap&#39;) library(httr) library(jsonlite) library(ggplot2) library(ggmap) options(stringsAsFactors = F) 2. Google API 因為 Google 爸爸說從 2018/7/16 開始限制 Google Map 的使用和讀取，所以我們還是去申請個 API 吧。 新聞：http://technews.tw/2018/07/16/google-maps-due-date-is-on-api-key-access-is-charging-more-expensive-and-restricted-and-w</description>
+    </item>
+    
+  </channel>
+</rss>

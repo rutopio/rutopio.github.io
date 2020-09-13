@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>貨幣 on Rutopio</title>
+    <link>https://rutopio.github.io/tags/%E8%B2%A8%E5%B9%A3/</link>
+    <description>Recent content in 貨幣 on Rutopio</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Fri, 07 Jun 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://rutopio.github.io/tags/%E8%B2%A8%E5%B9%A3/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>地區貨幣的願景與潛力：以「高雄幣」為例</title>
+      <link>https://rutopio.github.io/essay/2019-06-07-%E5%9C%B0%E5%8D%80%E8%B2%A8%E5%B9%A3%E7%9A%84%E9%A1%98%E6%99%AF%E8%88%87%E6%BD%9B%E5%8A%9B%E4%BB%A5%E9%AB%98%E9%9B%84%E5%B9%A3%E7%82%BA%E4%BE%8B/</link>
+      <pubDate>Fri, 07 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/essay/2019-06-07-%E5%9C%B0%E5%8D%80%E8%B2%A8%E5%B9%A3%E7%9A%84%E9%A1%98%E6%99%AF%E8%88%87%E6%BD%9B%E5%8A%9B%E4%BB%A5%E9%AB%98%E9%9B%84%E5%B9%A3%E7%82%BA%E4%BE%8B/</guid>
+      <description>前言 「地區貨幣」的概念有別於由中央政府所發行的法幣，是屬於一種地域性且有限流通的產物。最早的想法應當可以追溯回歐洲中古封建時代的地方自治傳統，所以西方世界對於地方貨幣的接受度一直都不低，例如法國到 2018 年為止，已經有 50 多種的地方貨幣1。但我認為，由於台灣受到東方傳統的「編戶齊民」思想影響，地方的治理權限常常源於中央所賦予，希望人民信賴地方自行發行的貨幣難度很高。以下我想以沈中華講師有參與建置、近期常常</description>
+    </item>
+    
+    <item>
+      <title>試論「匯率過度調整（Overshoot）」的發生時機</title>
+      <link>https://rutopio.github.io/essay/2019-05-09-%E8%A9%A6%E8%AB%96%E5%8C%AF%E7%8E%87%E9%81%8E%E5%BA%A6%E8%AA%BF%E6%95%B4overshoot%E7%9A%84%E7%99%BC%E7%94%9F%E6%99%82%E6%A9%9F/</link>
+      <pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/essay/2019-05-09-%E8%A9%A6%E8%AB%96%E5%8C%AF%E7%8E%87%E9%81%8E%E5%BA%A6%E8%AA%BF%E6%95%B4overshoot%E7%9A%84%E7%99%BC%E7%94%9F%E6%99%82%E6%A9%9F/</guid>
+      <description>When there is equilibrium in the money market, $M^{s}/P = L(R,Y)$, so $V = Y/L(R,Y)$. ($M^{s}/P$ is the money supply, $L(\cdot)$ is the money demand, $R$ and $Y$ are interest rate and real GNP respectively.) When $R$ increases, $L(R,Y)$ falls and thus velocity rises (vice versa). When $Y$ increases, $L(R,Y)$ rises by a smaller amount because the elasticity of aggregate money demand with respect to real output is smaller than 1. Thus velocity rises (vice versa). Because an increase in $R$ or increase in income causes the exchange rate to appreciate, an increase in velocity is associated with an appreciation of the exchange rate (vise versa). 簡單來說 分為兩個階段 $dM&amp;gt;0\Longrightarrow dR_{1}0$ $dY&amp;gt;0\Longrightarrow dR_{2}&amp;gt;0$ 首先 \begin{equation}\frac{M_{US}^{1}+dM}{P_{US}^{1}} = L+dL=L+\frac{\partial L}{\partial R}\cdot dR+\frac{\partial L}{\partial Y}\cdot dY\tag{0}\end{equation} 且$R$變動是$dR_{1}$，$dY=0$，故 \begin{equation} \begin{split} &amp;\frac{M_{US}^{1}+dM}{P_{US}^{1}}=L+\frac{\partial L}{\partial R}\cdot dR_{1}\\ &amp;\frac{dR_{1}}{dM}=\left(\frac{\partial R}{\partial L}\right)\left(\frac{M^{1}_{US}}{dM\cdot P^{1}_{US}}+\frac{1}{P^{1}_{US}}-\frac{L}{dM}\right) \end{split}\tag{a} \end{equation} $dY&amp;gt;0$，且$M^{s}$是外生給定，故$L$不再變動，</description>
+    </item>
+    
+  </channel>
+</rss>

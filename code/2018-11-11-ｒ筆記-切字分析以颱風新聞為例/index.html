@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="R語言, R Language, jeibaR, 切字, 新聞切字, 教學" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="介紹 R 語言中最基本的切字方式（jeibaR），以聯合報的「颱風新聞」為例。">
+  
+  <meta property="og:title" content="[Ｒ筆記] 切字分析：以「颱風新聞」為例" />
+<meta property="og:description" content="介紹 R 語言中最基本的切字方式（jeibaR），以聯合報的「颱風新聞」為例。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/code/2018-11-11-%EF%BD%92%E7%AD%86%E8%A8%98-%E5%88%87%E5%AD%97%E5%88%86%E6%9E%90%E4%BB%A5%E9%A2%B1%E9%A2%A8%E6%96%B0%E8%81%9E%E7%82%BA%E4%BE%8B/" /><meta property="article:published_time" content="2018-11-11T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-11-11T00:00:00&#43;00:00"/>
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       [Ｒ筆記] 切字分析：以「颱風新聞」為例 | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/code/2018-11-11-%EF%BD%92%E7%AD%86%E8%A8%98-%E5%88%87%E5%AD%97%E5%88%86%E6%9E%90%E4%BB%A5%E9%A2%B1%E9%A2%A8%E6%96%B0%E8%81%9E%E7%82%BA%E4%BE%8B/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+      
+    
+    
+      
+        <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%EF%BD%92"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸Ｒ</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">[Ｒ筆記] 切字分析：以「颱風新聞」為例</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Nov 11, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>11 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<h2 id="1-引入會用到的library">1. 引入會用到的library</h2>
+
+<pre><code class="language-r">install.packages(&quot;jiebaR&quot;)
+library(tidyverse)
+library(stringr)
+library(tidytext)
+library(jiebaR)
+library(purrr)
+library(lubridate)
+library(scales)
+</code></pre>
+
+<h2 id="2-把我們要分析的typhoon-rds引入r環境裡面">2. 把我們要分析的typhoon.rds引入R環境裡面</h2>
+
+<p>typhhon.rds 可以到這裡下載：<a href="https://github.com/rutopio/DSSI_2018/blob/master/Assignment_6/data/typhoon.rds">https://github.com/rutopio/DSSI_2018/blob/master/Assignment_6/data/typhoon.rds</a></p>
+
+<pre><code class="language-r">news.df &lt;- readRDS(&quot;typhoon.rds&quot;)
+
+# 檢查一整個dataframe的數量，這裡顯示總共有4706個row，8個column。
+dim(news.df)
+
+# 檢查每一個column的標題
+# 分別有link（連結）、title（標題）、time（時間）、report（寫報導的記者）、from（新聞源）、text（內文）、cat（時間區分，這裡的early是指1992年以前的新聞，late是指2016年後的新聞）
+names(news.df)
+</code></pre>
+
+<pre><code>[1] 4706    7
+[1] &quot;link&quot;   &quot;title&quot;  &quot;time&quot;   &quot;report&quot; &quot;from&quot;   &quot;text&quot;   &quot;cat&quot;   
+</code></pre>
+
+<h2 id="3-引入不想被分割的詞">3. 引入不想被分割的詞</h2>
+
+<p>stopWords.rds 可以到這裡下載：<a href="https://github.com/rutopio/DSSI_2018/blob/master/Assignment_6/data/stopWords.rds">https://github.com/rutopio/DSSI_2018/blob/master/Assignment_6/data/stopWords.rds</a></p>
+
+<pre><code class="language-r"># 因為中文不像英文那樣每個辭彙中間會空格，所以如果有辭彙不想被拆分的話就要窮舉出來
+# 這裡把不想拆分開來的辭彙窮舉到segment_not裡面
+segment_not &lt;- c(&quot;質疑&quot;,&quot;中央&quot;,&quot;縣政府&quot;,&quot;市政府&quot;,&quot;中央政府&quot;,&quot;蘇南成&quot;,&quot;災前&quot;,&quot;災後&quot;,&quot;莫拉克&quot;,&quot;颱風&quot;,&quot;應變中心&quot;,&quot;停班停課&quot;,&quot;停課&quot;,&quot;停班&quot;,&quot;停駛&quot;,&quot;議會&quot;,&quot;路樹&quot;,&quot;阿扁&quot;,&quot;里長&quot;,&quot;賀伯&quot;,&quot;採收&quot;,&quot;菜價&quot;,&quot;蘇迪&quot;,&quot;受災戶&quot;,&quot;颱風警報&quot;,&quot;韋恩&quot;,&quot;台東縣&quot;,&quot;馬總統&quot;,&quot;馬英九&quot;,&quot;陳水扁&quot;,&quot;行政院長&quot;,&quot;立法院&quot;,&quot;陳總統&quot;,&quot;豪大雨&quot;,&quot;梅姬&quot;,&quot;台東&quot;,&quot;台北市政府&quot;,&quot;工務段&quot;,&quot;漂流木&quot;,&quot;陳菊&quot;,&quot;行政院&quot;,&quot;台南縣&quot;,&quot;卡玫基&quot;,&quot;魚塭&quot;,&quot;救助金&quot;,&quot;陳情&quot;,&quot;檢討&quot;,&quot;強颱&quot;,&quot;中颱&quot;,&quot;輕颱&quot;,&quot;小林村&quot;,&quot;野溪&quot;,&quot;蚵民&quot;,&quot;農委會&quot;,&quot;國民黨&quot;,&quot;民進黨&quot;,&quot;來襲&quot;,&quot;中油公司&quot;,&quot;中央政府&quot;,&quot;颱風天&quot;,&quot;土石流&quot;,&quot;蘇迪勒&quot;,&quot;水利署&quot;,&quot;陳說&quot;,&quot;颱風假&quot;,&quot;颱風地區&quot;,&quot;台灣&quot;,&quot;臺灣&quot;,&quot;柯羅莎&quot;,&quot;八八風災&quot;,&quot;紓困&quot;,&quot;傅崑萁&quot;,&quot;民進黨&quot;,&quot;國民黨&quot;,&quot;中央黨部&quot;,&quot;台中&quot;,&quot;鄉民&quot;,&quot;縣政府&quot;,&quot;表示&quot;,&quot;文旦柚&quot;,&quot;鄉鎮市公所&quot;,&quot;鄉鎮市&quot;,&quot;房屋稅&quot;,&quot;高雄&quot;,&quot;未達&quot;,&quot;台灣省&quot;,&quot;台北市&quot;,&quot;道歉&quot;,&quot;民調&quot;,&quot;八成&quot;,&quot;責任&quot;,&quot;政治責任&quot;)
+
+# worker()函式是jiebaR這個library的東西，用來新建一個分詞引擎
+# 這裡命名為cutter
+# ref:https://zhuanlan.zhihu.com/p/25681782
+cutter &lt;- worker()
+
+# new_user_word()同樣源自jiebaR，可以增加字定義的辭彙
+# 換句話說，如果我們沒有加入segment_not，那麼jiebaR就會用預設的方法幫我們切詞
+# ref:https://github.com/qinwf/jiebaR/issues/26
+new_user_word(cutter, segment_not)
+
+# 把讓切詞停止的keyword引入到stopWords，告訴jiebaR到這邊就要停下來
+stopWords &lt;- readRDS(&quot;stopWords.rds&quot;)
+
+# 順便看一下裡面有啥
+head(stopWords)
+</code></pre>
+
+<pre><code>1   ,           
+2   ?           
+3   、           
+4   。           
+5   “           
+6   ”
+</code></pre>
+
+<h2 id="4-開始切字囉">4. 開始切字囉</h2>
+
+<pre><code class="language-r"># 先切2000-2008年民進黨執政時期的資料
+# tokenized.df就是我們等一下把東西切開來之後會存進去的dataframe
+tokenized_DPP.df &lt;- news.df %&gt;%
+  # 後面的mutate是dplyr這個library特有的函式，用來新增dataframe的column
+  # 這裡在tokenized.df新增一個column，名為timestamp，把news.df裡的time轉存到這裡
+    mutate(timestamp=ymd(time)) %&gt;% 
+  # 如果我們要篩一段時間內的新聞就好，可以在這裡加上一個filter
+  # 這裡選2000-05-20到2008-05-20
+    filter(timestamp &gt;= as.Date(&quot;2000-05-20&quot;) &amp; timestamp &lt; as.Date(&quot;2008-05-20&quot;)) %&gt;%
+  # 因為我們有前面的timestamp了，這裡就不用news.df裡的time
+  # cat我們也用不到，把他移掉
+    select(-time,-cat,-report,-from) %&gt;%
+  # 選取原本news.df裡面的這幾個column作為分析用
+    select(title, text, timestamp) %&gt;%
+  # 在tokenized.df新增一個column，名為word，用來放切割後的詞
+  # 這段程式碼要拆成幾個部份，首先的purrr是一個讓R有類似OOP處理function的方法
+  # 因為我們要對每一個新聞的text部份進行切割，最簡單的方法就是寫一個for然後行他跑
+  # 可是這樣會有大量loop的部份，這時用map可以減少loop的使用，運行起來也比較快
+  # 他把原本的fumction包裝成另一個funciton以處理我們切割的執行
+    mutate(word = map(text, function(x)segment(x, cutter))) %&gt;%
+  # 最後用party這個column標註這些是DPP時期的新聞
+    mutate(party='DPP')
+  
+# 先切2008-2016年國民黨執政時期的資料
+tokenized_KMT.df &lt;- news.df %&gt;%
+    mutate(timestamp=ymd(time)) %&gt;% 
+    filter(timestamp &gt;= as.Date(&quot;2008-05-20&quot;) &amp; timestamp &lt; as.Date(&quot;2016-05-20&quot;)) %&gt;%
+    select(-time,-cat,-report,-from) %&gt;%
+    select(title, text, timestamp) %&gt;%
+    mutate(word = map(text, function(x)segment(x, cutter))) %&gt;%
+    mutate(party='KMT')
+</code></pre>
+
+<p>接著打開幾篇新聞來檢查原本的新聞是否有被切開字了：</p>
+
+<p>原本的：</p>
+
+<pre><code>tokenized_DPP.df$text[1]
+</code></pre>
+
+<pre><code>[1] &quot;今年真是個災難年。 二月，中國大陸雪災，延伸到澎湖寒害還沒復原；五月初，印度洋納吉斯熱帶氣旋又造成緬甸近十三萬人無辜喪生；十天後，四川的強烈地震，又是至少十萬人喪命。人類面對天災，
+...
+</code></pre>
+
+<p>切割後的：</p>
+
+<pre><code class="language-r">tokenized_DPP.df$word[1]
+</code></pre>
+
+<pre><code>[[1]]
+  [1] &quot;今年&quot;       &quot;真是&quot;       &quot;個&quot;         &quot;災難&quot;       &quot;年&quot;         &quot;二月&quot;       &quot;中國&quot;       &quot;大陸&quot;       &quot;雪災&quot;       &quot;延伸&quot;       &quot;到&quot;        
+ [12] &quot;澎湖&quot;       &quot;寒害&quot;       &quot;還沒&quot;       &quot;復原&quot;       &quot;五月&quot;       &quot;初&quot;         &quot;印度洋&quot;     &quot;納&quot;         &quot;吉斯&quot;       &quot;熱帶&quot;       &quot;氣旋&quot;      
+ [23] &quot;又&quot;         &quot;造成&quot;       &quot;緬甸&quot;       &quot;近&quot;         &quot;十三萬&quot;     &quot;人&quot;         &quot;無辜&quot;       &quot;喪生&quot;       &quot;十天&quot;       &quot;後&quot;         &quot;四川&quot;      
+ [34] &quot;的&quot;         &quot;強烈&quot;       &quot;地震&quot;       &quot;又&quot;         &quot;是&quot;         &quot;至少&quot;       &quot;十萬人&quot;     &quot;喪命&quot;       &quot;人類&quot;       &quot;面對&quot;       &quot;天災&quot;    
+ ...
+</code></pre>
+
+<pre><code class="language-r"># 這邊一樣是檢查
+tokenized_KMT.df$text[1]
+tokenized_KMT.df$word[1]
+
+# 最後合併成tokenized.df，再加上doc_id當index
+tokenized.df &lt;- rbind(tokenized_DPP.df,tokenized_KMT.df) %&gt;% mutate(doc_id = row_number())
+
+# 稍微看一下有什麼
+head(tokenized.df)
+</code></pre>
+
+<h2 id="5-再來-把所有的keyword都拆開了-這樣比較好統計">5. 再來，把所有的keyword都拆開了，這樣比較好統計</h2>
+
+<pre><code class="language-r"># 這個動作會把上面的tokenized.df$word從array拆開成一個一個詞
+unnested_DPP.df &lt;- tokenized_DPP.df %&gt;% unnest(word)
+unnested_KMT.df &lt;- tokenized_KMT.df %&gt;% unnest(word)
+unnested.df &lt;- tokenized.df %&gt;% unnest(word)
+
+# 應該會有很多很多的row
+dim(unnested_DPP.df)
+dim(unnested_KMT.df)
+dim(unnested.df)
+</code></pre>
+
+<pre><code>[1] 164169      5
+[1] 711711      5
+[1] 875880      6   
+</code></pre>
+
+<h2 id="6-畫出字詞的統計數量">6. 畫出字詞的統計數量</h2>
+
+<pre><code class="language-r"># DPP的部份
+unnested_DPP.df %&gt;%
+    count(word, sort=T) %&gt;%
+  # 這裡會篩掉stopWords裡的詞
+    filter(!(word %in% stopWords$word)) %&gt;%
+  # 這裡會篩掉大小寫的單一英文字跟數字
+    filter(!str_detect(word, &quot;[a-zA-Z0-9]+&quot;)) %&gt;%
+  # 只篩出兩個字以上的詞，否則會篩出一堆「的」、「是」之類的東西
+    filter(nchar(word) &gt; 1) %&gt;%
+  # 只選出現三次的東西
+    filter(n &gt; 3) %&gt;%
+  # 重新排序
+    mutate(word = reorder(word, n)) %&gt;%
+  # 只取前20名多的
+    slice(1:20) %&gt;%
+  # 用ggplot畫圖的部份
+    ggplot() + aes(word, n)+
+    geom_col() + 
+    ggtitle('2000-2008年民進黨執政時間聯合報最常用的字詞')+
+    ylab('出現次數')+
+    xlab('字詞')+
+    coord_flip() + 
+    theme(axis.title.y=element_text(angle = 0,vjust = 0.5),plot.title = element_text(hjust = 0.5))
+</code></pre>
+
+<p><img src="https://i.imgur.com/9gflcdI.png" width="90%" style="display:block; width:90%" ></p>
+
+<pre><code class="language-r"># KMT的部份
+unnested_KMT.df %&gt;%
+    count(word, sort=T) %&gt;%
+    filter(!(word %in% stopWords$word)) %&gt;%
+    filter(!str_detect(word, &quot;[a-zA-Z0-9]+&quot;)) %&gt;%
+    filter(nchar(word) &gt; 1) %&gt;%
+    filter(n &gt; 3) %&gt;%
+    mutate(word = reorder(word, n)) %&gt;%
+  # 這裡取20筆就好
+    slice(1:20) %&gt;%
+    ggplot() + aes(word, n)+
+    ggtitle('2008-2016年國民黨執政時間聯合報最常用的字詞')+
+    ylab('出現次數')+
+    xlab('字詞')+
+    geom_col() + 
+    coord_flip() + 
+    theme(axis.title.y=element_text(angle = 0,vjust = 0.5),plot.title = element_text(hjust = 0.5))
+  
+</code></pre>
+
+<p><img src="https://i.imgur.com/OipbPTU.png" width="90%" style="display:block; width:90%"></p>
+
+<h2 id="7-logratio-分析兩黨時期-聯合報所使用的用字差異">7. logratio：分析兩黨時期，聯合報所使用的用字差異</h2>
+
+<pre><code class="language-r"># 統計用詞出現的次數
+party_word.tf &lt;- unnested.df %&gt;%
+  # 記數
+    count(party, word) %&gt;%
+  # 一樣篩掉不想統計的東西
+    filter(!str_detect(word, &quot;[a-zA-Z0-9]+&quot;)) %&gt;%
+    filter(!(word %in% stopWords$word)) %&gt;%
+    filter(nchar(word)&gt;1)
+
+# 統計比例
+party_ratio &lt;- party_word.tf %&gt;%
+    filter(n&gt;1) %&gt;%
+    spread(party, n, fill = 0) %&gt;%
+    ungroup() %&gt;%
+  # 計算比例，最後取log
+    mutate_if(is.numeric, funs((. + 1) / sum(. + 1))) %&gt;%
+    mutate(logratio = log(KMT / DPP)) %&gt;%
+    arrange(desc(logratio))
+ 
+# 畫圖
+party_ratio %&gt;%
+    group_by(logratio &gt; 0) %&gt;%
+    top_n(10, abs(logratio)) %&gt;%
+    ungroup() %&gt;%
+    mutate(word = reorder(word, logratio)) %&gt;%
+    ggplot(aes(word, logratio, fill = logratio &lt; 0)) +
+    geom_bar(stat = &quot;identity&quot;) +
+    coord_flip() +
+    ggtitle('聯合報社於兩黨執政時期，用詞出現的次數頻率之比')+
+    xlab('字詞')+
+    ylab(&quot;兩黨執政時期用詞出現的次數頻率之比（經取natural log後處理）&quot;) +
+    scale_fill_manual(name = &quot;&quot;, labels = c(&quot;KMT&quot;,&quot;DPP&quot;),values = c(&quot;tomato&quot;,&quot;lightblue&quot;)) +
+    theme(axis.title.y=element_text(angle = 0,vjust = 0.5),plot.title = element_text(hjust = 0.5))
+</code></pre>
+
+<p><img src="https://i.imgur.com/YYCzbLl.png" width="90%" style="display:block; width:90%"></p>
+
+<p>理論上而言，唯恐天下不亂的記者和媒體最愛在颱風天或是有災難出現的時候檢討當時的政府，而在兩黨執政期間因為總統不同，所以會檢討的對象也應該會不一樣，但扣除前幾名分別是颱風的名稱後，發現聯合報出現「馬總統」的比例真高啊，而且居然不是用本名「馬英九」，看得出聯合報真～的～有夠愛馬總統ㄉ啦！</p>
+
+<h2 id="8-scatter-用字頻率比較">8. scatter：用字頻率比較</h2>
+
+<pre><code class="language-r"># 分析用字的頻率，愈靠近兩軸代表愈靠近兩黨
+frequency &lt;- party_word.tf %&gt;%
+  # 一樣只篩出現次數大於三次的字詞
+    filter(n&gt;3) %&gt;%
+    group_by(party) %&gt;%
+    mutate(proportion = n/sum(n)) %&gt;%
+    select(-n) %&gt;%
+    spread(party, proportion) %&gt;%
+    na.omit()
+
+# 畫圖
+frequency %&gt;%
+ggplot(aes(x = DPP, y = KMT, color = abs(KMT - DPP))) + 
+    geom_abline(color = &quot;gray40&quot;, lty = 5) + 
+    geom_point(alpha = 0.1, size = 2.0, width = 0.3, height = 0.3) + 
+    geom_text(aes(label = word), check_overlap = TRUE, size = 3) +
+    theme(legend.position=&quot;none&quot;) + 
+  # 調整成取log_10的狀態，免得資料太過集中
+    scale_x_log10(labels = percent_format()) +
+    scale_y_log10(labels = percent_format()) +
+    coord_fixed(1)+
+    ggtitle('聯合報社於兩黨執政時期，用詞出現的次數頻率散佈圖')+
+    xlab('2000-2008民進黨執政期間')+
+    ylab('2008-2016國民黨執政期間')+
+    theme(axis.title.y=element_text(angle = 0,vjust = 0.5),plot.title = element_text(hjust = 0.5))
+  
+</code></pre>
+
+<p><img src="https://i.imgur.com/lRKYftG.png" width="90%" style="display:block; width:90%"></p>
+
+<h2 id="9-後記">9. 後記</h2>
+
+<p>其實我本來是要分析在兩黨部同執政期間，聯合報是否有媒體自助餐的現象。</p>
+
+<p>我本來的預期是在因為聯合報很藍，所以在2000-2008這段阿扁執政期間發生的颱風災害，一定都會說是扁政府的問題，所以「政府」、「中央」這些字眼出現的頻率會高於馬政府時期；而2008-2016這段馬政府期間因為政府是主子、罵不得，所以大多都會說是地方政府的錯，所以「縣政府」、「市政府」等出現的頻率會高於扁政府期間，結果很吊詭的的並沒有很明顯的發現這樣的現象。</p>
+
+<p>後來我想想可能可以歸咎於兩個原因。第一個就是上面的分析單單只採用「出現了」幾次當作頻率，而沒有考慮到「中央」或是「地方」政府出現的新聞可能不一樣。有可能這篇出現的「中央」是在怪罪中央政府沒有編列治水經費的缺失，但另一篇卻是用來稱讚「中央」在事後回復家園的時候處理的很好；這篇出現的「地方」可能是在說地方政府都沒有協助救災，但另一篇有可能是在說「地方」在這次災後有幫忙協助重建。我們應該還要考量到每一篇新聞是用持平、稱讚或是譴責的語氣去做分類，再從裡面分別抓出「中央」和「地方」的差別。</p>
+
+<p>例如在2000-2008年期間，「稱讚」類的新聞有可能出現較多的「地方」，而「譴責」類的新聞可能會出現比較多的「中央」；而2008-2016年則是相反過來。這種語氣分類的方法可以從我們切出來的詞中分類、歸納出來，單單只用切出的詞作為計量其實是不夠的。</p>
+
+<p>第二個就是「台灣媒體亂象」其實要一直到近十年才開始，基本上在2000年初期，媒體上還保持自律，還不太會用腥羶色的新聞內容博取點閱率，也還不會以奇怪或是聳動的標題吸引人們（如慟！驚！恐！悚！震憾彈！之類的用語），更不會將媒體當成攻擊另外一個政黨的工具。所以如果我們可以把時間拆分成「2008-2016」和「2016-至今」兩筆，可能才會看出所謂「媒體自助餐」的結果。</p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/r" role="button">R </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E5%88%87%E5%AD%97" role="button">切字 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E9%A2%B1%E9%A2%A8" role="button">颱風 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%96%B0%E8%81%9E" role="button">新聞 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/jiebar" role="button">jiebaR </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/code/2018-10-22-%EF%BD%92%E7%AD%86%E8%A8%98-%E7%88%AC%E8%9F%B2%E4%BB%A5%E5%9C%B0%E7%90%83%E5%9C%96%E8%BC%AF%E9%9A%8A%E7%82%BA%E4%BE%8B/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>[Ｒ筆記] 爬蟲：以「地球圖輯隊」為例</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://rutopio.github.io/code/2018-11-17-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%A9%B2%E8%B2%B7%E8%B3%A31%E5%8B%95%E6%85%8B%E8%A6%8F%E5%8A%83/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>[Python筆記]何時該買賣(1)：動態規劃</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#1-%e5%bc%95%e5%85%a5%e6%9c%83%e7%94%a8%e5%88%b0%e7%9a%84library">
+												 1. 引入會用到的library
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#2-%e6%8a%8a%e6%88%91%e5%80%91%e8%a6%81%e5%88%86%e6%9e%90%e7%9a%84typhoon-rds%e5%bc%95%e5%85%a5r%e7%92%b0%e5%a2%83%e8%a3%a1%e9%9d%a2">
+												 2. 把我們要分析的typhoon.rds引入R環境裡面
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#3-%e5%bc%95%e5%85%a5%e4%b8%8d%e6%83%b3%e8%a2%ab%e5%88%86%e5%89%b2%e7%9a%84%e8%a9%9e">
+												 3. 引入不想被分割的詞
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#4-%e9%96%8b%e5%a7%8b%e5%88%87%e5%ad%97%e5%9b%89">
+												 4. 開始切字囉
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#5-%e5%86%8d%e4%be%86-%e6%8a%8a%e6%89%80%e6%9c%89%e7%9a%84keyword%e9%83%bd%e6%8b%86%e9%96%8b%e4%ba%86-%e9%80%99%e6%a8%a3%e6%af%94%e8%bc%83%e5%a5%bd%e7%b5%b1%e8%a8%88">
+												 5. 再來，把所有的keyword都拆開了，這樣比較好統計
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#6-%e7%95%ab%e5%87%ba%e5%ad%97%e8%a9%9e%e7%9a%84%e7%b5%b1%e8%a8%88%e6%95%b8%e9%87%8f">
+												 6. 畫出字詞的統計數量
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#7-logratio-%e5%88%86%e6%9e%90%e5%85%a9%e9%bb%a8%e6%99%82%e6%9c%9f-%e8%81%af%e5%90%88%e5%a0%b1%e6%89%80%e4%bd%bf%e7%94%a8%e7%9a%84%e7%94%a8%e5%ad%97%e5%b7%ae%e7%95%b0">
+												 7. logratio：分析兩黨時期，聯合報所使用的用字差異
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#8-scatter-%e7%94%a8%e5%ad%97%e9%a0%bb%e7%8e%87%e6%af%94%e8%bc%83">
+												 8. scatter：用字頻率比較
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#9-%e5%be%8c%e8%a8%98">
+												 9. 後記
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>散佈圖 on Rutopio</title>
+    <link>https://rutopio.github.io/tags/%E6%95%A3%E4%BD%88%E5%9C%96/</link>
+    <description>Recent content in 散佈圖 on Rutopio</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Mon, 01 Oct 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://rutopio.github.io/tags/%E6%95%A3%E4%BD%88%E5%9C%96/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Ｒ筆記] 最基本的畫圖和統計</title>
+      <link>https://rutopio.github.io/code/2018-10-01-%EF%BD%92%E7%AD%86%E8%A8%98-%E6%9C%80%E5%9F%BA%E6%9C%AC%E7%9A%84%E7%95%AB%E5%9C%96%E5%92%8C%E7%B5%B1%E8%A8%88/</link>
+      <pubDate>Mon, 01 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2018-10-01-%EF%BD%92%E7%AD%86%E8%A8%98-%E6%9C%80%E5%9F%BA%E6%9C%AC%E7%9A%84%E7%95%AB%E5%9C%96%E5%92%8C%E7%B5%B1%E8%A8%88/</guid>
+      <description>1. 懶得用真的資料就隨機產生幾筆資料吧 # rnorm 函數可以隨機產生資料點，這裡共產生 1000 筆，平均為 1，標準差 10 的資料點 x.a &amp;lt;- rnorm(1000, 1, 10) 2. 篩掉離平均值正負兩個標準差外的資料點 長太歪的視為離峰，如果不刪掉的話可能會影響再來的統計，留下 95 % 的資料。 # 用 subset() 去篩值 # mean 就是平均值，正負兩個 sd 標準差 xfilter &amp;lt;- subset(x.a, x.a &amp;lt;= mean(x.a) + 2*sd(x.a) &amp;amp; x.a &amp;gt;= mean(x.a) - 2*sd(x.a)) 3. 畫成散佈圖（Scatter plot）和密度圖（Density plot） # Scatter plot plot(xfilter, main = &amp;quot;在兩個標</description>
+    </item>
+    
+  </channel>
+</rss>

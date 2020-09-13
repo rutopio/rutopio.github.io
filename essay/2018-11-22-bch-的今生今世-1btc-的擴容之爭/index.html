@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="BCH, BTC, Bitcoin, Bitcoin Cash, 比特幣, 區塊練, Block chain, 密碼貨幣, Cryptocurrency" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="隨著 BCH（Bitcoin Cash，比特幣現金）原鏈最後一塊高度 556766 的區塊於 2018 年 11 月 16 日 02:05 (UTC&#43;8) 由 svpool 產出，正式宣告 BCH 一分為二，分裂成 BCHABC 與 BCHSV，走向硬分叉之路。在記載這場世紀對決之前，有必要先來回顧 BCH 過去一年的歷史。">
+  
+  <meta property="og:title" content="BCH 的今生今世 (1)：BTC 的擴容之爭" />
+<meta property="og:description" content="隨著 BCH（Bitcoin Cash，比特幣現金）原鏈最後一塊高度 556766 的區塊於 2018 年 11 月 16 日 02:05 (UTC&#43;8) 由 svpool 產出，正式宣告 BCH 一分為二，分裂成 BCHABC 與 BCHSV，走向硬分叉之路。在記載這場世紀對決之前，有必要先來回顧 BCH 過去一年的歷史。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/essay/2018-11-22-bch-%E7%9A%84%E4%BB%8A%E7%94%9F%E4%BB%8A%E4%B8%96-1btc-%E7%9A%84%E6%93%B4%E5%AE%B9%E4%B9%8B%E7%88%AD/" /><meta property="article:published_time" content="2018-11-22T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-11-22T00:00:00&#43;00:00"/>
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       BCH 的今生今世 (1)：BTC 的擴容之爭 | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/essay/2018-11-22-bch-%E7%9A%84%E4%BB%8A%E7%94%9F%E4%BB%8A%E4%B8%96-1btc-%E7%9A%84%E6%93%B4%E5%AE%B9%E4%B9%8B%E7%88%AD/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%95%B7%E6%96%87%E6%B7%B1%E8%AB%87"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 長文深談 </a></li>
+      
+    
+    
+  </ul>
+
+  <div class="px-4 post-heading">BCH 的今生今世 (1)：BTC 的擴容之爭</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Nov 22, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>15 minutes read</li>
+    
+  </ul>
+  
+    <div class="view">
+      <img src="https://i.imgur.com/8S0qDDp.png" />
+    </div>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<h2 id="寫在所有之前">寫在所有之前</h2>
+
+<p>隨著 BCH（Bitcoin Cash，比特幣現金）原鏈最後一塊高度 556766 的區塊於 2018 年 11 月 16 日 02:05 (UTC+8) 由 svpool 產出，正式宣告 BCH 一分為二，走向硬分叉之路。</p>
+
+<p>這次的硬分叉事件可以說是 BCH 、甚至是全 Cryptocurrency 社群的共識之戰。由比特大陸陣營所領導的 BCHABC ，與被戲稱為「盜版中本聰」的澳洲電腦科學家 Craig Steven Wright（CSW） 、nChain 陣營所領導的 BCHSV 於 當日 02:07 、高度第 556767 塊的 BCHABC 產出後正式分家，展開 Cryptocurrency 世界裡第一場算力大賽。</p>
+
+<p>在記載這場世紀對決之前，有必要先來回顧 BCH 過去一年的歷史。</p>
+
+<hr />
+
+<h2 id="區塊壅塞">區塊壅塞</h2>
+
+<p>去年 2017 年可以說是 Cryptocurrency 問世以來最刺激的一年，在 Ethereum（以太坊） 為主的強大競爭壓力之下，問世第九年的 BTC（Bitcoin）開始面臨到始料未及的問題。</p>
+
+<p>隨著越來越多人交易、接收與使用 BTC ，原始中本聰設計的 <a href="https://github.com/bitcoin/bitcoin/commit/a30b56ebe76ffff9f9cc8a6667186179413c6349">1 MB 區塊大小</a>每秒只能處理 7 筆交易（相較於 Visa 每秒約可以處理 65000 條交易），早已沒辦法滿足日漸增加的交易量。在挖礦的獎勵機制下，只有手續費較高的交易會被優先處理，那些手續費比較低的交易要求會被礦工們忽略、延遲，直到新產出的區塊有辦法容納這些交易才會在鏈上被確認（confirm）完成。</p>
+
+<pre><code>static const unsigned int MAX_BLOCK_SIZE = 1000000;
+</code></pre>
+
+<blockquote>
+<p>每一個區塊大小 1 MB = 1024 KB = 1024*1024 B = 1048576 B</p>
+
+<p>平均給個區塊能存放約 1048576 B / 250 B（平均每筆交易所需大小） = 4194.3 筆交易資料</p>
+
+<p>每秒可產生的交易數量約 4194.3 / (10 min（平均每次區塊產出時間） * 60 sec) = 7 tps （交易量／秒）</p>
+</blockquote>
+
+<p>這就像是因為高速公路（鏈上區塊）壅塞所實施的過路費管制，要上交流道（進行交易）的車輛（交易要求）都必須先付一筆過路費（手續費），有能力付出比較多（高手續費）的車輛（交易要求）可以被優先通過；而比較少（低手續費）的車輛（交易）就要耐心在交流道前等待（Pending），所以這些車（交易）可能會比較晚到家（被確認）。</p>
+
+<p>在區塊堵塞的高峰期，每次挖出區塊後未能在鏈上被確認的交易高達數十萬筆，每筆正常交易要求所需要的手續費高達數百元，重要的交易甚至需要付出上千元的手續費來加快確認速度。</p>
+
+<hr />
+
+<h2 id="中本聰的看法">中本聰的看法</h2>
+
+<p>事實上，早在 2010 年 10 月，早期 BTC 開發者 Jeff Garzik 就考慮到 BTC 所設計的 1 MB 區塊大小會容納不下未來可能的龐大交易量，在社群裡<a href="https://bitcointalk.org/index.php?topic=1347.msg15366#msg15366">提出修改程式碼的可能性</a>，以「未來每分鐘可完成 1400 筆交易（即 23 tps）」的目標將區塊大小增加到 7.1 MB。</p>
+
+<p>因為「鏈上擴容」是屬於硬分叉的範疇，反對方認為這會要求所有的節點強制升級，容易造成新舊節點之間的混亂。而中本聰也認為暫時不應該升級，但應該預先做好未來「升級區塊大小」的準備，比如在更新原始碼裡寫入在「某個區塊高度後，提高區塊大小」的判斷式。</p>
+
+<blockquote>
+<p>It can be phased in, like:</p>
+
+<pre><code>if (blocknumber &gt; 115000)
+   maxblocksize = largerlimit
+</code></pre>
+
+<p>It can start being in versions way ahead, so by the time it reaches that block number and goes into effect, the older versions that don&rsquo;t have it are already obsolete.</p>
+
+<p><strong>When we&rsquo;re near the cutoff block number, I can put an alert to old versions to make sure they know they have to upgrade.</strong></p>
+
+<p><em>──satoshi，October 04, 2010, 07:48:40 PM，Re: [PATCH] increase block size limit</em></p>
+</blockquote>
+
+<p>此後，中本聰隱退 BTC 社群，把剩下的開發及維護工作交給了 Gavin Andresen。</p>
+
+<hr />
+
+<h2 id="解決方案之爭-軟分叉與硬分叉">解決方案之爭：軟分叉與硬分叉</h2>
+
+<p>2015 年 5 月，每個 BTC 的平均區塊大小達到了 400 KB，並且持續增長中。照中本聰當初的想法，早就應該增大區塊上限了。所以 Gavin 決定將在 2016 年 3 月 1 日將區塊大小擴大到 20 MB，升級方案之爭也隨之開始。</p>
+
+<p>Jeff Garzik 提出 <a href="https://github.com/jgarzik/bip100/blob/master/bip-0100.mediawiki">BIP100</a> 方案<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>，提出刪去原有的 1 MB 空間限制，採用浮動算法控制每個新塊的大小，設定區塊上限是 32MB，預計會在全網 75% 算力同意的情況之下進行節點升級，也就是啟動硬分叉擴容方案。</p>
+
+<blockquote>
+<p>A simple deterministic system is specified, whereby a 75% mining supermajority may activate a change to the maximum block size each 2016 blocks.** Each change is limited to a 5% increase from the previous block size hard limit, or a decrease of similar magnitude.** Among adopting nodes, there will be no disagreement on the evolution of the maximum block size.</p>
+
+<p><em>──BIP100</em></p>
+</blockquote>
+
+<p>另一方面，Gavin 和 Mike Hearn 也提出自己的 <a href="https://github.com/bitcoin/bips/blob/master/bip-0101.mediawiki">BIP101</a>方案，主張先把區塊大小擴增到 8 MB，然後每兩年翻倍，直到 2036 年上限的 8.2 GB。</p>
+
+<blockquote>
+<p><strong>The maximum size shall be 8,000,000 bytes</strong> at a timestamp of 2016-01-11 00:00:00 UTC (timestamp 1452470400), <strong>and shall double every 63,072,000 seconds (two years</strong>, ignoring leap years), until 2036-01-06 00:00:00 UTC (timestamp 2083190400). The maximum size of blocks in between doublings will increase linearly based on the block&rsquo;s timestamp. <strong>The maximum size of blocks after 2036-01-06 00:00:00 UTC shall be 8,192,000,000 bytes</strong>.</p>
+
+<p><em>──BIP101</em></p>
+</blockquote>
+
+<p>在當時，握有主要算力的中國礦池<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup> 因為擔心中國國內網速相較於外國來說教具劣勢，如果每個區塊變得過大會使傳輸速度產生延遲，進而影響挖礦收益，因此聯合拒絕 Gavin 所提出的 BIP101 之每年區塊翻倍建議，但折衷接受 BIP100 方案，暫時將區塊擴增到 8 MB 大小。</p>
+
+<blockquote>
+<p>通過運營全世界最大的礦池之一，比特幣中國親身經歷了孤塊出現率帶來的問題和區塊鏈分叉帶來的風險。所以我們的觀點是：當今的互聯網，不管在中國還是全球，還沒準備好接受無限制的、自動增加大小的區塊。全球的比特幣礦工和礦池網絡，<strong>需要極高級別的網絡連接才能及時處理大容量區塊。如果區塊擴容過快，孤塊出現率肯定會提高，讓小礦工和礦池處於不利地位。</strong></p>
+
+<p>而且隨著大分叉風險大幅增加，毫無疑問會對比特幣造成巨大破壞。此外，撇開 BIP 100 和 BIP 101 的爭論，目前 比特幣協議已經有 32 MB 區塊的固有限制。<strong>換言之，自動加倍的 BIP 101 方案既沒有處理，也沒有克服這個限制、更沒有為超越 32MB 區塊提供解決方案。</strong></p>
+
+<p>基於這些技術原因，我們堅信 BIP 100 是更負責任的選擇。</p>
+
+<p><em>──比特幣中國 CEO 李启元</em></p>
+</blockquote>
+
+<p>此時，儘管 Gavin 仍然是 Bitcoin Core 、也就是 BTC 核心開發組織的關鍵成員之一，但其他多名受雇於 Blockstream 公司的 Core 成員反對改變 1 MB 的上限，主張透過 Segwit 方案，或使用閃電網絡（Lightning Network，LN）、側鏈（Sidechian）、樹鍊（Treechain）等第二層交易方法來解決鏈上交易堵塞的問題。</p>
+
+<p>在百般無奈之下，為了推進自己的「鏈上擴容」方案，Gavin 率領 Jeff Garzik 和 Peter Rizun 重新組織了一個名為 Bitcoin Classic 的開發團隊，並在開發者、礦池、礦工、社群之間進行協調和妥協。在獲得了 AntPool 和 BW 礦池在內的 50% 算力支持後，打算在區塊壅塞之前、算力支持率達 75% 的時候進行硬分叉，增加區塊大小到 2 MB。</p>
+
+<p>整個社群這時出現了兩個選擇：「<strong>要支持 Core 團隊提出的 Segwit 方案，還是接受 Bitcoin Classic 的硬分叉方案？</strong>」</p>
+
+<h3 id="segwit-基本教義派的軟分叉方案">SegWit：基本教義派的軟分叉方案</h3>
+
+<blockquote>
+<p>SegWit replaces the 1MB block-size limit with a 4MB block-weight limit.</p>
+
+<p><em>──Bitcoin Core</em></p>
+</blockquote>
+
+<p>由 Core 提出的 SegWit （Segregated Witness，隔離見證）方案，主要概念在於把每次交易所需的「基本資料（如地址、金額）」和「簽名資料（Witness，用來認證每筆交易的合法性）」拆開來，在每個原始 1 MB 的區塊上外掛上 Segwit 區塊用來存放「簽名資料」的部分，從而提升原本 1 MB 區域裡面可以放的交易數量（因為本來要放「基本資料」跟「簽名資料」的區塊，現在只要放入「基本資料」就好了），進而達到在「不改變區塊大小（保持 1 MB）」的情況下增加每個區塊可以容納的交易量。</p>
+
+<p>這樣「不擴容」的優點，在於因為沒有更改到原本 BTC 的演算協議，所以在軟分叉前後的 BTC 節點（nodes）是可以向下相容的，實施軟分叉前後的新舊節點都可以繼續正常運行。但在另一方面，這其實也只是治標（增加交易量）不治本（區塊空間就這麼大）的方法，原始區塊大小還是被限定在 1 MB 裡，如果日後交易量的大幅增加，總有一天還是會遇上需要擴容的情況。此外，也有 Segwit 將降低 BTC 主鏈的安全性聲音出現。</p>
+
+<p>之所以稱 Bitcoin Core 為基本教義派，是因為他們認為 BTC 就應該是一種「終極的自由財產」，為了保護每個人所持有的 BTC 及財產安全，應該絕對地去中心化，每個人都必須有能力運行全節點（Full nodes）錢包。如果任意的增加區塊大小，會使未來 BTC 錢包所需的大小增大數倍，可能會有一天無法在儲存空間有限的個人裝置上運行，所以 Core 才會堅持在不變動區塊大小的情況下嘗試實施 SegWit 方案。當然，這是他們的說法，實際上他們對不擴容的堅持跟 Core 背後 Blockstream 這間公司利益有關。</p>
+
+<h3 id="增大區塊-擴容派的硬分叉方案">增大區塊：擴容派的硬分叉方案</h3>
+
+<p>而「擴容派」則主張直接透過更改 BTC 基礎協議的方法，透過放棄 BTC 原始舊鏈、在舊鏈之外硬分叉出一條大區塊空間的「新鏈」，從而增加交易確認的速度、也能一併解決手續費過高的問題。</p>
+
+<p>這樣的優點在於治本，只要把空間加的更大（加到 8 MB、16 MB、甚至 32 MB）就能夠一次性的解決鏈上擴容的問題。但也因為這將改動 BTC 的演算協議，硬分叉所叉出的新鏈將不向下相容舊鏈。一旦分叉，所有的舊節點都必須強制升級至新版本，否則將不能正常運行。</p>
+
+<p>另外，隨著區塊大小的增加，運行節點所需網路速度、硬體設備、挖礦成本和進入門檻將會提高，這勢必造成散戶只能攀附大型礦池、使全網算力更加「集中」在礦池裡面，偏離 BTC 最一開始的「去中心化」觀念。</p>
+
+<p>「擴容派」的想法是把 BTC 定位為「生活中支付用的貨幣」，如果受限於區塊大小，導致每次交易所需的確認時間太長、或是需要付出比日常交易還要多的手續費，那麼使用者體驗就會變差，進而讓消費者尋覓他種貨幣使用。與其如此，他們寧願付出「去中心化」的代價來換取「交易速度」。因此，他們認為 BTC 當務之急就是解決區塊過小的問題。</p>
+
+<hr />
+
+<h2 id="社群整體的共識之爭-該支持誰">社群整體的共識之爭：該支持誰？</h2>
+
+<p>兩種方案各自有各自的優缺點，也各有各自支持的人馬。前者掌握的算力雖為少數，但擁有大批的信仰者。而後者掌握了多數的算力，但信仰者卻是少數。至少在目前還是這樣。</p>
+
+<p>基本上，基本教義派站在維持「小區塊」立場，在區塊大小受限情況下，手續費與交易速度勢必大幅增加，使得 BTC 將走向<strong>「保值性的電子黃金」</strong>之路：因為交易手續費變得太高，而使流動性變差。而擴容派則站在「大區塊」的立場，勢必讓 BTC 走向<strong>「用來支付的電子貨幣」</strong>之路：增加流動性但手續費減少。</p>
+
+<p>在這裡，一個哲學問題就出現了：如果在硬分叉之後、和舊鏈互不相容、處於新鏈的貨幣，是否還能被稱為 Bitcoin？Bitcoin 這個「名字」該屬於哪條鏈？如果多數的礦工都取得共識，那麼新鏈理所當然可以「取代」舊鏈，成為真正的 BTC，但是社群意見還是存在著分歧。</p>
+
+<p>儘管如此，畢竟大家都持有一樣的貨幣、挖著同一種貨幣，無論是以 Segwit 方案行軟分叉，還是直接增大區塊大小的硬分叉，都會使貨幣本身受到衝擊，問題是要怎麼讓衝擊降到最少。在此同時，因為交易堵塞的臭名，BTC 在 Cryptocurrency 界的市佔率由過去的八成以上逐漸跌破五成，持有 BTC 的信仰者、開發者、礦工都為了<strong>「維持 BTC 價值」的社群共同利益，努力尋求一個不至於分裂、穩住幣價的方法</strong>。</p>
+
+<h3 id="香港共識">「香港共識」</h3>
+
+<p>在區塊鏈的演算共識裡，並不是每個礦工或開發者都擁有同樣的說話份量，每個「節點」說話的份量是依照「持有多少算力」來做決定的。在這個世界裡，算力決定說話的權重。也因此到了 2016 年，決定 BTC 未來的走向不再只是開發者團隊，握有超過 50% 算力的各大礦池也成為了龐大的外圍勢力。</p>
+
+<p>2016 年 2 月初，中國國內的礦池自行達成「九二共識<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup>」，認為應該要在 90% 算力的支持下「才」進行 2 MB 的硬分叉，而不是如 Gavin 說的在 75% 同意的情況下「擅自」進行硬分叉。</p>
+
+<p>很快的，中國各大礦池和 Bitcoin Core 在香港共識大會（Hong Kong’s Cyberport）達成「<a href="https://medium.com/@bitcoinroundtable/bitcoin-roundtable-consensus-266d475a61ff">香港共識（Hong Kong Agreetment）</a>」，計劃在 2016 年 4 月發佈 Segwit 軟分叉方案，2016 年 7 月發布擴容為 2 MB 硬分叉的原始碼，並在隔年 2017 年 7 月前後進行硬分叉。</p>
+
+<blockquote>
+<ul>
+<li><p>SegWit is expected to be released in April 2016.</p></li>
+
+<li><p>The code for the hard-fork will therefore be available by July 2016.</p></li>
+
+<li><p>If there is strong community support, the hard-fork activation will likely happen around July 2017.</p></li>
+</ul>
+
+<p><em>──Hong Kong Agreement，2016 年 2 月 21 日</em></p>
+</blockquote>
+
+<p>「香港共識」等於是在 Core 和 Classic 兩派人馬之間找到了一個平衡點，Core 同意將擴容到 2 MB 的硬分叉方案納入未來 BTC Roadmap 之中；作為交換，中國的礦池也同意只運行 Core 的方案而放棄 Classic 的方案，希望 Core 在得到礦工們的支持後， 也應該重視擴容的需要性。</p>
+
+<h3 id="core-的反悔">Core 的反悔</h3>
+
+<p>但在香港共識大會之後， Core 便開始表現出跳票的跡象。比特大陸的 CEO 吳忌寒開始透過 Twitter 警告 Core，「比特大陸的礦池不會在沒有 2 MB 硬分叉原始碼的情況下運行 Segwit」，社群對於 BTC 未來的走向開始分成兩派。</p>
+
+<p>2016 年 5 月，BTC 鏈上平均區塊大小達到 800 KB，離區塊上限 1 MB 已經不遠，交易擁堵的問題開始出現、手續費也水漲船高。此時距離「香港共識」約定的 4 月發布 Segwit 時限已過許久，但 Core 仍舊還沒發佈 Segwit 方案，社群開始出現許多催促 Core 的聲音，或是相對 Core 的猶豫不決，重啟 Classic 「硬分叉方案」的論調也多了起來。</p>
+
+<p>這時發生了一件扭轉 Classic 聲勢的圈外事。澳洲電腦科學家 Craig Steven Wright（CSW）露面並稱自己就是中本聰，同時得到 Gavin 的<a href="http://gavinandresen.ninja/satoshi">背書</a>。但最終 CSW 並沒有提出公開可靠的證據，因此被社群們恥笑是假中本聰、澳本聰。，而 Gavin 在此事之後失去社群的誠信，並以此為由被逐出了 Bitcoin Core ，重啟 Classic 方案的聲音也消失了，擴容派就此失去了主要的領導團體。</p>
+
+<p>但是擴容的問題還是沒有被解決。在 Classic 失去社群支持後，擴容派開始尋覓其他的選擇。</p>
+
+<p>2016 年 10 月，Peter Rizun 基於 Jeff Garzik 所提出的 BIP100 方案，在特大陸投資的新礦池 ViaBTC（佔有全網 10% 算力）部署了自己 Bitcoin Unlimited 方案：一種通過市場發展動態決定區塊的上限方案。這個方案得到 btc.top 、Roger Ver 的 bitcoin.com 礦池支持，但隨後被發現 bug 而被迫中止。</p>
+
+<p>2016 年 11 月，Core 開發組終於放出 Segwit 的程式碼，並要求大家在 11 月 19 號開始投票決定是否正式啟動 Segwit 方案，要求最低算力共識必須達 95% 才啟用。可是無論是何種方案，雙方的支持率大約都在 30% 上下，社群還是為了要「軟分叉」還是「硬分叉」而喋喋不休。</p>
+
+<h3 id="uasf">UASF</h3>
+
+<p>2017 年 3 月 12 日，此時社群裡又殺出另外一個程咬金，帳號名為 Shaolin Fry 的匿名用戶在社群論壇上提出 UASF （User Activiated Soft Fork，用戶啟動軟分叉，<a href="https://github.com/bitcoin/bips/blob/master/bip-0148.mediawiki">BIP148</a>）方案，打算在 8 月 1 日啟動後「拒絕並孤立所有未採用 Segwit 的區塊」。有種種證據顯示，這次的 UASF 是由 Core 團隊提出的，他們就是鐵了心要推行自己的 Segwit 方案。</p>
+
+<blockquote>
+<p>Segwit increases the blocksize, fixes transaction malleability, and makes scripting easier to upgrade as well as bringing many other benefits.</p>
+
+<p>It is hoped that miners will respond to this BIP by activating segwit early, before this BIP takes effect. Otherwise this BIP will cause the mandatory activation of the existing segwit deployment before the end of midnight November 15th 2017.</p>
+
+<p><strong>This BIP will be active between midnight August 1st 2017</strong> (epoch time 1501545600) and midnight November 15th 2017 (epoch time 1510704000)<strong>if the existing segwit deployment is not locked-in or activated before epoch time 1501545600. This BIP will cease to be active when segwit is locked-in.</strong></p>
+
+<p><em>──BIP148</em></p>
+</blockquote>
+
+<p>Core 所打的算盤是，即使 UASF 後軟分叉出新的鏈算力（啟用 BIP148 協議）不足無法影響舊鏈（未啟用 BIP148 協議），但只要某天這條新鏈擁有超過 51% 的算力，沒有做重放保護（Reply Protection）的此鏈將取代原本 BTC 的舊鏈，成為「真 BTC」。這基本上就是威脅所有礦工們別吵了，如果不怕未來分叉 BTC 後造成兩條鏈交易的混亂，最好就乖乖支持我們的 Segwit 方案。</p>
+
+<p>原本各大礦池們都沒理會這次的 UASF 方案，畢竟握有龐大算力的是他們，能決定要挖哪一條鏈的也是他們。但 Core 此時又出來搧風點火鼓吹散戶礦工應當支持這次的 UASF。在資訊不對稱的散戶礦工眼裡，Core 就像領導者一樣的存在，大礦池們開始擔心零星算力會轉而支持 UASF。如果真的像 Core 預期的那樣，那麼未來鏈上極可能運行這次 UASF 方案，也就是 Core 的 Segwit 方案，這麼一來 BTC 的領導權將重回 Core 和 Blockstream，似乎無法阻止總有一天閃電網路的運行了。</p>
+
+<h3 id="紐約共識-與-segwit2x">「紐約共識」與 Segwit2x</h3>
+
+<p>2017 年的 5 月，受不了 Core 的交易所及各大礦池們，在不邀請 Core 團隊的情況下於紐約的共識大會中接受由溫和派 Sergio Lerner 提出的「<a href="https://medium.com/@DCGco/bitcoin-scaling-agreement-at-consensus-2017-133521fe9a77">紐約共識（New York Agreetment，NYA）</a>」，宣告 BTC 即將在 11 月實施 Segwit2x 方案：先採用 Segwit 軟分叉，再硬分叉將區塊大小提升到 2 MB。相當於把多年的問題回歸「香港共識」。</p>
+
+<blockquote>
+<p>We agree to immediately support the following parallel upgrades to the bitcoin protocol, which will be deployed simultaneously and based on the original Segwit2Mb proposal:</p>
+
+<ul>
+<li><strong>Activate Segregated Witness at an 80% threshold, signaling at bit 4</strong>
+-** Activate a 2 MB hard fork within six months**</li>
+</ul>
+
+<p>The group of signed companies represents a critical mass of the bitcoin ecosystem. As of May 25, this group represents:</p>
+
+<ul>
+<li>58 companies located in 22 countries</li>
+<li><strong>83.28% of hashing power</strong></li>
+<li>5.1 billion USD monthly on chain transaction volume</li>
+<li>20.5 million bitcoin wallets</li>
+</ul>
+
+<p><em>──New York Agreement，2017 年 5 月 23 日</em></p>
+</blockquote>
+
+<p>或許是因為礦工們終於慶幸理念不同的各方找到了不讓 BTC 分裂的方法，在這次的大會裡，握有全網 83% 算力的礦工和主流礦場在 BTC 區塊鏈上寫下「NYA」代表同意，預告十一月將升級至 Segwit2x 方案。<strong>這個決定象徵 BTC 未來將不再由 Core 團隊做決定，而是把決定權交還給維持區塊鏈運作的礦工們手上。</strong></p>
+
+<p>在紐約共識裡，「Segwit2x」可以視為支持「小區塊」和「大區塊」兩派意見的折衷方案。而 BTC 的擴容之旅本來應該就此塵埃落定。</p>
+
+<p>然而事情總是沒有那麼順利。</p>
+
+<hr />
+
+<h2 id="bch-的誕生">BCH 的誕生</h2>
+
+<p>六月，比特大陸自行發布自己的 UAHF（User Activiated Hard Fork）分叉方案，表示如果 Segwit2x 未能即時啟動，將在 8 月 1 日時進行硬分叉方案對抗 UASF。</p>
+
+<p>換句話說，BTC 即將在未來幾個月內，分裂成三條鏈：</p>
+
+<ul>
+<li>BIP148 的 UASF 軟分叉方案（實則由 Core 支持）</li>
+<li>紐約共識的 Segwit2x 硬分叉方案</li>
+<li>比特大陸領導的 UAHF 硬分叉方案</li>
+</ul>
+
+<p>8 月 1 日，比特大陸在 ViaBTC 、 Bitcoin ABC 及 Bitcoin Ulimited 等主張「擴容」的團隊支持下，宣告進行自己的 UAHF 方案，將從原本的 BTC 主鏈硬分叉出 Bitcoin Cash（BCH）。同日，在 BTC 主鏈高度為 478559 時，以超過原本 BTC 區塊大小的 1.9 MB 爆出第一個 BCH 區塊，象徵 Bitcoin Cash 的誕生。</p>
+
+<p>而紐約共識的 Segwit2x 方案也準備啟用，但部份礦池和交易所宣布放棄、或者稱自己從來沒有支持過升級到 2 MB 的方案，改而旁觀 Core 的 UASF 和紐約協議的 Segwit2x 未來走勢。許多交易所決定在紐約共識第二階段硬分叉後，繼續把原本空間上限為 1 MB 的鏈稱為 BTC，運行 Segwit2x 方案、空間上限 2 MB 的鏈稱為 B2X，直到兩條鏈分出勝負決定自己是真正的 BTC 為止。</p>
+
+<p>如 Bitfinex 在期貨市場使用了 CST 機制（Chain Split Token），提前在 Segwit2x 產生新鏈之前分發出 BT1（BTC）和 BT2（B2X）代幣，讓市場決定兩種貨幣未來價格走向：每位投資人可以在分叉前用 1 BTC 兌換 BT1 和 BT2 各一枚，並且允許在期貨市場上交易。看好 Core USAF  方案的人可以買入 BT1，賣出 BT2；看好 Segwit2x 的人則反向操作，買入 BT2，賣出 BT1。直到期貨交割日（Bitfinex 訂定的日期是 2017 年 12 月 31 日），每 1 BT1 可以換取 1 BTC，每 1 BT2 可以換取 1 B2X。如果到了當時某一條鏈（無論是舊鏈或是新鏈）已經死鏈或者根本沒發生分裂，那麼其對應的代幣價值便會歸零。</p>
+
+<p>期貨市場不僅在分叉發生之前就創造了投機機會，還以 BT1/BT2 的交易價格間接反映出整體社群對兩種鏈的未來價格評估。時價 4300 美元的 BTC 在此拆分成起價 3000 美元的 BT1 和起價 1300 美元的 BT2，但兩者的價格差距隨即拉大，可見市場對於 Segwit2x 感到悲觀而選擇拋售 BT2。</p>
+
+<p>11 月 8 日，原定在 BTC 鏈上區塊高度 494784 所實行的 Segwit2x 升級方案被 Jeff Garzik  宣告「擱置」，Segwit2x 原定的第二階段擴容為 2 MB 之路就此中斷，BT2 價值也隨之歸零。</p>
+
+<hr />
+
+<h2 id="寫在所有之後">寫在所有之後</h2>
+
+<p>這次 Segwit2x 的失敗，象徵 BTC 社群走向兩派思想的分裂。在這次的分裂中，Core 和基本教義派得到了自己想要 Segwit 方案，把 BTC 的區塊上限繼續鎖死在 1 MB；而擴容派和中立派選擇合作、分叉出符合「擴容」願景的 大區塊 BCH。</p>
+
+<p>但是，這僅僅只是暫時的合作而已，BTC 和 BCH 的未來仍然撲朔迷離。</p>
+
+<h3 id="目前各大領導陣營">目前各大領導陣營</h3>
+
+<ol>
+<li><p>極端堅持擴容派：主張直接擴容，絕對性的反對 Segwit 方案：</p>
+
+<ul>
+<li>Bitcoin Unlimited</li>
+<li>Bitcoin Classic</li>
+<li>Viabtc 礦池</li>
+<li>Craig Steven Wright</li>
+</ul></li>
+
+<li><p>溫和漸進的擴容派：一定要擴容，但可以接受 Segwit 和閃電網路等方案並行：</p>
+
+<ul>
+<li>Roger Ver 領導的 bitcoin.com 礦池</li>
+<li>吳忌寒所領導的比特大陸旗下 Antpool 礦池</li>
+<li>btc.top 礦池</li>
+</ul></li>
+
+<li><p>中立派：態度模糊，見風轉舵：</p>
+
+<ul>
+<li>F2Pool 礦池</li>
+<li>BW 礦池</li>
+<li>Bitfury 礦池</li>
+</ul></li>
+
+<li><p>堅決反擴容派：主張不擴容改使用 Segwit 或閃電網路來解決交易容量問題：</p>
+
+<ul>
+<li>Bitcoin Core</li>
+<li>Blockstream</li>
+</ul></li>
+</ol>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><p><a href="https://zhuanlan.zhihu.com/p/30930715">https://zhuanlan.zhihu.com/p/30930715</a></p></li>
+
+<li><p><a href="https://zhuanlan.zhihu.com/p/28247024">https://zhuanlan.zhihu.com/p/28247024</a></p></li>
+
+<li><p><a href="https://www.zhihu.com/question/63109943/answer/210856667">https://www.zhihu.com/question/63109943/answer/210856667</a></p></li>
+
+<li><p><a href="https://zhuanlan.zhihu.com/p/28157297">https://zhuanlan.zhihu.com/p/28157297</a></p></li>
+
+<li><p><a href="https://zhuanlan.zhihu.com/p/29943001">https://zhuanlan.zhihu.com/p/29943001</a></p></li>
+</ul>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">BIP，Bitcoin Improvement Proposal，比特幣改進建議，按提出的順序編號
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">當時全世界前五大礦池分別為 F2Pool &gt; AntPool &gt; BitFury &gt; BTCC &gt; BW ，在這五個當中除了 BitFury 外都是中國礦池。
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3">之所以此次的共識在中國被戲稱為「九二共識」的原因，就在於和台灣海峽兩岸的「九二共識」一樣：雖然各說各話，但卻各有共識，能讓爭議的雙方從分裂的軍事鬥爭降級為協議間的鬥爭，避免最壞的結果。
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/cryptocurrency" role="button">Cryptocurrency </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/bch" role="button">BCH </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E5%88%86%E5%8F%89" role="button">分叉 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%A7%91%E6%8A%80" role="button">科技 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/btc" role="button">BTC </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%93%B4%E5%AE%B9" role="button">擴容 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/essay/2018-11-20-2018%E5%B9%B4%E4%B9%9D%E5%90%88%E4%B8%80%E5%A4%A7%E9%81%B8%E6%9A%A8%E5%85%AC%E6%8A%95%E6%A1%88%E5%89%8D%E5%A4%9C%E5%BF%83%E5%BE%97/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>2018年九合一大選暨公投案前夜心得</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://rutopio.github.io/essay/2018-11-26-bch-%E7%9A%84%E4%BB%8A%E7%94%9F%E4%BB%8A%E4%B8%96-2%E6%8A%80%E8%A1%93%E4%B9%8B%E7%88%AD/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>BCH 的今生今世 (2)：技術之爭</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%af%ab%e5%9c%a8%e6%89%80%e6%9c%89%e4%b9%8b%e5%89%8d">
+												 寫在所有之前
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%8d%80%e5%a1%8a%e5%a3%85%e5%a1%9e">
+												 區塊壅塞
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%b8%ad%e6%9c%ac%e8%81%b0%e7%9a%84%e7%9c%8b%e6%b3%95">
+												 中本聰的看法
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%a7%a3%e6%b1%ba%e6%96%b9%e6%a1%88%e4%b9%8b%e7%88%ad-%e8%bb%9f%e5%88%86%e5%8f%89%e8%88%87%e7%a1%ac%e5%88%86%e5%8f%89">
+												 解決方案之爭：軟分叉與硬分叉
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#segwit-%e5%9f%ba%e6%9c%ac%e6%95%99%e7%be%a9%e6%b4%be%e7%9a%84%e8%bb%9f%e5%88%86%e5%8f%89%e6%96%b9%e6%a1%88">
+												 SegWit：基本教義派的軟分叉方案
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%a2%9e%e5%a4%a7%e5%8d%80%e5%a1%8a-%e6%93%b4%e5%ae%b9%e6%b4%be%e7%9a%84%e7%a1%ac%e5%88%86%e5%8f%89%e6%96%b9%e6%a1%88">
+												 增大區塊：擴容派的硬分叉方案
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%a4%be%e7%be%a4%e6%95%b4%e9%ab%94%e7%9a%84%e5%85%b1%e8%ad%98%e4%b9%8b%e7%88%ad-%e8%a9%b2%e6%94%af%e6%8c%81%e8%aa%b0">
+												 社群整體的共識之爭：該支持誰？
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%a6%99%e6%b8%af%e5%85%b1%e8%ad%98">
+												 「香港共識」
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#core-%e7%9a%84%e5%8f%8d%e6%82%94">
+												 Core 的反悔
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#uasf">
+												 UASF
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%b4%90%e7%b4%84%e5%85%b1%e8%ad%98-%e8%88%87-segwit2x">
+												 「紐約共識」與 Segwit2x
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#bch-%e7%9a%84%e8%aa%95%e7%94%9f">
+												 BCH 的誕生
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%af%ab%e5%9c%a8%e6%89%80%e6%9c%89%e4%b9%8b%e5%be%8c">
+												 寫在所有之後
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%9b%ae%e5%89%8d%e5%90%84%e5%a4%a7%e9%a0%98%e5%b0%8e%e9%99%a3%e7%87%9f">
+												 目前各大領導陣營
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#reference">
+												 Reference
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

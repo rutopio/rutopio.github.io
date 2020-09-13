@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="[所謂的創作， 就是為了感動人而演化出來的文明。 而所謂的人， 就是為了被創作感動而演化出來的生物。]">
+  
+  <meta property="og:title" content="Codes &amp; Creative" />
+<meta property="og:description" content="[所謂的創作， 就是為了感動人而演化出來的文明。 而所謂的人， 就是為了被創作感動而演化出來的生物。]" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://rutopio.github.io/code/" />
+<meta property="og:updated_time" content="2018-10-22T00:00:00&#43;00:00"/>
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       Codes &amp; Creative | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/code/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  <main class="post-main-wrapper px-md-5">
+    
+    <div class="row">
+
+      
+      
+        
+        <div class="col-md-3 col-sm-1">
+          
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+
+  <hr>
+  
+    <div class="post-meta">
+      <div class="mb-2">
+        <a href="https://rutopio.github.io/categories/">
+          <span class="font-weight-bold text-uppercase post-meta">
+            <i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 
+            Categories
+            
+          </span>
+        </a>
+      </div>
+
+      <div class="li-x post-meta" style="margin-left: -8px;">
+        
+          
+          
+            
+            <li class="py-1">
+              <a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90">
+                <span>雜技淺嚐 ／19</span>
+              </a>
+            </li>           
+          
+        
+      </div>
+    </div>
+
+    
+  
+
+    
+          
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <hr>
+  
+    <div class="post-meta">
+      <div class="mb-2">
+        <a href="https://rutopio.github.io/tags/">
+          <span class="font-weight-bold text-uppercase post-meta">
+            <i class="fas fa-tags pr-1" aria-hidden="true"></i> 
+            Tags 
+          </span>
+        </a>
+      </div>
+
+      <div class="li-x post-meta tags-md" style="margin-left: -8px;">
+        
+        
+        
+            <li><a href="https://rutopio.github.io/tags/%E5%8F%B0%E7%81%A3" role="button"><span>台灣 / 28</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/python" role="button"><span>python / 10</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/r" role="button"><span>r / 8</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/%E8%B3%87%E6%96%99%E8%99%95%E7%90%86" role="button"><span>資料處理 / 5</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/%E6%95%B8%E5%AD%B8%E6%8E%A8%E5%B0%8E" role="button"><span>數學推導 / 4</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92" role="button"><span>機器學習 / 4</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/%E6%9C%9F%E8%B2%A8" role="button"><span>期貨 / 3</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/%E7%88%AC%E8%9F%B2" role="button"><span>爬蟲 / 3</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/%E7%B5%B1%E8%A8%88" role="button"><span>統計 / 3</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/%E9%81%B8%E8%88%89" role="button"><span>選舉 / 3</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/%E9%87%91%E8%9E%8D%E5%B7%A5%E5%AD%B8" role="button"><span>金融工學 / 3</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/%E5%8B%95%E6%85%8B%E8%A6%8F%E5%8A%83" role="button"><span>動態規劃 / 2</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/%E8%A6%96%E8%A6%BA%E5%8C%96" role="button"><span>視覺化 / 2</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/aqi" role="button"><span>aqi / 1</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/dcard" role="button"><span>dcard / 1</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/jiebar" role="button"><span>jiebar / 1</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/json" role="button"><span>json / 1</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/pandas" role="button"><span>pandas / 1</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/%E5%88%87%E5%AD%97" role="button"><span>切字 / 1</span></a></li>
+          
+        
+            <li><a href="https://rutopio.github.io/tags/%E5%9B%9E%E6%BA%AF" role="button"><span>回溯 / 1</span></a></li>
+          
+        
+      </div>
+    </div>
+
+    
+  
+
+          
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+
+  <hr>
+  
+    <div class="post-meta">
+      <div class="mb-2">
+        <a href="https://rutopio.github.io/series/">
+          <span class="font-weight-bold text-uppercase post-meta">
+            <i class="fas fa-bookmark pr-1" aria-hidden="true"></i> 
+            Recommend Series
+          </span>
+        </a>
+      </div>
+     
+      <div class="post-meta" >
+        
+          
+          
+            <li class="py-1"><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%E8%9B%87%E8%9B%87"><span>摸摸蛇蛇 (10)</span></a></li>
+          
+            <li class="py-1"><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%EF%BD%92"><span>摸摸ｒ (8)</span></a></li>
+          
+        
+      </div>
+    
+      
+    </div>
+  
+
+  
+        </div>
+        
+
+        
+        
+        <div class="col-md-9 mt-3">  
+      
+          <ul>
+            <div class="div-x">
+              <div class='post-heading'>
+  
+      Codes &amp; Creative
+  
+</div>
+
+              
+              
+                <div class="px-2 middot"></div>
+                <div>
+                  18 posts
+                </div>
+              
+            </div>
+
+            
+              <div class="post-content markdown">
+                
+
+<h3 id="寫扣和建造教堂非常相似-完工之後我們就開始祈禱"><strong>「寫扣和建造教堂非常相似，完工之後我們就開始祈禱。」</strong></h3>
+
+<p>部分引用請標註來源；而未經本人許可，請勿全文轉載。</p>
+
+              </div>
+            
+        </ul>
+        <div>
+          <div class="pagination pagination-outline justify-content-end active-color">
+            
+            
+
+<ul class="pagination">
+    
+    <li class="page-item">
+        <a href="https://rutopio.github.io/code/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+    <a href="https://rutopio.github.io/code/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="https://rutopio.github.io/code/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item active"><a class="page-link" href="https://rutopio.github.io/code/page/2/">2</a></li>
+    
+    
+    <li class="page-item disabled">
+    <a href="" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+        <a href="https://rutopio.github.io/code/page/2/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+          </div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://rutopio.github.io/code/2018-10-22-%EF%BD%92%E7%AD%86%E8%A8%98-%E7%88%AC%E8%9F%B2%E4%BB%A5%E5%9C%B0%E7%90%83%E5%9C%96%E8%BC%AF%E9%9A%8A%E7%82%BA%E4%BE%8B/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">[Ｒ筆記] 爬蟲：以「地球圖輯隊」為例</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Oct 22, 2018</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>4 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      抓個不一樣一點的新聞網頁，「地球圖輯隊」大多是以報導國際間的新聞為主，如果受夠了爆料公社或是行車記錄器，還是看點國外的大事吧。 1. 引入該引的library。 有時候都想碎碎念說該引的太多了，不如引天吧。 library(tidyverse) library(rvest) library(httr) library(dplyr) options(stringsAsFactors = F) 2. 打開要抓的網頁看小秘密 按下F12。可以用右邊面板右上角的選取器，或是按下 Ctrl&#43;Shift&#43;C 點選我們要找的東西，此時會反藍，。 可以看到地球圖輯隊的新聞都被放在 div 的 class 名為「imgWrap masonry-br......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+        
+      
+      
+        
+          <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%EF%BD%92"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸Ｒ</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%88%AC%E8%9F%B2" role="button">爬蟲 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/r" role="button">R </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E8%B3%87%E6%96%99%E8%99%95%E7%90%86" role="button">資料處理 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E5%9C%B0%E7%90%83%E5%9C%96%E8%BC%AF%E9%9A%8A" role="button">地球圖輯隊 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://rutopio.github.io/code/2018-10-15-%EF%BD%92%E7%AD%86%E8%A8%98-%E7%88%AC%E8%9F%B2%E4%BB%A5dcard%E7%82%BA%E4%BE%8B/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">[Ｒ筆記] 爬蟲：以「Dcard」為例</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Oct 15, 2018</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>3 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      雖然 Dcard 的素質大家有目共睹，就是那樣。但我們還是來練習一下吧。 1. 先檢查Dcard的小秘密 把網頁扒開來看Dcard的小秘密： 可以看到Dcard把網頁裡面的標題、部份內容都寫在這個檔案裡面。 因為Dcard沒有下一頁的按鈕，所以我們繼續往下滑，看看他是怎麼在滑到底後呼叫出多的內容。 開始找到一個感覺，以圖片裡的Request URL而言： https://www.dcard.tw/_api/forums/relationship/posts?popular=true&amp;limit=30&amp;before=229848524 relationship：代表我們在抓的看板，也就是感情無病呻吟板 po......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+        
+      
+      
+        
+          <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%EF%BD%92"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸Ｒ</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%88%AC%E8%9F%B2" role="button">爬蟲 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/r" role="button">R </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E8%B3%87%E6%96%99%E8%99%95%E7%90%86" role="button">資料處理 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/dcard" role="button">dcard </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://rutopio.github.io/code/2018-10-09-%EF%BD%92%E7%AD%86%E8%A8%98-%E6%95%B4%E7%90%86%E6%A0%BC%E5%BC%8F%E5%BE%88%E7%B3%9F%E7%9A%84-json-%E6%AA%94/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">[Ｒ筆記] 整理格式很糟的 json 檔</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Oct 9, 2018</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>One minute read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      有時候吼，有些 json 檔的格式其實很奇葩，尤其是政府的，所以我們要弄成 dataframe 格式去分析前需要先整理一下。舉例來說下面這幾個檔案，直接用 json 的方法去讀是讀不出來的。 違規藥品廣告資料 (https://data.gov.tw/dataset/14196) 違規化妝品廣告資料（https://data.gov.tw/dataset/14198） 健康食品資料集（https://data.gov.tw/dataset/6951) 這裡選擇用健康食品資料集（https://data.gov.t......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+        
+      
+      
+        
+          <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%EF%BD%92"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸Ｒ</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%95%B4%E7%90%86" role="button">整理 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/r" role="button">R </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E8%B3%87%E6%96%99%E8%99%95%E7%90%86" role="button">資料處理 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/json" role="button">json </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://rutopio.github.io/code/2018-10-09-%EF%BD%92%E7%AD%86%E8%A8%98-%E5%8F%B0%E7%81%A3%E5%8D%B3%E6%99%82-aqi-%E6%8C%87%E6%95%B8%E7%9A%84%E7%B9%AA%E8%A3%BD/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">[Ｒ筆記] 台灣即時 AQI 指數的繪製</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Oct 9, 2018</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>2 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      1. 引入必要的library # 沒安裝的要安裝，這兩個專門畫圖的 # install.packages(&#39;ggplot2&#39;) # install.packages(&#39;ggmap&#39;) library(httr) library(jsonlite) library(ggplot2) library(ggmap) options(stringsAsFactors = F) 2. Google API 因為 Google 爸爸說從 2018/7/16 開始限制 Google Map 的使用和讀取，所以我們還是去申請個 API 吧。 新聞：http://technews.tw/2018/07/16/google-maps-due-date-is-on-api-key-access-is-charging-more-expensive-and-restricted-and-w......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+        
+      
+      
+        
+          <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%EF%BD%92"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸Ｒ</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/%E5%9C%B0%E5%9C%96" role="button">地圖 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/r" role="button">R </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E8%B3%87%E6%96%99%E8%99%95%E7%90%86" role="button">資料處理 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/aqi" role="button">AQI </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%A9%BA%E6%B0%A3%E6%8C%87%E6%95%B8" role="button">空氣指數 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://rutopio.github.io/code/2018-10-08-python%E7%AD%86%E8%A8%98%E5%BE%9Ecsv%E6%B1%82%E5%87%BA%E6%9C%9F%E8%B2%A8%E7%9A%84ohlc/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">[Python筆記]從csv求出期貨的OHLC</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Oct 8, 2018</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>2 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      這次的目標是台灣期貨交易所提供的前 30 個交易日期貨每筆成交資料，從裡面的csv求出當日的OHLC。 在這裡我們用代號 TX 的台指期大盤指數為計算的目標。 名詞與狀態定義 在一開始我們要先定義幾個名詞： Open：當日開盤價 High：當日最高價 Low：當日最低價 Close：當日收盤價 以及現實生活中的期貨交易狀態： 交易時間： 盤內交易（就是在交易所交易）：由 08:45:00 開盤至 13:45:00 收盤為止的所有交易，在一般的期貨網看到的 K 線圖多只......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+        
+      
+      
+        
+          <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%E8%9B%87%E8%9B%87"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸蛇蛇</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/pandas" role="button">Pandas </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/python" role="button">Python </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E8%B3%87%E6%96%99%E8%99%95%E7%90%86" role="button">資料處理 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%9C%9F%E8%B2%A8" role="button">期貨 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://rutopio.github.io/code/2018-10-01-%EF%BD%92%E7%AD%86%E8%A8%98-%E8%A6%96%E8%A6%BA%E5%8C%96%E5%B7%9D%E6%99%AE%E7%9A%84%E6%8E%A8%E7%89%B9%E6%84%9B%E5%BF%83%E6%95%B8%E5%88%86%E6%9E%90/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">[Ｒ筆記] 視覺化：川普的推特愛心數分析</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Oct 1, 2018</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>3 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      1. 前言 不得不說 Trump 一直以來都超愛用 Twitter，從大事小事私事國家大事都曾用 Twitter 發言，甚至常被說是 Twitter 治國。 而 Trump 常用 Twitter 的原因有很多種說法，其中我覺得最有道理的一種說法是 Trump 認為比起在白宮或是國會開記者會說著無趣又正式的官方新聞稿，Twitter 這種每篇不到 200 字的即興小短文，更能讓喜歡的人和媒體知道他在講什麼、想什麼。 事實上，當我們回頭審視 Trump 在選前以的摧票演講及選後的上任演講時，我們不難發現他都用那些簡單......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+        
+      
+      
+        
+          <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%EF%BD%92"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸Ｒ</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/r" role="button">R </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%B5%B1%E8%A8%88" role="button">統計 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E8%A6%96%E8%A6%BA%E5%8C%96" role="button">視覺化 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%8E%A8%E7%89%B9" role="button">推特 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E5%B7%9D%E6%99%AE" role="button">川普 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://rutopio.github.io/code/2018-10-01-%EF%BD%92%E7%AD%86%E8%A8%98-%E8%A6%96%E8%A6%BA%E5%8C%96%E5%8F%B0%E5%8C%97%E5%B8%82%E7%AB%8A%E7%9B%9C%E6%A1%88%E5%88%86%E5%B8%83/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">[Ｒ筆記] 視覺化：台北市竊盜案分布</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Oct 1, 2018</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>2 minutes read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      1. 先引入資料 這裡用的是台北市政府的公開資料。 url &lt;- &#34;http://data.taipei/opendata/datalist/datasetMeta/download?id=68785231-d6c5-47a1-b001-77eec70bec02&amp;rid=34a4a431-f04d-474a-8e72-8d3f586db3df&#34; df &lt;- read.csv(url, fileEncoding = &#34;big5&#34;) # 只拿我們要的東西 df$time &lt;- substr(df$發生時段, 1, 2) df$region &lt;- substr(df$發生.現.地點, 4, 5) 2. 畫出馬賽克圖表（mosaicplot） 原始資料：以橫軸為時間，縱軸為地點 res &lt;- tapply(df$編號, list(df$time, df$region), length, default = 0) mosaicplot(res, main = &#34;台北市竊盜率（以橫軸為時間，縱軸為地點）&#34;, xlab = &#34;時間&#34;, ylab = &#34;......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+        
+      
+      
+        
+          <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%EF%BD%92"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸Ｒ</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/r" role="button">R </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%B5%B1%E8%A8%88" role="button">統計 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E8%A6%96%E8%A6%BA%E5%8C%96" role="button">視覺化 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%AB%8A%E7%9B%9C%E6%A1%88" role="button">竊盜案 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+              <div class="post-wrapper white-bg post-card">
+  
+  <a href="https://rutopio.github.io/code/2018-10-01-%EF%BD%92%E7%AD%86%E8%A8%98-%E6%9C%80%E5%9F%BA%E6%9C%AC%E7%9A%84%E7%95%AB%E5%9C%96%E5%92%8C%E7%B5%B1%E8%A8%88/">
+    <div class="post-header text-center">
+      <div class="px-4 post-heading">[Ｒ筆記] 最基本的畫圖和統計</div>
+      <ul class="post-meta li-x mt-1">
+        
+          <li>Oct 1, 2018</li>
+        
+    
+        
+          <li class="middot"></li>
+          <li>One minute read</li>
+        
+      </ul>
+    </div>
+    
+
+    
+      1. 懶得用真的資料就隨機產生幾筆資料吧 # rnorm 函數可以隨機產生資料點，這裡共產生 1000 筆，平均為 1，標準差 10 的資料點 x.a &lt;- rnorm(1000, 1, 10) 2. 篩掉離平均值正負兩個標準差外的資料點 長太歪的視為離峰，如果不刪掉的話可能會影響再來的統計，留下 95 % 的資料。 # 用 subset() 去篩值 # mean 就是平均值，正負兩個 sd 標準差 xfilter &lt;- subset(x.a, x.a &lt;= mean(x.a) &#43; 2*sd(x.a) &amp; x.a &gt;= mean(x.a) - 2*sd(x.a)) 3. 畫成散佈圖（Scatter plot）和密度圖（Density plot） # Scatter plot plot(xfilter, main = &#34;在兩個標......
+    
+  </a>
+
+  
+  
+  <div class="post-meta li-x mt-2 div-x">
+    <div>
+      
+        
+          <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+        
+      
+      
+        
+          <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%EF%BD%92"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸Ｒ</a></li>
+        
+      
+    </div>
+   
+    <div>
+      
+        
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/r" role="button">R </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%B5%B1%E8%A8%88" role="button">統計 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%95%A3%E4%BD%88%E5%9C%96" role="button">散佈圖 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E5%AF%86%E5%BA%A6%E5%9C%96" role="button">密度圖 </a></li>
+      
+    
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+</div>
+
+          
+            
+        </div>
+      </div>
+      
+
+    </div>
+  </main>
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="BCH, BTC, Bitcoin, Bitcoin Cash, 比特幣, 區塊練, Block chain, 密碼貨幣, Cryptocurrency" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="隨著 BCH（Bitcoin Cash，比特幣現金）原鏈最後一塊高度 556766 的區塊於 2018 年 11 月 16 日 02:05 (UTC&#43;8) 由 svpool 產出，正式宣告 BCH 一分為二，分裂成 BCHABC 與 BCHSV，走向硬分叉之路。在記載這場世紀對決之前，有必要先來回顧 BCH 過去一年的歷史。本文將說明 Lightning Network、Liquid Network 的技術之爭。">
+  
+  <meta property="og:title" content="BCH 的今生今世 (2)：技術之爭" />
+<meta property="og:description" content="隨著 BCH（Bitcoin Cash，比特幣現金）原鏈最後一塊高度 556766 的區塊於 2018 年 11 月 16 日 02:05 (UTC&#43;8) 由 svpool 產出，正式宣告 BCH 一分為二，分裂成 BCHABC 與 BCHSV，走向硬分叉之路。在記載這場世紀對決之前，有必要先來回顧 BCH 過去一年的歷史。本文將說明 Lightning Network、Liquid Network 的技術之爭。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/essay/2018-11-26-bch-%E7%9A%84%E4%BB%8A%E7%94%9F%E4%BB%8A%E4%B8%96-2%E6%8A%80%E8%A1%93%E4%B9%8B%E7%88%AD/" /><meta property="article:published_time" content="2018-11-26T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-11-26T00:00:00&#43;00:00"/>
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       BCH 的今生今世 (2)：技術之爭 | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/essay/2018-11-26-bch-%E7%9A%84%E4%BB%8A%E7%94%9F%E4%BB%8A%E4%B8%96-2%E6%8A%80%E8%A1%93%E4%B9%8B%E7%88%AD/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%95%B7%E6%96%87%E6%B7%B1%E8%AB%87"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 長文深談 </a></li>
+      
+    
+    
+  </ul>
+
+  <div class="px-4 post-heading">BCH 的今生今世 (2)：技術之爭</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Nov 26, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>18 minutes read</li>
+    
+  </ul>
+  
+    <div class="view">
+      <img src="https://i.imgur.com/K4PjHni.png" />
+    </div>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<h2 id="寫在所有之前">寫在所有之前</h2>
+
+<p>在繼續談論 BTC 和 BCH 之爭之前，我們需要一篇偏技術向的文章來解釋 Core 和擴容派所主張的技術差異。</p>
+
+<h2 id="回歸本質">回歸本質</h2>
+
+<p>首先，我們應該先想想中本聰構思的「數位貨幣」到底是什麼？</p>
+
+<h3 id="對個人節點而言-greedy-but-honest">對個人節點而言：Greedy, but honest</h3>
+
+<p>2008 年，中本聰在他的跨時代論文 <em>Bitcoin: A Peer-to-Peer Electronic Cash System（比特幣：一種點對點網路的電子現金系統）</em> 裡創造了 Bitcoin 的概念，創造了第一個使用 P2P 網路節點運行的電子代幣。</p>
+
+<p>在他所創造的共識規則中，身處 BTC 生態系裡的每個人都能追求自己的最大利益，而無需聽從任何人的意見，也不必管任何財富分配的問題。礦工（也就是每個參與挖擴的節點）越是想要在算力競爭中挖取 BTC，那麼全網的出礦難度就會變高，要對主鏈進行 51% 攻擊所需的總算力就越大，主鏈也就越難被竄改（基於最長鏈原則）；而礦工越是想要賺取手續費，依據市場的需求法則，就只能薄利多收、爭取待確認的交易，此時的手續費就會變得更便宜，使得 BTC 的交易越有效率。而當越來越多人使用 BTC 進行交易，那麼依照梅特卡夫定律（Metcalfe&rsquo;s law，一個網路的價值等於該網路內的「節點數的平方」，而且該網路的價值與用戶數的平方成正比），BTC 和區塊鏈技術<strong>所帶來的網路效應和價值就會越大</strong>，此時就會有越來越多的企業和投資人看好並投資 BTC 或區塊鏈的基礎建設研發，直到這項技術普及為止。</p>
+
+<p>這就是 Bitcoin 和 Blockchain 的基本假設和其「矛盾下」的保護。正因為假設在市場裡每個人都是貪婪的，但受限於區塊鏈視最長鏈為主鏈、每次交易所產生得數位簽證、以及礦工挖取手續費的共識規則之下，「欺騙」與「破壞」的行為都無法獲取利益。此時，<strong>人們就只好選擇合作以獲取最大的利益。這就是所謂 Greedy, but honest</strong>。</p>
+
+<p>在中本聰對於區塊鏈以及 Bitcoin 這項科技的未來藍圖裡，「擴容」應該會和「摩爾定律」所預測的一樣，隨著基礎網路設備更新時擴容，否則 BTC 這項技術就會遇上交易擁塞的問題（詳見<a href="http://chingru.me/essay/2018-11-22-bch-%E7%9A%84%E4%BB%8A%E7%94%9F%E4%BB%8A%E4%B8%96-1btc-%E7%9A%84%E6%93%B4%E5%AE%B9%E4%B9%8B%E7%88%AD/#/%E4%B8%AD%E6%9C%AC%E8%81%B0%E7%9A%84%E7%9C%8B%E6%B3%95">上一篇</a>）。</p>
+
+<h3 id="對開發者而言-主宰貨幣的生殺大權">對開發者而言：主宰貨幣的生殺大權</h3>
+
+<p>在這樣公開透明、彼此監督的區塊鏈系統裡，每一個節點都可以在 Greedy, but honest 的情況下創造整個社群的最大共同利益，那「開發者（Dev Team）」的利益呢？</p>
+
+<p>隨著中本聰在 2010 年底逐漸退出 BTC 核心社群、2012 年 BTC 逐漸為大眾所知之後，對利益懷有野心的勢力便開始入侵了 Bitcoin 的世界。</p>
+
+<p>雖然時日 BTC 的巨大算力保護了整個社群不至於受到來自外部的 51% 攻擊，得以持續健全的運行主鏈和交易，但是失去中本聰領導的社群，逐漸被貪婪的商人從內部（也就是中本聰留下的嫡系開發團體 Bitcoin Core）慢慢瓦解。先是以「沒誠信」的原因把 Gavin Anderson 趕走 Core（詳見<a href="http://chingru.me/essay/2018-11-22-bch-%E7%9A%84%E4%BB%8A%E7%94%9F%E4%BB%8A%E4%B8%96-1btc-%E7%9A%84%E6%93%B4%E5%AE%B9%E4%B9%8B%E7%88%AD/#/core-%E7%9A%84%E5%8F%8D%E6%82%94">上一篇</a>）、並開始以「維護」之名滲透其中、甚至把維持區塊鏈正常運作的礦工都抹黑成「自私自利的毒瘤」。</p>
+
+<p>以 Bitcoin Core 為主的「基本教義派」之所以擁有較多的支持者的原因在於，Core 是由當初中本聰血脈相傳下來的 Team，從過去第一個版本的 BTC 到現在，都是由他們在維護程式碼。但許多真正繼承中本聰意志的人早就因為鬥爭而出走了，目前多數的 Core 人員背後都有 Blockstream 這間公司的金援。但許多後來加入 Cryptocurrency 社群的新人們只覺得 Core 就是對的，殊不知現在的 Core 已經不是當年的 Core 了。</p>
+
+<h2 id="lightning-network-ln-閃電網路">Lightning Network（LN，閃電網路）</h2>
+
+<p>在前一篇文章裡，我們提到 Core 百般組饒硬分叉的可能性，不斷強調應該把區塊大小維持在原始的 1 MB，寧願大規模的改寫 BTC 協議的原始碼，也要運行 Segwit 、並搭配<a href="https://lightning.network/lightning-network-paper.pdf">閃電網路</a>（Lightning Network，LN）、側鏈（Sidechian）、或是樹鍊（Treechain）等「第二層交易」來解決交易阻塞的問題。</p>
+
+<h3 id="設計概念">設計概念</h3>
+
+<p>所謂的「第二層交易」，尤其是以 LN 為代表，就是把本來應該在 BTC 主鏈之上的交易（on-chain transaction），轉移到鏈下（off-chain） ，而閃電網路（LN）就是鏈下交易的道路之一。LN 的基本概念就是<strong>「我們沒有必要把所有的、完整的交易都寫入鏈上的區塊，我們只把重要的、大筆的、需要被即時驗證的交易寫入鏈上；而小筆、日常生活中瑣碎的支付就使用 LN 通道。BTC 主鏈應該作為結算鏈」</strong>。</p>
+
+<p>我們可以把 LN 的運行分成以下幾個步驟。</p>
+
+<ul>
+<li><p>交易的雙方準備共同打開一個「錢包」（即 channel）。</p>
+
+<p>當交易的雙方預計進行多次交易（可能是多次或經常性的轉帳），交易的單方或是雙方把自己持有的 BTC 「入金」到錢包這個 channel 裡面。此時的 channel 處於開放狀態。</p>
+
+<p>這是雙方第一次在區塊鏈上寫入交易紀錄。</p></li>
+</ul>
+
+<p><img src="https://i.imgur.com/27HHgyT.png"  style="display:block; margin:auto;width:80%"></p>
+
+<blockquote>
+<p>今天 A 和 B 預計進行多次交易。A 先把 5 BTC 存入這個 channel 裡面，B 也把 1 BTC 存入這個 channel。現在這個 channel 裡面共有雙方的 6 BTC。</p>
+
+<p>在這裡會用到 Recoverable Sequence Maturity Contract （RSMC）技術進行雙方所打開的 channel 進行驗證簽證。</p>
+</blockquote>
+
+<ul>
+<li>要交易的時候就是在這個錢包裡面留下「借據」。</li>
+</ul>
+
+<p>當這個 channel 處於開放狀態時，雙方在任何時候都可以在 channel 裡、不透過主鏈的的情況下進行「交易」。其實就是共同協商修改這個 channel 裡的餘額分配。</p>
+
+<p><img src="https://i.imgur.com/nGlnLtL.png"  style="display:block; margin:auto;width:80%"></p>
+
+<blockquote>
+<p>如果今天 A 打算支付給 B 共 3 BTC，那麼雙方只要透過協議，此時 A 手上的 BTC 持有量更新為 5 - 3 = 2 BTC，而 B 手上持有的 BTC 則更新為 1 + 3 = 4 BTC。此時這個 channel 裡還是只有雙方的 6 BTC，改變的只有雙方所持有的餘額分配。</p>
+</blockquote>
+
+<ul>
+<li>在越來越多人使用 LN 的情況下，進行動態的 LN 網路拓譜。</li>
+</ul>
+
+<p>在上面的交易裡，因為只有雙方之間有 channel ，當要和第三方交易時可能會遇上問題。但 LN 允許 channel 和 channel 之間的連結，換句話說，LN 的 channel 之間就會呈現網狀的擴散，形成網路拓譜，讓橫跨多個沒有直接 channel 連結的使用者之間的交易變得可能。</p>
+
+<p><img src="http://i.imgur.com/SmPekaz.jpg"  style="display:block; margin:auto;width:80%"></p>
+
+<blockquote>
+<p>如果今天 B 和 C 打算進行交易，B 欲支付給 C 共 1 BTC，但是雙方之間並沒有 channel ，除非他們要為了進行「這一筆」交易開一個新的 channel ，或是把這次的交易移到主鏈上進行。</p>
+
+<p>但幸運的是，A 和 C 之間有一個 channel（假設在這個 channel 裡的餘額分配 A 有 10 BTC，C 有 5 BTC），此時 ABC 三方雖只有 C-A 和 A-B 兩個 channel，但因為 LN 允許 channel 之間的連繫，所以變成 C-A-B 這樣的關係，A 成為這個交易網路的「中繼站」。此時，B 就可以借助 A 和 C 之間的 channel 和 C 交易。這項技術是 Hashed TimeLock Contract（HTLC）。</p>
+
+<p>為了讓這比交易完成，C 會從 B 那邊收到來自 B 發出的密鑰，並向 A 請求調整餘額分配，將 A-C 之間的 channel 餘額調整成 A 持有 10 - 1 = 9 BTC，C 持有 5 + 1 = 6 BTC。而拿到密鑰的 A 轉而向 B 要求交易，B 確認密鑰是由自己發出的後，便調整 A-B 之間的 channel 餘額分配調整成 A 持有 2 + 1 = 3 BTC，B 有 4 - 1 = 3 BTC。</p>
+
+<p>此時，在所有 channel 裡，C 多了 1 BTC，B 少了 1 BTC，而原本的 A 從在 A-B 持有 2 BTC、B-C 持有 10 BTC（共 12 BTC）變更成 A-B 持有 3 BTC、B-C 持有 9 BTC，還是保有 12 BTC。這相當於 B 支付給 C 共 1 BTC 的效果。</p>
+</blockquote>
+
+<p><img src="https://i.imgur.com/GOeP4Ak.png"  style="display:block; margin:auto;width:80%"></p>
+
+<p>這個例子裡的「A」可以說是一個交易的「交易中繼站（Payment Hub）」，他讓本來應該「每個使用者」之間都要有 channel 才能交易，<strong>變成只要有一個「中繼站」跟「多數人」之間有 channel ，就可以進行這筆交易。</strong>這種以多個「中繼站」為中心輻射出去的網路，就是 LN 最終所想達成的動態網路拓譜過程。</p>
+
+<ul>
+<li>結清</li>
+</ul>
+
+<p>直到一開始交易的雙方決定結清這個錢包，也就是關閉這個 channel 之前，雙方都可以透過上面的方法在雙方、或是多方之間進行交易。最後，當 channel 關閉，雙方的「借據」結清，把最後的持餘額分配結果寫回區塊鏈上。這是第二次把交易紀錄寫入區塊鏈。</p>
+
+<p>也就是說，每一個 LN 只會在打開、關閉時需要寫入區塊鏈。</p>
+
+<p><img src="http://i.imgur.com/alMvuxz.jpg"  style="display:block; margin:auto;width:80%"></p>
+
+<blockquote>
+<p>假設最後 A 與 B 之間的 channel 餘額分配為 A 持有 1 BTC，B 持有 5 BTC，則在雙方決定結清後，變把這個 channel 現在的餘額分配狀況拿回主鏈確認，雙方在各自的地址裡回收餘額。</p>
+
+<p>關閉 channel 的時間點可以是雙方做出共識決定，也可以是在開啟的時候就約定好何時會強制結清關閉。</p>
+</blockquote>
+
+<h3 id="core-所宣稱的優點">Core 所宣稱的優點</h3>
+
+<p>和原來鏈上交易時，每筆交易都在區塊確認後「轉移」 BTC 相比，在 channel 上的「交易」並不會真的讓 BTC「立刻轉移」到對方的地址裡，而是類似用寫借據的概念「紀錄」在 channel 之上。如此一來，那些大量的瑣碎交易就不會需要到鏈上確認，自然也沒必要付出「手續費」給「礦工」寫入區塊。透過 LN，<strong>很大一部分的交易會脫離 BTC 主練，改於鏈下進行，每筆交易在理論上都會以閃電（Lightning）般的速度發生。</strong>鏈上交易自然剩下那些比較重要的、需要被即時寫入鏈上確認的「大筆交易」和 channel 第一次創立和最後結清後的紀錄，相當於減緩了主鏈上的交易量。</p>
+
+<p>乍聽之下 LN 好像可行，但問題還是在於使用 LN 時的利益分配。在 BTC 鏈上的每一筆交易雖然都需要付出手續費，但這就是礦工挖礦（協助這筆交易 confirm）所得到的利益。根據共識，優先挖出區塊的礦工可以獲得當前區塊的「全額」手續費作為報酬，這是因為中本聰無私的把 Bitcoin 開放給全世界使用，不在這筆交易中收取任何一毛的「稅金」所致。</p>
+
+<p><strong>但「第二層交易」這個通道的「稅金」呢？</strong></p>
+
+<h3 id="問題所在">問題所在</h3>
+
+<h4 id="電子黃金">電子黃金</h4>
+
+<p>隨著鏈上交易和手續費越來越貴，開始影響鏈上交易的有流動性，一旦使用 LN， BTC 將失去當初 <em>Bitcoin: A Peer-to-Peer Electronic Cash System</em> 裡的「現金（Cash）」功能。因為實際上真的會動用、改變 BTC 持有量的時機只有在 channel 開啟時與關閉時，<strong>BTC 會變成跟黃金一樣是一種用來「結清」的單位而不是「進行交易」的單位</strong>，而每個人的錢包地址，就成為了<strong>黃金存摺</strong>，這完全背離中本聰當初想讓這個系統用來「進行交易」的想法。</p>
+
+<h4 id="關於-中繼站">關於「中繼站」</h4>
+
+<p>正如同上面所說，如果要構成一個龐大的 LN 交易系統，勢必必須存在好幾個如上面 A 的「交易中繼站」。</p>
+
+<p>因為 channel 每次的開啟都必須寫入區塊鏈上，所以使用者在一開始就要決定要放多少錢在 channel 裡面。如果你預計每個使用者平均會交易 10 BTC，那麼要一次服務一百個人的中繼站就可能會需要放入 10 BTC * 100 人 = 1000 BTC（預估值） 。所以這個「中繼站」，必須存有<strong>夠多</strong>的 BTC 才能協助每一筆交易順利運行，否則交易會在此中斷。</p>
+
+<blockquote>
+<p>如果 A-C 之間 A 只有 0.5 BTC，那麼雖然 B 欲透過 A 支付給 C  1 BTC 時，會因為 A-C channel 裡的餘額不足而導致交易無法進行。</p>
+</blockquote>
+
+<p>原本雙方單純在區塊鏈交易只需交換地址、拿交易資料到鏈上進行全網廣播，再等待礦工確認，如此簡單的事情，也因為運行 LN 的關係，讓一筆交易可能需要經過數十個節點（因為網路拓譜而使用 HTLC ），如果在互相驗證的過程中有 channel 或是 hub 出現問題（如放的錢不夠多、沒有在線上），交易都會發生問題。</p>
+
+<p>Bitcoin Core 團隊不斷的強調建立 LN 的節點就跟建立 BTC 的節點一樣簡單。但這些由散戶建立的 channel 和 hub，勢必都會遇到 channel 裡面放的資金不足、無法時常保持線上狀態、網路不穩的問題。與區塊鏈的節點相比，後者即使散戶呈現離線狀態，但鏈上的運算還是會有其他的「礦工」協助確認交易，所有離線期間的交易紀錄只要在散戶上線後更新到最長鏈和最新區塊就可以找回。</p>
+
+<p>因此，這些提供多人服務的「中繼站」絕對會隨著 LN 的網路拓譜越來越少，因為有能力一次把大量 BTC 放到 channel 裡的一定是少數的使用者，甚至只有交易所、金融機構可以滿足 LN 網路的拓展的龐大交易量所需的 BTC，那麼這勢必造成 channel 的中繼站的「中心化」，集中在少數幾個「資金池」的手中，背離區塊鏈的去中心化想法。</p>
+
+<h4 id="打開-channel-的成本">打開 channel 的成本</h4>
+
+<p>另一個問題是，如果每次開啟 channel 需要支付「稅金」怎麼辦？</p>
+
+<p>為了讓 LN 上每一筆交易能夠順利的完成，必然會需要一個穩定的中繼站（Payment Hub），散戶會需要和這個中繼站簽合約以打開 channel ，但好巧不巧，這個合約剛好是 Blockstream 公司的專利，所以你每次開通、結算、關閉、或是續約，都必須支付給 Blockstream 公司一筆使用費，這就是掌握 Core 的 Blockstream 公司在打的主意。</p>
+
+<p>在鏈上不擴容（維持 1 MB）的情況下，即使啟用 Segwit ，鏈上的交易的手續費還是會隨著 BTC 全網難度增加而越來越高，當人們被迫轉而使用 LN 時，必須先要和 Blockstream 簽約，支付「稅金」來開通和主要中繼站的 channel，每次當契約到期時，人們只能被迫選擇關閉、或是續約，這都還要在另外支付一筆錢。此時，如果你還打算會到過去用鏈上支付的方法，你會發現你在自己地址的餘額早已連手續費都支付不了，成為 dust （零頭）。</p>
+
+<p>所以，LN 就是一種「中心化」的概念，因為每次打開、關閉一個 channel ，就必須支付「稅金」，那麼人們就會減少動用 channel 的次數，進而傾向找一個支援 LN 的交易所存入 BTC 在上面交易，而交易所和交易所之間再透過 LN channel 互相連結，和我們把錢存到銀行，銀行之間會互相貼現的金融體系一模一樣。</p>
+
+<p>回頭看中本聰的論文名稱， *Bitcoin: A Peer-to-Peer Electronic Cash System（比特幣：一種點對點網路的電子現金系統）*，在 LN 的世界裡，既沒有 P2P，只有交易所和交易所之間的連結；也沒有 Electronic Cash System ，因為此時鏈上只會有開啟通道和關閉兩件事情了，BTC 也從 Cash 變成了結清用的黃金。</p>
+
+<p>2017 年年底，LN 在試運行時隨即被發現無法完成最基本的交易，因此 LN 的啟用也被 Core 一拖再延。</p>
+
+<h2 id="liquid-network">Liquid Network</h2>
+
+<p>2018 年 10 月 10 日，Blockstream 正式發表 BTC 側鏈之一的「Liquid Network」，旨在連結各大交易所和金融機構，用來加快交易所之間的交易速度。</p>
+
+<blockquote>
+<p>The Liquid Network provides fast, secure, and confidential transactions to address the needs of exchanges, brokers, market makers, and financial institutions around the world.</p>
+
+<p><em>Blockstream</em></p>
+
+<p><a href="https://blockstream.com/2018/10/10/liquid-launch/">https://blockstream.com/2018/10/10/liquid-launch/</a></p>
+</blockquote>
+
+<p>所謂的側鏈（sidechains），是相對與「主鏈」而言的，它並不是指特定某一條某個區塊鏈，而是只要指遵守「側鏈協議（可以讓 BTC 安全地從主鏈轉移到其他區塊鏈，又可以從其他區塊鏈安全地返回主鏈的一種協議）」的所有區塊鏈，都可以被稱為側鏈之一。</p>
+
+<h3 id="設計概念-1">設計概念</h3>
+
+<p>Liquid 是一條 BTC 主鏈之外的「私有側鏈」（畢竟是屬於 Blockstream 公司所有），在 Liquid 之上，Blcokstream 發行了屬於自己的代幣：L-BTC（Liquid-Bitcoin），並且和主鏈上的 BTC 價格掛勾（2-way peg，類似港幣和美金掛勾一樣的概念），在主鏈上的 1 BTC 可以兌換在 Liquid Network 上的 1 L-BTC，並讓交易在 Liquid 上面進行。</p>
+
+<h3 id="陰謀所在">陰謀所在</h3>
+
+<blockquote>
+<p>To transfer $BTC onto the Liquid Network sidechain via the 2-way peg, the BTC is deposited into a multisig peg address. After 102 confirmations, $LBTC is transferred for the user. To peg out onto the Bitcoin blockchain, only 2 Liquid confirmations are required.</p>
+
+<p><em>Blockstream</em></p>
+
+<p><a href="https://twitter.com/blockstream/status/1051497055200468994">https://twitter.com/blockstream/status/1051497055200468994</a></p>
+</blockquote>
+
+<p>在 BTC 主鏈上的 BTC 要映射到 Liquid 上面的 L-BTC，需要在區塊鏈上進行 102 次確認，但從 Liquid 的 L-BTC 轉回 BTC，卻只需要進行 2 次確認。這個設定很明顯就是故意衝著 BTC 而來，如果 BTC 對 L-BTC 也只要 2 個確認，那麼不就代表 BTC 很好用嗎？既然如此，我們就再加 100 個確認吧。</p>
+
+<p>原本在鏈上的交易都是匿名的（雖然交易紀錄都看得到，但地址每個人都可以自行生成），但當使用了 Liquid 這條私有鏈， Blockstream 可以掌握所有的金流和 L-BTC 流向。到最後即使 BTC 的主鏈消失了、沒人使用了，也不會有人在乎了，因為到了這個時候每個人都在 Liquid 上面使用 L-BTC 交易就好了。雖然 Blockstream 不斷強調未來將不會有任何一方或 Blockstream 可以控制 Liquid Network，也沒有任何交易所可以控制超過一部以上的 Liquid 伺服器，但 Liquid也 「永遠不會像 BTC 一樣去中心化」。如果說各大交易所是 Cryptocurrency 世界裡的「地區銀行」，各自擁有不同的市佔率。那麼這次的 Blockstream ，想成為 BTC、甚至是 Cryptocurrency 世界中的「中央銀行」。</p>
+
+<p>在「快又便宜」、「鏈上交易」、「去中心化」之間，中本聰的 BTC 選擇了鏈上交易和去中心化，而使用 Segwit+LN 方案的 BTC 則捨棄了鏈上交易，擁抱了快又便宜跟去中心化（雖然據 Core 所述 LN 不會造成中心化，但事實上還是中心化了），而 Liquid 則只選了快又便宜以滿足 Blockstram 的利益。</p>
+
+<h2 id="擴容派的希望">擴容派的希望</h2>
+
+<p>事實上，原始中本聰並沒有要限制 BTC 的區塊大小在 1 MB 裡，最初的 BTC 區塊大小也是 32 MB ，但因為當時知道 BTC 的人還不多、每秒交易量（tps）也少，每個區塊只用到少數空間卻要花費大量算力求出，才臨時把區塊大小縮小到 1 MB 這個已經可以應付當初交易量的大小。這同時也能保證 2008 年時多數性能較弱、儲存空間較少的個人電腦擁有參與運算、成為節點的權力。</p>
+
+<p>正如同前面所述，Core 為了宣傳自己的 LN 和 Liquid ，抵死不增加區塊大小，不但讓交易阻塞、也使得擴容派非常不開心，擴容派需要的是一個快又便宜的鏈上支付方法。在 Bitcoin Classic 失勢後，這一回他們找上了比特大陸。</p>
+
+<h3 id="比特大陸-bitmain">比特大陸（Bitmain）</h3>
+
+<p>比特大陸（Bitmain）由 CEO 吳忌寒於 2013 年成立，是當前全世界最大的礦機生產商，同時也握有世界上最大比例的礦池和礦場。</p>
+
+<ul>
+<li>「礦機」</li>
+</ul>
+
+<p>礦機就是用來專門「挖礦」的機器。</p>
+
+<p>因為 BTC 採用的 SHA-256 演算法會隨著時間改變挖礦的難度，使用 PC 的 CPU 去進行運算求解早已跟不上難度，最後，ASIC（Application-specific integrated circuit，特殊應用積體電路）礦機被發明出來，這是一種專門為使用者而生、設計用來挖礦的晶片機組。</p>
+
+<ul>
+<li>「礦場」</li>
+</ul>
+
+<p>礦場就是專門用來放實體礦機的地方，因為「挖礦」（運算）的過程中會需要大量的電力成本和產生大量的廢熱，所以礦機大多放在電費低廉（如內蒙古，或是鄰近三峽大壩的四川）、或是天氣偏冷的地方。</p>
+
+<ul>
+<li>「挖礦（Mining）」</li>
+</ul>
+
+<p>因為 BTC 是採用 SHA-256 演算法進行運算的，在得到每個區塊的 hash 值之前，需要以下參數：</p>
+
+<p>$$
+SHA256(SHA256(version + prev_hash + merkle_root + ntime + nbits + x)) &lt; TARGET
+$$</p>
+
+<p>其中</p>
+
+<ul>
+<li><code>version</code>：鏈上（chain）版本</li>
+<li><code>prev_hash</code>：上一個區塊（block）的 hash 值</li>
+<li><code>merkle_root</code>：需要寫入的交易記錄的 hash 樹的值</li>
+<li><code>ntime</code>：更新時間</li>
+<li><code>nbits</code>：當前難度</li>
+</ul>
+
+<p>挖礦（Mining）的過程就是找到上面的 <code>x</code> ，上式的 x 的範圍是 0 到 2^32, 而TARGET 則根據當前難度求出的。除了嘗試湊出 <code>x</code> 之外，每個想要挖到 BTC 的人還可以嘗試更改 <code>merkle_root</code> 和 <code>ntime</code> 之值。由於 hash 運算的特性，要找這樣一個 x 只能透過暴力搜尋。</p>
+
+<p>hash 運算是一個不可逆的過程，所以尋找到符合要求的 <code>x</code> 非常困難，需要不斷更改不同的參數以求解。這時，如果一個節點自稱自己找到了符合結果的 <code>x</code> ，那麼就可以在鏈上向全網廣播自己找到的結果。而其他的節點就可以接收並檢驗這個 <code>x</code> 是否符合 SHA-256 和鏈上協議。如果發現確實滿足要求，那麼這個計算出的 hash 就是有效的，其他的節點就會接受這個答案，「新的區塊」就此誕生。</p>
+
+<h3 id="比特大陸的礦池-mining-pool">比特大陸的礦池（Mining Pool）</h3>
+
+<p>因此，即使散戶礦工「理論上」有機會求出 hash （挖到礦），但設備計算能力（算力）強的礦工當然「更有機會」。隨著全世界越來越多人知道 BTC 的存在、越來越多人投入資源、建置更多的設備在挖礦之上，以散戶的設備（可能只是 PC）挖到礦的機率已經非常非常小。</p>
+
+<blockquote>
+<p>所以礦工們結合起來吧！</p>
+</blockquote>
+
+<p>礦工們建立了「礦池（Mining Pool）」，讓很多礦工一起解一個題目，最後再根據每個人貢獻的部份平分得出來的結果。就像一群人包牌買樂透一樣，雖然還是不一定會中獎，但是也更多人買當然會增加一點中獎的機會。礦工們全力貢獻計算能力，把維護節點的事交給「礦池」負責，而礦池則向礦工收取少量手續費，雙方都從此獲利，堪稱一舉兩得。</p>
+
+<p><img src="https://i.imgur.com/I2nqLM4.png"  style="display:block; margin:auto;width:80%"></p>
+
+<p>根據 <a href="https://btc.com/stats/pool?pool_mode=year">BTC.com 的統計</a>，過去一年內，由比特大陸所持有的 <a href="https://btc.com">BTC.com</a> 和 <a href="https://www.antpool.com/">AntPool</a> 分別佔了全往算力的 21.6% 和 15.0% ，另外由比特大陸所領導投資的 <a href="https://www.viabtc.com/">ViaBTC</a> 佔有 11.0%，光是這三大礦池就佔了全網總算力的 47.6%，這還不算上其他跟比特大陸相互聯盟的小型礦池、或是雲端算力。如果真的認真起來，比特大陸可以說握有超過一半的 BTC 算力。</p>
+
+<p>在上一篇中，我們提到礦池的意見已經逐漸和開發者（也就是 Core）平起平坐，因為如果沒有他們的提供算力，區塊鏈將會停滯不前。正因為比特大陸的力量越來越大，逐漸就和 Core 產生了意見分歧。如上面所說，Core 背後的 Blockstream 想要的是鏈下擴容，由 LN 或 Liquid Network 收取獲利；但比特大陸想要的是鏈上擴容，因為唯有高流動性、值錢的貨幣，才能讓更多人投入挖礦這個產業中，比特大陸才能由此獲利。</p>
+
+<p>Core 和比特大陸之爭慢慢浮現，一邊強調「祖訓不能移」，只能留在 1 MB；另一邊強調「祖訓應該與時俱進」，應該往上增加區塊容量。兩邊各自以中本聰作為神主牌，互相指控對方想害死 BTC、搞中心化，實則上都是為了自己的最大利益。</p>
+
+<p>也因此，在 Core 強推 Segwit 方案，為未來的 LN 鋪路之後，以比特大陸為主的「擴容派」立刻表示反對，這次，比特大陸決定不在妥協於 Core ，要用自己所持有的龐大算力，自己發行自己的貨幣。</p>
+
+<p>2017 年 6 月，比特大陸自行發布自己的 UAHF（User Activiated Hard Fork）分叉方案，表示將在 8 月 1 日時進行硬分叉，從本來的 Bitcoin 主鏈之外分叉出 Bitcoin Cash（中國國內本來以 BCC 稱呼 Bitcoin Cash，但因為 BCC 和 BitConnect 這個傳銷垃圾幣撞名，爾後改名叫作 BCH）。</p>
+
+<p>8 月 1 日，比特大陸在 ViaBTC 、 Bitcoin ABC 及 Bitcoin Ulimited 等主張「擴容」的團隊支持下，在 Bitcoin 主鏈高度為 <a href="https://blockdozer.com/block/000000000000000000651ef99cb9fcbe0dadde1d424bd9f15ff20136191a5eec">478559</a> 時，以超過原本 BTC 區塊大小的 1.91 MB 由 ViaBTC 礦池產出第一個 BCH 區塊，象徵 Bitcoin Cash 的誕生。</p>
+
+<h2 id="bitcoin-cash">Bitcoin Cash</h2>
+
+<p>BCH 的主要支持者就是當年和 Core 吵的你死我活的「擴容派」，包括比特大陸的 CEO 吳忌寒（畢竟 BCH 最早也是他們叉出來的）、比特幣耶穌 Roger Ver、假中本聰 Craig Steven Wright（CSW）、btc.top 礦池、Gavin Andresen 、Bitcoin ABC 團隊等。</p>
+
+<h3 id="區塊大小">區塊大小</h3>
+
+<p>BCH 將原本 BTC 區塊大小由 1 MB 提升到 8 MB，並且允許在每次定期的「升級」中逐漸提高容量以應付可能的交易阻塞，同時刪除了 Core 所提出的 Segwit 方案，堅持要在鏈上擴容，不使用第二層交易。</p>
+
+<p>2018 年 5 月，BCH 主鍊透過硬分叉的方式「升級」，將原先 8 MB 的區塊大小再度升級到 32 MB ，到了這個階段，BCH 可以應付更大規模的即時交易量、提高交易速率、也進一步降低手續費，基本上可以滿足數年內 BCH 主鏈上的交易需求量。</p>
+
+<h3 id="算力難度">算力難度</h3>
+
+<p>根據中本聰的白皮書，BTC 最多只會有約 2100 萬個（漸進非絕對），隨著被挖出的 BTC 越來越多，剩餘的 BTC 也越來越少，hash 的算法難度就越來越困難，並且也因礦池的獨大，每幾個月難度就會呈現指數成長。</p>
+
+<p>而 BCH 在一開始引進動態難度調節模式（EDA， Emergency Difficulty Adjustment），每一個區塊爆出的難度會隨著 BCH 全網算力來做調整。當加入的節點越多、挖 BCH 的人越多，出礦難度就會越高，反之則降低出礦難度，這是為了防止鏈上算力不足造成交易停滯的情況。 若最近 12 小時出塊數小於 6 個，則難度會自動降低 25% 。此外，因為 BTC 和 BCH 都使用 SHA-256 演算法，礦工和礦池可以根據兩邊的挖礦難度、幣值求出的「挖礦收益」來決定挖哪種幣。</p>
+
+<p>但 EDA 也遇到了出塊速度不穩定（被稱為「算力潮汐」）、但整體出塊速度還是偏快的壞處。難度低或算力高的時候，每兩天就可以完成一次難度週期，再度進行 EDA。整體來說，這樣的出塊速度會讓 BCH 在提前把區塊給挖出來，會為市場帶來更大的拋售賣壓，通貨膨脹速度也會快於 BTC，對價格產生不利的影響。</p>
+
+<p>2017 年 11 月 13 日，BCH 透過主鏈硬分叉的方式刪掉原有的 EDA ，改採 Amaury Sechet 所貢獻的出塊難度計算方法。如此一來，BCH 的平均出塊時間終於穩定在 10 分鐘左右， 不再有算力潮汐的現象，而 BCH 的算力和 BTC 的算力的比例將穩定在價格比例附近。</p>
+
+<h2 id="寫在所有之後">寫在所有之後</h2>
+
+<p>Bitcoin Cash 嘗試在「快又便宜」、「鏈上交易」、「去中心化」三者之間取得新的平衡。和那些分叉失敗、失去價格的垃圾幣相比，BCH 最終在大礦池和擴容派的支持之下活下來了，而且取得了 BTC 約的 10% 價格。另一方面，隨著 Core 的跳票、Segwit2x 的失敗，越來越多的溫和派倒向 BCH，BCH 的目標就是取代被 Core 和 Blockstream 控制的 BTC，成為「真正符合中本聰藍圖的 *Bitcoin*」。</p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="https://pansci.asia/archives/53571">https://pansci.asia/archives/53571</a></li>
+<li><a href="https://www.ptt.cc/bbs/DigiCurrency/M.1464982563.A.9B1.html">https://www.ptt.cc/bbs/DigiCurrency/M.1464982563.A.9B1.html</a></li>
+<li><a href="https://www.blocktempo.com/lightning-network/">https://www.blocktempo.com/lightning-network/</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/25768806">https://zhuanlan.zhihu.com/p/25768806</a></li>
+<li><a href="https://tw.saowen.com/a/e7d28fad7681b39da1c9a3836a643bfa82db503c09503bfea2c8cb14d9ae86e6">https://tw.saowen.com/a/e7d28fad7681b39da1c9a3836a643bfa82db503c09503bfea2c8cb14d9ae86e6</a></li>
+<li><a href="https://bitcoin01.weebly.com/276042930524163253663101431639278612615924590271713034065311.html">https://bitcoin01.weebly.com/276042930524163253663101431639278612615924590271713034065311.html</a></li>
+<li><a href="https://www.ptt.cc/bbs/DigiCurrency/M.1451386728.A.069.html">https://www.ptt.cc/bbs/DigiCurrency/M.1451386728.A.069.html</a></li>
+</ul>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/cryptocurrency" role="button">Cryptocurrency </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/bch" role="button">BCH </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E5%88%86%E5%8F%89" role="button">分叉 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/btc" role="button">BTC </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/essay/2018-11-22-bch-%E7%9A%84%E4%BB%8A%E7%94%9F%E4%BB%8A%E4%B8%96-1btc-%E7%9A%84%E6%93%B4%E5%AE%B9%E4%B9%8B%E7%88%AD/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>BCH 的今生今世 (1)：BTC 的擴容之爭</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://rutopio.github.io/essay/2018-11-27-2018-%E5%85%AC%E6%8A%95%E4%B9%8B%E5%BE%8C%E6%8C%BA%E5%90%8C%E7%82%BA%E4%BB%80%E9%BA%BC%E6%9C%83%E5%A4%B1%E6%95%97/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>2018 公投之後：挺同為什麼會失敗？</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%af%ab%e5%9c%a8%e6%89%80%e6%9c%89%e4%b9%8b%e5%89%8d">
+												 寫在所有之前
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%9b%9e%e6%ad%b8%e6%9c%ac%e8%b3%aa">
+												 回歸本質
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8d%e5%80%8b%e4%ba%ba%e7%af%80%e9%bb%9e%e8%80%8c%e8%a8%80-greedy-but-honest">
+												 對個人節點而言：Greedy, but honest
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b0%8d%e9%96%8b%e7%99%bc%e8%80%85%e8%80%8c%e8%a8%80-%e4%b8%bb%e5%ae%b0%e8%b2%a8%e5%b9%a3%e7%9a%84%e7%94%9f%e6%ae%ba%e5%a4%a7%e6%ac%8a">
+												 對開發者而言：主宰貨幣的生殺大權
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#lightning-network-ln-%e9%96%83%e9%9b%bb%e7%b6%b2%e8%b7%af">
+												 Lightning Network（LN，閃電網路）
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%a8%ad%e8%a8%88%e6%a6%82%e5%bf%b5">
+												 設計概念
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#core-%e6%89%80%e5%ae%a3%e7%a8%b1%e7%9a%84%e5%84%aa%e9%bb%9e">
+												 Core 所宣稱的優點
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%95%8f%e9%a1%8c%e6%89%80%e5%9c%a8">
+												 問題所在
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%9b%bb%e5%ad%90%e9%bb%83%e9%87%91">
+												 電子黃金
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%97%9c%e6%96%bc-%e4%b8%ad%e7%b9%bc%e7%ab%99">
+												 關於「中繼站」
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%89%93%e9%96%8b-channel-%e7%9a%84%e6%88%90%e6%9c%ac">
+												 打開 channel 的成本
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#liquid-network">
+												 Liquid Network
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%a8%ad%e8%a8%88%e6%a6%82%e5%bf%b5-1">
+												 設計概念
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%99%b0%e8%ac%80%e6%89%80%e5%9c%a8">
+												 陰謀所在
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%93%b4%e5%ae%b9%e6%b4%be%e7%9a%84%e5%b8%8c%e6%9c%9b">
+												 擴容派的希望
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%af%94%e7%89%b9%e5%a4%a7%e9%99%b8-bitmain">
+												 比特大陸（Bitmain）
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%af%94%e7%89%b9%e5%a4%a7%e9%99%b8%e7%9a%84%e7%a4%a6%e6%b1%a0-mining-pool">
+												 比特大陸的礦池（Mining Pool）
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#bitcoin-cash">
+												 Bitcoin Cash
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%8d%80%e5%a1%8a%e5%a4%a7%e5%b0%8f">
+												 區塊大小
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%ae%97%e5%8a%9b%e9%9b%a3%e5%ba%a6">
+												 算力難度
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%af%ab%e5%9c%a8%e6%89%80%e6%9c%89%e4%b9%8b%e5%be%8c">
+												 寫在所有之後
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#reference">
+												 Reference
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>矩陣 on Rutopio</title>
+    <link>https://rutopio.github.io/tags/%E7%9F%A9%E9%99%A3/</link>
+    <description>Recent content in 矩陣 on Rutopio</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Tue, 11 Jun 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://rutopio.github.io/tags/%E7%9F%A9%E9%99%A3/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Python筆記]圖片邊界偵測，以 PGM 檔案為例</title>
+      <link>https://rutopio.github.io/code/2019-06-11-python%E7%AD%86%E8%A8%98%E5%9C%96%E7%89%87%E9%82%8A%E7%95%8C%E5%81%B5%E6%B8%AC%E4%BB%A5-pgm-%E6%AA%94%E6%A1%88%E7%82%BA%E4%BE%8B/</link>
+      <pubDate>Tue, 11 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2019-06-11-python%E7%AD%86%E8%A8%98%E5%9C%96%E7%89%87%E9%82%8A%E7%95%8C%E5%81%B5%E6%B8%AC%E4%BB%A5-pgm-%E6%AA%94%E6%A1%88%E7%82%BA%E4%BE%8B/</guid>
+      <description>引入 library import sys # 讀入檔案用的 import numpy as np # 做矩陣運算用的 import matplotlib.pyplot as plt # 最後畫出圖用的 對 PGM 檔案進行處理 執行方法如下。其中 input.pgm 為輸入的檔名，會在執行後跑出 Original Image 與 Edge Image 的比較圖（以 matplotlib.pyplot 繪製而成），同時在該目錄之下中輸出 input_out.pgm。 $ python assignment_2.py input.pgm 開始先將檔案做前置處理。 filename = sys.argv[1] # 讀入檔案名稱 # 沿著每一列讀 with open(filename) as file: lines = file.readlines() # 忽視註解那一列，通常都是以井字號開頭的 for l in list(lines): if (l[0] == &amp;quot;#&amp;quot;): lines.remove(l) # 檢查是否是我們要的檔案格式，也就是 ASCII P2</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>回溯 on Rutopio</title>
+    <link>https://rutopio.github.io/tags/%E5%9B%9E%E6%BA%AF/</link>
+    <description>Recent content in 回溯 on Rutopio</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Sun, 18 Nov 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://rutopio.github.io/tags/%E5%9B%9E%E6%BA%AF/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Python筆記]何時買賣(2)：回溯</title>
+      <link>https://rutopio.github.io/code/2018-11-18-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%B2%B7%E8%B3%A32%E5%9B%9E%E6%BA%AF/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2018-11-18-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%B2%B7%E8%B3%A32%E5%9B%9E%E6%BA%AF/</guid>
+      <description>這篇的回溯方法目前有一點問題，我似乎沒有考慮到最後要平倉的時候，賣出還要再扣一筆手續費的情況啊QQ 在上一篇的動態規劃裡，我們已經得到最大的獲利了，但我們只知道最大的獲利，什麼時候要買、什麼時候要賣，什麼時候該都不做，也就是每天的行動我們還不知道，我們還要在做一個回溯的方法。 回溯的方法有百百種，每個人寫出來的方法都不一樣，我的寫法似乎不是最佳解ㄏ，感覺浪費的不少空間去存不會再用到的資料就是了。 變數定</description>
+    </item>
+    
+  </channel>
+</rss>

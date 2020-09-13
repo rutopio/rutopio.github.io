@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>機器學習 on Rutopio</title>
+    <link>https://rutopio.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92/</link>
+    <description>Recent content in 機器學習 on Rutopio</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Sun, 10 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://rutopio.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[ML筆記] Logistic Regression</title>
+      <link>https://rutopio.github.io/code/2019-03-10-ml%E7%AD%86%E8%A8%98-logistic-regression/</link>
+      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2019-03-10-ml%E7%AD%86%E8%A8%98-logistic-regression/</guid>
+      <description>scikit-learn 使用 scikit-learn 訓練一個感知器 from sklearn import datasets import numpy as np iris = datasets.load_iris() # 就是那堆花 X = iris.data[:, [2, 3]] # 選取花瓣長度(2)與花瓣寬度(3)當作特徵 y = iris.target # 花的類別 print(&#39;X:&#39;, X[1:5, ]) # 檢查print(&#39;Label:&#39;, np.unique(y)) 終端輸出： &amp;gt; X: [[1.4 0.2] [1.3 0.2] [1.5 0.2] [1.4 0.2]] &amp;gt; Label: [0 1 2] 在這裡的 X 代表了那堆花的特徵（features），這裡用的是花瓣長度([2])與花瓣寬度([3])當作分類時的特徵，而 y 則是花的類別（本來是 sentosa、versicolor、virgin</description>
+    </item>
+    
+    <item>
+      <title>[ML筆記]Adeline 與梯度下降</title>
+      <link>https://rutopio.github.io/code/2019-03-09-ml%E7%AD%86%E8%A8%98adeline-%E8%88%87%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/</link>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2019-03-09-ml%E7%AD%86%E8%A8%98adeline-%E8%88%87%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/</guid>
+      <description>Adaline 認知器 在上一篇中，我們知道 Rossenblatt 感知器的激勵函數是： \begin{equation} \phi (z) = \phi (\textbf{w}^\mathrm{T} \cdot \textbf{x}) = \left\{ \begin{array}{ll} +1 &amp; {z \geq \theta}\\ -1 &amp; \textrm{otherwise}\\ \end{array} \right. \end{equation} 而這是 Adaline 認知器中的激勵函數： \begin{equation} \phi (z) = \phi (\textbf{w}^\mathrm{T} \cdot \textbf{x}) = \textbf{w}^\mathrm{T} \cdot \textbf{x}=w_{1}x_{1}+w_{2}x_{2}+ \dots +w_{n}x_{n} \end{equation} 差別在於 Adaline 的激勵函數是一個連續的線性激勵函數（不像 Rossenblatt 是跳躍性的，非 $+1$ 就是 $-1$），我們也可說 Adaline 的激勵函數就示意整個淨輸入。另外 Adeline 演算法會在淨輸入到激勵函數後，把結果引入一個量化器（quantizer），對類別判斷之後再輸出，這是 Rossenblatt 感知器所沒有的。</description>
+    </item>
+    
+    <item>
+      <title>[ML筆記]Rossenblatt 感知器</title>
+      <link>https://rutopio.github.io/code/2019-03-08-ml%E7%AD%86%E8%A8%98rossenblatt-%E6%84%9F%E7%9F%A5%E5%99%A8/</link>
+      <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2019-03-08-ml%E7%AD%86%E8%A8%98rossenblatt-%E6%84%9F%E7%9F%A5%E5%99%A8/</guid>
+      <description>Rossenblatt 感知器（Rossenblatt Perceptron） 人造神經元 想像一個生物的神經元（neuron），他有一個輸入端和一個輸出端，化學反應訊號透過不同的樹突（dendrites）由別的細胞接收而來，經過細胞核、由軸突（axon）末端傳送到另外一個神經元（可參見 McCulloch-Pitts neuron）。那如果我們把他想像成一個二元的邏輯閥，多個訊號由遠處傳送到這個神經元，神經元可以選擇要不要再傳送到別的神經元。試想，如果任</description>
+    </item>
+    
+    <item>
+      <title>[Python筆記]我們能預測騙線的發生嗎？</title>
+      <link>https://rutopio.github.io/code/2019-01-14-python%E7%AD%86%E8%A8%98%E6%88%91%E5%80%91%E8%83%BD%E9%A0%90%E6%B8%AC%E9%A8%99%E7%B7%9A%E7%9A%84%E7%99%BC%E7%94%9F%E5%97%8E/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2019-01-14-python%E7%AD%86%E8%A8%98%E6%88%91%E5%80%91%E8%83%BD%E9%A0%90%E6%B8%AC%E9%A8%99%E7%B7%9A%E7%9A%84%E7%99%BC%E7%94%9F%E5%97%8E/</guid>
+      <description>寫在所有之前 關於技術分析 在所有的股票、標的、期貨市場中，主要有三大流派的投資分析方式： 基本面：分析該物件的內在價值。以股票來說，就是看這間公司的財報健不健全，或是這間公司投資的未來產業動向為何。 技術面：認為歷史會一再重演，主張可以從過去的資訊學習，進而了解未來。像是使用Ｋ線圖畫線、使用技術指標考慮買賣點、ML、DL 等方法去推測未來市場的變化。 籌碼面：或稱新聞面、消息面。像三大法人的買賣方向，以及密</description>
+    </item>
+    
+  </channel>
+</rss>

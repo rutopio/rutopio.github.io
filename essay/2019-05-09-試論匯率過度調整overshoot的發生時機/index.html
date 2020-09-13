@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="匯率過度調整, Overshoot, 匯率, 經濟學" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="試論「匯率過度調整（Overshoot）」的發生時機。">
+  
+  <meta property="og:title" content="試論「匯率過度調整（Overshoot）」的發生時機" />
+<meta property="og:description" content="試論「匯率過度調整（Overshoot）」的發生時機。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/essay/2019-05-09-%E8%A9%A6%E8%AB%96%E5%8C%AF%E7%8E%87%E9%81%8E%E5%BA%A6%E8%AA%BF%E6%95%B4overshoot%E7%9A%84%E7%99%BC%E7%94%9F%E6%99%82%E6%A9%9F/" /><meta property="article:published_time" content="2019-05-09T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-05-09T00:00:00&#43;00:00"/>
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       試論「匯率過度調整（Overshoot）」的發生時機 | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/essay/2019-05-09-%E8%A9%A6%E8%AB%96%E5%8C%AF%E7%8E%87%E9%81%8E%E5%BA%A6%E8%AA%BF%E6%95%B4overshoot%E7%9A%84%E7%99%BC%E7%94%9F%E6%99%82%E6%A9%9F/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+      
+    
+    
+  </ul>
+
+  <div class="px-4 post-heading">試論「匯率過度調整（Overshoot）」的發生時機</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>May 9, 2019</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>5 minutes read</li>
+    
+  </ul>
+  
+    <div class="view">
+      <img src="https://i.imgur.com/s1ZPNGe.jpg" />
+    </div>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<blockquote>
+<p>When there is equilibrium in the money market, $M^{s}/P = L(R,Y)$, so $V = Y/L(R,Y)$.</p>
+
+<p>($M^{s}/P$ is the money supply, $L(\cdot)$ is the money demand, $R$ and $Y$ are interest rate and real GNP respectively.)</p>
+
+<p>When $R$ increases, $L(R,Y)$ falls and thus velocity rises (vice versa). When $Y$ increases, $L(R,Y)$ rises by a smaller amount because the elasticity of aggregate money demand with respect to real output is smaller than 1. Thus velocity rises (vice versa). Because an increase in $R$ or increase in income causes the exchange rate to appreciate, an increase in velocity is associated with an appreciation of the exchange rate (vise versa).</p>
+</blockquote>
+
+<h2 id="簡單來說">簡單來說</h2>
+
+<ul>
+<li><p>分為兩個階段</p>
+
+<ul>
+<li>$dM&gt;0\Longrightarrow dR_{1}<0 \; ,dL>0$</li>
+<li>$dY&gt;0\Longrightarrow dR_{2}&gt;0$</li>
+</ul></li>
+
+<li><p>首先</p></li>
+</ul>
+
+<p>\begin{equation}\frac{M_{US}^{1}+dM}{P_{US}^{1}} = L+dL=L+\frac{\partial L}{\partial R}\cdot dR+\frac{\partial L}{\partial Y}\cdot dY\tag{0}\end{equation}</p>
+
+<ul>
+<li>且$R$變動是$dR_{1}$，$dY=0$，故</li>
+</ul>
+
+<p>
+\begin{equation}
+\begin{split}
+&\frac{M_{US}^{1}+dM}{P_{US}^{1}}=L+\frac{\partial L}{\partial R}\cdot dR_{1}\\
+&\frac{dR_{1}}{dM}=\left(\frac{\partial R}{\partial L}\right)\left(\frac{M^{1}_{US}}{dM\cdot P^{1}_{US}}+\frac{1}{P^{1}_{US}}-\frac{L}{dM}\right)
+\end{split}\tag{a}
+\end{equation}
+</p>
+
+<ul>
+<li>$dY&gt;0$，且$M^{s}$是外生給定，故$L$不再變動，而由$dR_{2}$吸收，故：</li>
+</ul>
+
+<p>
+\begin{equation}
+\begin{split}
+&\frac{M^{1}_{US}+dM}{P_{US}^{1}}=L+\frac{\partial L}{\partial R}\left( dR_{1}+dR_{2}\right)+\frac{\partial L}{\partial Y}\cdot dY\\
+&\frac{dR_{1}+dR_{2}}{dM}=\left(\frac{\partial R}{\partial L}\right)
+\left(\frac{M_{US}^{1}}{dM\cdot P_{US}^{1}}+\frac{1}{P_{US}^{1}}-\frac{L}{dM}-\frac{\partial L}{\partial Y}\cdot \frac{dY}{dM}\right)
+\end{split}\tag{b}
+\end{equation}
+</p>
+
+<ul>
+<li>由$(a)(b)$可得：</li>
+</ul>
+
+<p>
+\begin{equation}
+\frac{dR_{2}}{dM}=-\frac{\partial R}{\partial L}\cdot \frac{\partial L}{\partial Y}\cdot \frac{dY}{dM}\tag{c}
+\end{equation}
+</p>
+
+<ul>
+<li><p>本國資產回報率$(R)$與流動性需求$(L)$負相關$(\partial L/\partial R<0)$、而產出$(Y)$與之正相關$(\partial L/\partial Y>0)$。</p></li>
+
+<li><p>當本國貨幣供給增加$(dM&gt;0)$，使本國資產回報率下跌$(dR_{1}<0)$，而流動性增加$(dL>0)$。</p></li>
+
+<li><p>另一方面，因著貨幣供給增加，使本國貨幣相對外國貨幣貶值，本國產品價格相對於外國產品是較便宜的，對於出口有利，而改善了經常帳，於是總需求提⾼；故提高的產出$(dY&gt;0)$，在短期之下價格水準尚未調整，使流動性需求右移，本應該使流動性需求增加，卻因著貨幣總量乃由外生給定，流動性需求$(L+dL)$要等於實質貨幣供給，故全微分下的條件，意味著產出變動完全被本國資產回報率的變動$(dR_{2}&gt;0)$吸收。</p></li>
+
+<li><p>若$dR_{1}&lt;d(R_{1}+R_{2})&lt;0$，意味著產出增加將和緩因著本國與外國的資產回報率出現差異而造成的短期匯率過度調整。</p></li>
+</ul>
+
+<h2 id="用個模型來說">用個模型來說</h2>
+
+<h3 id="參數">參數</h3>
+
+<ul>
+<li>取自然對數後的參數，以小寫表示之：
+
+<ul>
+<li>$\frac{d\ln{P}}{dt}=\frac{dp}{dt}=\dot{p}$ ：「價格隨時間的變化程度（通膨率）」取自然對數</li>
+<li>$p=\ln{P}$：「物價水準」取自然對數</li>
+<li>$\bar{p}=\ln{\bar{P}}$：「均衡之下的物價水準」取自然對數</li>
+<li>$y^{d}=\ln{Y^{d}}$：「總需求」取自然對數</li>
+<li>$y=\ln{Y}$：「總供給」取自然對數</li>
+<li>$e=\ln{E}$：「匯率」取自然對數</li>
+<li>$\bar{e}=\ln{\bar{E}}$：「均衡之下的匯率」取自然對數</li>
+<li>$g=\ln{G}$：「政府支出」取自然對數</li>
+<li>$m^{s}=\ln{M^{s}}$：「本國貨幣供給量」取自然對數</li>
+<li>$m^{d}=\ln{M^{d}}$：「本國貨幣需求量」取自然對數</li>
+</ul></li>
+<li>未取自然對數的參數，以大寫表示之：
+
+<ul>
+<li>$R$：本國利率</li>
+<li>$R^{f}$：外國利率</li>
+</ul></li>
+</ul>
+
+<h3 id="方程組">方程組</h3>
+
+<ul>
+<li>除了以上的參數之外，在方程式中出現的希臘字母皆表示是個參數，且皆大於零。</li>
+</ul>
+
+<h4 id="在商品市場之中">在商品市場之中</h4>
+
+<ul>
+<li>首先是 philips curve 的式子，等號左邊的 $\pi$ 是一個常數，代表物價通膨的速度。</li>
+</ul>
+
+<p>
+\begin{equation}\dot{p}=\pi(y^{d}-y) \tag{1}\end{equation}
+</p>
+
+<ul>
+<li>再來是總需求，可以由 IS-LM 模型得出：</li>
+</ul>
+
+<p>
+\begin{equation}y^{d}=\delta(e-p)+\gamma y+g, \; 0<\gamma<1 \tag{2}\end{equation}
+</p>
+
+<h4 id="在貨幣市場之中">在貨幣市場之中</h4>
+
+<ul>
+<li>貨幣供給等式：
+首先，在未取自然對數之前，貨幣市場由$R$（利率）和$Y$（產出）決定$M^{d}$（貨幣供給）和$P$（物價水準）。等號左式是貨幣學派的市場均衡條件。</li>
+</ul>
+
+<p>
+\begin{equation}\frac{M^{d}}{P}=L(R,Y)=Y^{\phi}e^{-\lambda R}\tag{d}\end{equation}
+</p>
+
+<ul>
+<li>在取對數後，如前面提到的，我們把取過對數的以小寫表示之：</li>
+</ul>
+
+<p>
+\begin{equation}m^{d}-p=\phi y - \lambda R \tag{3}\end{equation}
+</p>
+
+<ul>
+<li>貨幣平衡於供給和需求平衡時，我們令此數量為$m$：</li>
+</ul>
+
+<p>
+\begin{equation}m^{d}=m^{s}\equiv m \tag{4}\end{equation}
+</p>
+
+<h4 id="國際資產市場之中">國際資產市場之中</h4>
+
+<ul>
+<li>利率預測程度：
+此式代表著外國利率和本國利率之間，在理性預期匯率（$\Delta e$）之下，呈現完全替代關係，</li>
+</ul>
+
+<p>
+\begin{equation}R=R^{f}+\Delta e^{e} \tag{5}\end{equation}
+</p>
+
+<ul>
+<li>其中 $\theta$ 是市場預期對均衡貨幣過高或低估的敏感性（the sensitivity of market expectations to over- or undervaluation of currency from equilibrium level），並可以在取自然對數後的近似值得出：：</li>
+</ul>
+
+<p>
+\begin{equation}
+\begin{split}
+\Delta e^{e}&=\frac{E^{e}-E}{E}\\
+&\equiv\theta \left(\frac{\bar{E}-E}{E}\right)\\
+&\simeq \theta\left(\ln{\left[1+\frac{\bar{E}-E}{E}\right]}\right)\\
+&=\theta\left(\ln{\bar{E}}-\ln{E}\right)\\
+&=\theta(\bar{e}-e) 
+\end{split}\tag{6}
+\end{equation}
+</p>
+
+<h3 id="數學推導">數學推導</h3>
+
+<ul>
+<li>在長期均衡之下，$y=y^{d}$，代表產出和消費相等，且$\phi=1$，此時可以從$(1)$得到通膨率為零。</li>
+</ul>
+
+<p>
+\begin{equation}0=\dot{p}=\pi(y^{d}-y)\tag{e}\end{equation}
+</p>
+
+<ul>
+<li>由$(2)$，可以代入 $y=y^{d}$ 後移項得到以下式子，代表商品市場達到均衡。</li>
+</ul>
+
+<p>
+\begin{equation}
+\begin{split}
+&y=\delta(e-p)+\gamma y+g\\
+\Longrightarrow& (1-\gamma)y=\delta e-\delta p+g\\
+\Longrightarrow& p=e+\frac{1}{\delta}\left(g-(1-\gamma)y\right)
+\end{split}\tag{7}
+\end{equation}
+</p>
+
+<ul>
+<li>接著求貨幣市場的均衡，由$(6)$帶入$(5)$，再代入$(3)$綜合得到：</li>
+</ul>
+
+<p>
+\begin{equation}R=R^{f}+\theta(\bar{e}-e)\tag{f}\end{equation}
+</p>
+
+<p>
+\begin{equation}m-p=\phi y - \lambda R=\phi y-\lambda R^{f}-\lambda\theta(\bar{e}-e)\tag{g}\end{equation}
+</p>
+
+<ul>
+<li>移項後：</li>
+</ul>
+
+<p>
+\begin{equation}p=m-\phi y+\lambda R^{f}+\lambda\theta(\bar{e}-e)\tag{8}\end{equation}
+</p>
+
+<ul>
+<li>其中，我們可以視 $\lambda$ 是預期匯率回到原本的速度，而 $\theta$ 則是市場預期對均衡貨幣過高或低估的敏感性</li>
+<li>接著，在長期的情況下，均衡匯率就是匯率，換句話說 $\bar{e}=e$。此時由$(8)$：</li>
+</ul>
+
+<p>
+\begin{equation}\bar{p}=m-\phi y + \lambda R^{f}\tag{9}\end{equation}
+</p>
+
+<ul>
+<li>還記得前面的$(7)$的$\bar{p}$，這式在長期時也會成立，和$(9)$合併，兩式要相等：</li>
+</ul>
+
+<p>
+\begin{equation}\bar{p}=\bar{e}+\frac{1}{\delta}\left(g-(1-\gamma)y\right)\tag{7}\end{equation}
+</p>
+
+<p>
+\begin{equation}
+\begin{split}
+\bar{p}&=m-\phi y + \lambda R^{f}\\&=\bar{e}+\frac{1}{\delta}\left(g-(1-\gamma)y\right)\\
+\Longrightarrow\bar{e}&=\bar{p}-\frac{1}{\delta}(g+(1-\gamma)y)\\&=m-\phi y+\lambda R^{f} -\frac{1}{\delta}(g+(1-\gamma)y)
+\end{split}\tag{10}
+\end{equation}
+</p>
+
+<ul>
+<li>移項後得到長期的實質匯率受到供給面的影響：</li>
+</ul>
+
+<p>
+\begin{equation}\bar{e}=\bar{p}+\frac{1}{\delta}\left((1-\gamma)y-g\right)\tag{11*}\end{equation}
+</p>
+
+<ul>
+<li>現在考慮短期的波動，由最前面的$(8)(9)$解出$e$：</li>
+</ul>
+
+<p>
+\begin{equation}e=\bar{e}-\frac{1}{\lambda \theta}(p-\bar{p})=\bar{e}-\frac{1}{\lambda\theta}(p-m-\phi y+\theta R^{f})\tag{12}\end{equation}
+</p>
+
+<ul>
+<li>為了找出短期之下匯率和貨幣供給的反應，我們把$(12)$對貨幣供給微分。其中$\bar{e}$可以帶入$(10)$，微分後是 1，而且參數皆大於零，所以得到：</li>
+</ul>
+
+<p>
+\begin{equation}e=\bar{e}-\frac{1}{\lambda \theta}(p-\bar{p})>\bar{e}\tag{g}\end{equation}
+</p>
+
+<p>
+\begin{equation}\frac{de}{dm}=\frac{d\bar{e}}{dm}+\frac{1}{\lambda \theta}=1+\frac{1}{\lambda \theta}>1\tag{13*}\end{equation}
+</p>
+
+<ul>
+<li><p>此即代表在短期，也就是價格在回穩之前，匯率的升幅（$\Delta e\simeq de$）比貨幣供應的升幅（$\Delta m \simeq dm$）要大，並超越在長期時均衡狀態，於是發生匯率超調 (overshoot)。</p></li>
+
+<li><p>換句話說，overshoot 的大小程度和 $\lambda$（市場預期匯率回到原本的速度） 與 $\theta$（市場預期對均衡貨幣過高或低估的敏感性）有關，當兩者乘積愈小時，overshoot的變動幅度會愈大，反之則愈小。</p></li>
+</ul>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%95%B8%E5%AD%B8%E6%8E%A8%E5%B0%8E" role="button">數學推導 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E5%8C%AF%E7%8E%87" role="button">匯率 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%B6%93%E6%BF%9F" role="button">經濟 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E8%B2%A8%E5%B9%A3" role="button">貨幣 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/essay/2019-05-06-%E6%A0%B9%E8%88%87%E7%BE%8E%E5%AD%B8%E6%96%87%E5%8C%96%E8%88%87%E6%AD%B7%E5%8F%B2%E4%B9%8B%E6%96%BC%E5%9C%8B%E5%AE%B6%E6%88%96%E6%B0%91%E6%97%8F/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>「根」與美學：文化與歷史之於國家或民族</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://rutopio.github.io/essay/2019-05-13-%E5%85%88%E7%A6%81%E5%9C%8B%E5%AE%B6%E5%8F%B0%E7%81%A3-fintech-%E7%9A%84%E7%99%BC%E5%B1%95%E8%88%87%E7%AE%A1%E6%9C%83%E7%9A%84%E7%AE%A1%E5%88%B6/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>先禁國家：台灣 Fintech 的發展與⾦管會的管制</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%b0%a1%e5%96%ae%e4%be%86%e8%aa%aa">
+												 簡單來說
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%94%a8%e5%80%8b%e6%a8%a1%e5%9e%8b%e4%be%86%e8%aa%aa">
+												 用個模型來說
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%8f%83%e6%95%b8">
+												 參數
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%96%b9%e7%a8%8b%e7%b5%84">
+												 方程組
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%9c%a8%e5%95%86%e5%93%81%e5%b8%82%e5%a0%b4%e4%b9%8b%e4%b8%ad">
+												 在商品市場之中
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%9c%a8%e8%b2%a8%e5%b9%a3%e5%b8%82%e5%a0%b4%e4%b9%8b%e4%b8%ad">
+												 在貨幣市場之中
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%9c%8b%e9%9a%9b%e8%b3%87%e7%94%a2%e5%b8%82%e5%a0%b4%e4%b9%8b%e4%b8%ad">
+												 國際資產市場之中
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%95%b8%e5%ad%b8%e6%8e%a8%e5%b0%8e">
+												 數學推導
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

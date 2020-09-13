@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>摸摸蛇蛇 on Rutopio</title>
+    <link>https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%E8%9B%87%E8%9B%87/</link>
+    <description>Recent content in 摸摸蛇蛇 on Rutopio</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Thu, 16 Jan 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%E8%9B%87%E8%9B%87/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Python筆記] 2020台灣選舉結果爬蟲：以不分區政黨票為例</title>
+      <link>https://rutopio.github.io/code/2020-01-16-python%E7%AD%86%E8%A8%98-2020%E5%8F%B0%E7%81%A3%E9%81%B8%E8%88%89%E7%B5%90%E6%9E%9C%E7%88%AC%E8%9F%B2%E4%BB%A5%E4%B8%8D%E5%88%86%E5%8D%80%E6%94%BF%E9%BB%A8%E7%A5%A8%E7%82%BA%E4%BE%8B/</link>
+      <pubDate>Thu, 16 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2020-01-16-python%E7%AD%86%E8%A8%98-2020%E5%8F%B0%E7%81%A3%E9%81%B8%E8%88%89%E7%B5%90%E6%9E%9C%E7%88%AC%E8%9F%B2%E4%BB%A5%E4%B8%8D%E5%88%86%E5%8D%80%E6%94%BF%E9%BB%A8%E7%A5%A8%E7%82%BA%E4%BE%8B/</guid>
+      <description>1. 一樣先偷看中選會的小秘密 先打開中選會的網站，點到立法委員選舉下面的政黨得票數 (不分區及僑居國外國民立法委員)然後按 F12 查看小秘密^Q\^。 這時候就可以從 tag 裡面找到一個規律啦～然後如果又把每個縣市點開來，也會發現像是： 「id=&amp;ldquo;folder1260&amp;rdquo;」就是「政黨得票數 (不分區及僑居國外國民立法委員)」 「id=&amp;ldquo;folder1261&amp;rdquo;」就是「臺北市」 「i</description>
+    </item>
+    
+    <item>
+      <title>[Python筆記]Pigeonhole Problem（鴿籠問題）以 CNF 檔案輸出</title>
+      <link>https://rutopio.github.io/code/2019-10-14-python%E7%AD%86%E8%A8%98pigeonhole-problem%E9%B4%BF%E7%B1%A0%E5%95%8F%E9%A1%8C%E4%BB%A5-cnf-%E6%AA%94%E6%A1%88%E8%BC%B8%E5%87%BA/</link>
+      <pubDate>Mon, 14 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2019-10-14-python%E7%AD%86%E8%A8%98pigeonhole-problem%E9%B4%BF%E7%B1%A0%E5%95%8F%E9%A1%8C%E4%BB%A5-cnf-%E6%AA%94%E6%A1%88%E8%BC%B8%E5%87%BA/</guid>
+      <description>Outline 設想，總共有 n 隻鴿子和 m 個籠子，每一隻鴿子都要有一個籠子可以住，但每個籠子只能住一隻鴿子，請問對於這些鴿子和籠子，是否有適合的安排方式？雖然可能有很多種，但我們可以直接知道，當鴿子的數量比籠子還要多的時候，這個問題是無解的。 Variable $n$，鴿子數量 $m$，籠子數量 Instruction 假設 3 隻鴿子在 3 個籠子裡，即 $n=3, m=3$ ： $ python pigeonhole.py &amp;gt; Enter the number of pigeons(n):3 &amp;gt; Enter the number of holes(m):3 c c number of pigeons(n): 3 ,number of holes(m): 3 c p cnf 9 12 1 2 3 0 4 5 6 0 7 8 9 0 -1 -4 0 -1 -7 0 -4 -7 0 -2</description>
+    </item>
+    
+    <item>
+      <title>[Python筆記]圖片邊界偵測，以 PGM 檔案為例</title>
+      <link>https://rutopio.github.io/code/2019-06-11-python%E7%AD%86%E8%A8%98%E5%9C%96%E7%89%87%E9%82%8A%E7%95%8C%E5%81%B5%E6%B8%AC%E4%BB%A5-pgm-%E6%AA%94%E6%A1%88%E7%82%BA%E4%BE%8B/</link>
+      <pubDate>Tue, 11 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2019-06-11-python%E7%AD%86%E8%A8%98%E5%9C%96%E7%89%87%E9%82%8A%E7%95%8C%E5%81%B5%E6%B8%AC%E4%BB%A5-pgm-%E6%AA%94%E6%A1%88%E7%82%BA%E4%BE%8B/</guid>
+      <description>引入 library import sys # 讀入檔案用的 import numpy as np # 做矩陣運算用的 import matplotlib.pyplot as plt # 最後畫出圖用的 對 PGM 檔案進行處理 執行方法如下。其中 input.pgm 為輸入的檔名，會在執行後跑出 Original Image 與 Edge Image 的比較圖（以 matplotlib.pyplot 繪製而成），同時在該目錄之下中輸出 input_out.pgm。 $ python assignment_2.py input.pgm 開始先將檔案做前置處理。 filename = sys.argv[1] # 讀入檔案名稱 # 沿著每一列讀 with open(filename) as file: lines = file.readlines() # 忽視註解那一列，通常都是以井字號開頭的 for l in list(lines): if (l[0] == &amp;quot;#&amp;quot;): lines.remove(l) # 檢查是否是我們要的檔案格式，也就是 ASCII P2</description>
+    </item>
+    
+    <item>
+      <title>[ML筆記] Logistic Regression</title>
+      <link>https://rutopio.github.io/code/2019-03-10-ml%E7%AD%86%E8%A8%98-logistic-regression/</link>
+      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2019-03-10-ml%E7%AD%86%E8%A8%98-logistic-regression/</guid>
+      <description>scikit-learn 使用 scikit-learn 訓練一個感知器 from sklearn import datasets import numpy as np iris = datasets.load_iris() # 就是那堆花 X = iris.data[:, [2, 3]] # 選取花瓣長度(2)與花瓣寬度(3)當作特徵 y = iris.target # 花的類別 print(&#39;X:&#39;, X[1:5, ]) # 檢查print(&#39;Label:&#39;, np.unique(y)) 終端輸出： &amp;gt; X: [[1.4 0.2] [1.3 0.2] [1.5 0.2] [1.4 0.2]] &amp;gt; Label: [0 1 2] 在這裡的 X 代表了那堆花的特徵（features），這裡用的是花瓣長度([2])與花瓣寬度([3])當作分類時的特徵，而 y 則是花的類別（本來是 sentosa、versicolor、virgin</description>
+    </item>
+    
+    <item>
+      <title>[ML筆記]Adeline 與梯度下降</title>
+      <link>https://rutopio.github.io/code/2019-03-09-ml%E7%AD%86%E8%A8%98adeline-%E8%88%87%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/</link>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2019-03-09-ml%E7%AD%86%E8%A8%98adeline-%E8%88%87%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/</guid>
+      <description>Adaline 認知器 在上一篇中，我們知道 Rossenblatt 感知器的激勵函數是： \begin{equation} \phi (z) = \phi (\textbf{w}^\mathrm{T} \cdot \textbf{x}) = \left\{ \begin{array}{ll} +1 &amp; {z \geq \theta}\\ -1 &amp; \textrm{otherwise}\\ \end{array} \right. \end{equation} 而這是 Adaline 認知器中的激勵函數： \begin{equation} \phi (z) = \phi (\textbf{w}^\mathrm{T} \cdot \textbf{x}) = \textbf{w}^\mathrm{T} \cdot \textbf{x}=w_{1}x_{1}+w_{2}x_{2}+ \dots +w_{n}x_{n} \end{equation} 差別在於 Adaline 的激勵函數是一個連續的線性激勵函數（不像 Rossenblatt 是跳躍性的，非 $+1$ 就是 $-1$），我們也可說 Adaline 的激勵函數就示意整個淨輸入。另外 Adeline 演算法會在淨輸入到激勵函數後，把結果引入一個量化器（quantizer），對類別判斷之後再輸出，這是 Rossenblatt 感知器所沒有的。</description>
+    </item>
+    
+    <item>
+      <title>[ML筆記]Rossenblatt 感知器</title>
+      <link>https://rutopio.github.io/code/2019-03-08-ml%E7%AD%86%E8%A8%98rossenblatt-%E6%84%9F%E7%9F%A5%E5%99%A8/</link>
+      <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2019-03-08-ml%E7%AD%86%E8%A8%98rossenblatt-%E6%84%9F%E7%9F%A5%E5%99%A8/</guid>
+      <description>Rossenblatt 感知器（Rossenblatt Perceptron） 人造神經元 想像一個生物的神經元（neuron），他有一個輸入端和一個輸出端，化學反應訊號透過不同的樹突（dendrites）由別的細胞接收而來，經過細胞核、由軸突（axon）末端傳送到另外一個神經元（可參見 McCulloch-Pitts neuron）。那如果我們把他想像成一個二元的邏輯閥，多個訊號由遠處傳送到這個神經元，神經元可以選擇要不要再傳送到別的神經元。試想，如果任</description>
+    </item>
+    
+    <item>
+      <title>[Python筆記]我們能預測騙線的發生嗎？</title>
+      <link>https://rutopio.github.io/code/2019-01-14-python%E7%AD%86%E8%A8%98%E6%88%91%E5%80%91%E8%83%BD%E9%A0%90%E6%B8%AC%E9%A8%99%E7%B7%9A%E7%9A%84%E7%99%BC%E7%94%9F%E5%97%8E/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2019-01-14-python%E7%AD%86%E8%A8%98%E6%88%91%E5%80%91%E8%83%BD%E9%A0%90%E6%B8%AC%E9%A8%99%E7%B7%9A%E7%9A%84%E7%99%BC%E7%94%9F%E5%97%8E/</guid>
+      <description>寫在所有之前 關於技術分析 在所有的股票、標的、期貨市場中，主要有三大流派的投資分析方式： 基本面：分析該物件的內在價值。以股票來說，就是看這間公司的財報健不健全，或是這間公司投資的未來產業動向為何。 技術面：認為歷史會一再重演，主張可以從過去的資訊學習，進而了解未來。像是使用Ｋ線圖畫線、使用技術指標考慮買賣點、ML、DL 等方法去推測未來市場的變化。 籌碼面：或稱新聞面、消息面。像三大法人的買賣方向，以及密</description>
+    </item>
+    
+    <item>
+      <title>[Python筆記]何時買賣(2)：回溯</title>
+      <link>https://rutopio.github.io/code/2018-11-18-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%B2%B7%E8%B3%A32%E5%9B%9E%E6%BA%AF/</link>
+      <pubDate>Sun, 18 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2018-11-18-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%B2%B7%E8%B3%A32%E5%9B%9E%E6%BA%AF/</guid>
+      <description>這篇的回溯方法目前有一點問題，我似乎沒有考慮到最後要平倉的時候，賣出還要再扣一筆手續費的情況啊QQ 在上一篇的動態規劃裡，我們已經得到最大的獲利了，但我們只知道最大的獲利，什麼時候要買、什麼時候要賣，什麼時候該都不做，也就是每天的行動我們還不知道，我們還要在做一個回溯的方法。 回溯的方法有百百種，每個人寫出來的方法都不一樣，我的寫法似乎不是最佳解ㄏ，感覺浪費的不少空間去存不會再用到的資料就是了。 變數定</description>
+    </item>
+    
+    <item>
+      <title>[Python筆記]何時該買賣(1)：動態規劃</title>
+      <link>https://rutopio.github.io/code/2018-11-17-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%A9%B2%E8%B2%B7%E8%B3%A31%E5%8B%95%E6%85%8B%E8%A6%8F%E5%8A%83/</link>
+      <pubDate>Sat, 17 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2018-11-17-python%E7%AD%86%E8%A8%98%E4%BD%95%E6%99%82%E8%A9%B2%E8%B2%B7%E8%B3%A31%E5%8B%95%E6%85%8B%E8%A6%8F%E5%8A%83/</guid>
+      <description>這幾天想這個題目寫的豆頁很痛= =，誰叫我動態規劃一直都沒有學好ㄞㄞㄞ，趁還沒忘記的時候趕快來做個筆記。 結果我發現其實這似乎不是最佳解啊哈哈哈^^。 條件與目標 目標 在我們的 function 裡，我們要在「知道證券的所有歷史資料」的設定下決定何時該買、何時該賣、或是什麼都不做，才能在「考慮手續費」的情況裡得到最大的獲利。 理論上來說，每一筆資料應該會有一個標準答案，也就是在最佳買點和賣點的考量下產生一個利潤極值。 變數定義</description>
+    </item>
+    
+    <item>
+      <title>[Python筆記]從csv求出期貨的OHLC</title>
+      <link>https://rutopio.github.io/code/2018-10-08-python%E7%AD%86%E8%A8%98%E5%BE%9Ecsv%E6%B1%82%E5%87%BA%E6%9C%9F%E8%B2%A8%E7%9A%84ohlc/</link>
+      <pubDate>Mon, 08 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2018-10-08-python%E7%AD%86%E8%A8%98%E5%BE%9Ecsv%E6%B1%82%E5%87%BA%E6%9C%9F%E8%B2%A8%E7%9A%84ohlc/</guid>
+      <description>這次的目標是台灣期貨交易所提供的前 30 個交易日期貨每筆成交資料，從裡面的csv求出當日的OHLC。 在這裡我們用代號 TX 的台指期大盤指數為計算的目標。 名詞與狀態定義 在一開始我們要先定義幾個名詞： Open：當日開盤價 High：當日最高價 Low：當日最低價 Close：當日收盤價 以及現實生活中的期貨交易狀態： 交易時間： 盤內交易（就是在交易所交易）：由 08:45:00 開盤至 13:45:00 收盤為止的所有交易，在一般的期貨網看到的 K 線圖多只</description>
+    </item>
+    
+  </channel>
+</rss>

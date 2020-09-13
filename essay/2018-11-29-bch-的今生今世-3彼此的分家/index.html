@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="BCH, BTC, Bitcoin, Bitcoin Cash, 比特幣, 區塊練, Block chain, 密碼貨幣, Cryptocurrency" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="隨著 BCH（Bitcoin Cash，比特幣現金）原鏈最後一塊高度 556766 的區塊於 2018 年 11 月 16 日 02:05 (UTC&#43;8) 由 svpool 產出，正式宣告 BCH 一分為二，分裂成 BCHABC 與 BCHSV，走向硬分叉之路。「擴容與否」是當初 BCH 從 BTC 分裂出來的原因，不幸的是，這正也是 BCH 獨立後又迎向分家的關鍵。">
+  
+  <meta property="og:title" content="BCH 的今生今世 (3)：彼此的分家" />
+<meta property="og:description" content="隨著 BCH（Bitcoin Cash，比特幣現金）原鏈最後一塊高度 556766 的區塊於 2018 年 11 月 16 日 02:05 (UTC&#43;8) 由 svpool 產出，正式宣告 BCH 一分為二，分裂成 BCHABC 與 BCHSV，走向硬分叉之路。「擴容與否」是當初 BCH 從 BTC 分裂出來的原因，不幸的是，這正也是 BCH 獨立後又迎向分家的關鍵。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/essay/2018-11-29-bch-%E7%9A%84%E4%BB%8A%E7%94%9F%E4%BB%8A%E4%B8%96-3%E5%BD%BC%E6%AD%A4%E7%9A%84%E5%88%86%E5%AE%B6/" /><meta property="article:published_time" content="2018-11-29T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-11-29T00:00:00&#43;00:00"/>
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       BCH 的今生今世 (3)：彼此的分家 | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/essay/2018-11-29-bch-%E7%9A%84%E4%BB%8A%E7%94%9F%E4%BB%8A%E4%B8%96-3%E5%BD%BC%E6%AD%A4%E7%9A%84%E5%88%86%E5%AE%B6/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%95%B7%E6%96%87%E6%B7%B1%E8%AB%87"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 長文深談 </a></li>
+      
+    
+    
+  </ul>
+
+  <div class="px-4 post-heading">BCH 的今生今世 (3)：彼此的分家</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Nov 29, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>12 minutes read</li>
+    
+  </ul>
+  
+    <div class="view">
+      <img src="http://i.imgur.com/UEJ3Pj3.jpg" />
+    </div>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<h2 id="寫在所有之前">寫在所有之前</h2>
+
+<p>天下大勢，分久必合，合久必分。當初 CSW（Craig Steven Wright） 、吳忌寒、Roger Ver 因為相同的「擴容」理念催生出了 Bitcoin Cash（BCH），現在 BCH 卻也因三方的理念衝突面臨分崩離析。</p>
+
+<h2 id="bch-社群的分裂-abc-與-sv-版本之爭">BCH 社群的分裂：ABC 與 SV 版本之爭</h2>
+
+<p>2018 年 8 月，作為 BCH 主要開發團隊之一的 Bitcoin ABC 團隊發佈了升級公告，預計於 11 月 15 日 的 BCH 0.18 版本中加入兩個更新：</p>
+
+<ul>
+<li>對區塊內的交易增加規範交易排序（CTOR）：使得全網節點在互相廣播時能減少需傳送的數據。</li>
+<li>增加兩種操作代碼（<code>OP_CHECKDATASIG</code> 和 <code>OP_CHECKDATASIGVERIFY</code>）：允許驗證來自區塊鍊外部的訊息。</li>
+</ul>
+
+<p>距離 BCH 在去年刪掉 EDA 機制 ，這是 BCH 第二次以硬分叉來做「升級」。在上次 EDA 存活問題中，因為社群普遍認為必須刪去，而且開發者也帶頭進行，這樣的共識使得 BCH 沒有分裂的危機。</p>
+
+<p>但是這次預計在 11 月進行的升級，卻受到以 CSW 為首的 nChain 團隊的強烈反對，聲稱要在 11 月 15 日對 BCH 進行另外一個硬分叉，由原本的 BCH 主鏈叉出新的 BCHSV 。屆時，BCH 將分裂成兩個版本，且因為這次兩邊的分叉都屬於硬分叉，兩邊的鏈（一條是由 Bitcoin ABC 團隊升級到 BCH 0.18 版本的鏈，以下稱為 BCHABC。而另外一條則是由 CSW 另外叉出來的新鏈，以下稱為 BCHSV）將不再向下相容原本的 BCH 節點。</p>
+
+<p>所有的礦池和交易所再一次迎來了選擇性的問題：該支持 BCHABC ，還是 BCHSV？</p>
+
+<h2 id="bchabc">BCHABC</h2>
+
+<ul>
+<li>即 BCH 原鏈上的 0.18 版本，可以說是 BCH 的「原鏈」。</li>
+<li>ABC 即 Adjustable Blocksize Cap 之意。</li>
+<li>以比特大陸 CEO 吳忌寒率領的比特大陸為首，其中包含 Bitcoin ABC 小組和「比特幣耶穌」之稱的 Roger Ver。</li>
+</ul>
+
+<p>目前 BCH 每塊實際容量在 200 KB 左右，認為在沒有必要進行擴容的情況下，維持區塊大小在 32 MB，以避免因為因為增加區塊大小使儲存空間變得太大、讓客戶端運行全網節點的可能性下降。同時專注於讓 BCH 成為如同 Ethereum 那樣的基礎建設公鍊，引入 ETH 既有的智能合約等設計，如此一來便能如 Ethereum 平台一樣有更多的應用空間。</p>
+
+<p>吳忌寒認為，BCH 就是 BCH，BTC 就是 BTC，兩者雖然共同享有一段歷史（BCH 在當初從 BTC 硬分叉出來時，實際上複製了當初 BTC 創世以來的所有帳本和地址），但隨後各自獨立，如同當年的大英帝國與爆發獨立戰爭後的美國一樣：雖出同源，但隨後各奔東西。在理念上，他認為事物要不斷的更替創新，才能適應這個不斷變化的世界。無論是去年叉出 BCH，還是這次對 BCH 底層協議的修改、使其擁有如同 Ethereum 鏈上的智能合約，都是為了讓 BCH 順應時代變化的新趨勢。</p>
+
+<h2 id="bchsv">BCHSV</h2>
+
+<ul>
+<li>基於 BCH 原鏈 0.17 版本硬分叉而成。</li>
+<li>SV 即 Satoshi&rsquo;s Version 之意。</li>
+<li>以 CSW 所率領的 nChain 為首，包含 CoinGeek 礦池創始人 Calvin Ayre 等。</li>
+</ul>
+
+<p>預計將從這次 BCH  更新後叉出去的「新鏈」。認為應該將區塊大小由現行的 32 MB 再度擴增到 128 MB、甚至未來如果要跟上 Visa 的交易速度，擴增到 1GB 、甚至 1 TB 都在規劃之內。打算讓 BCH 專注在轉帳及交易的「貨幣本質」之上，且不該在協議裡面增加應用（如智能合約）變成平台鏈，應該寫死底層協議，以免妨礙身為「貨幣」的穩定性。</p>
+
+<p>CSW 陣營認為，世上本來就應該「只有一個比特幣」。他原本雖然不支持 BCH 從 BTC 分叉出去，但在 BCH 分叉成功後，擴容派的他只能選邊站在 BCH。 而這次，CSW 要重新舉起「中本聰藍圖的比特幣」的大旗，堅決走中本聰白皮書上定義的「電子現金」道路，掃除一切「異端」。他打算先消滅 BCHABC，然後累積實力， 打算幾年之後殲滅被 Bitcoin Core 和 Blockstream 掌握的 Bitcoin，讓 BCHSV 成為中本聰白皮書裡所描述的「真　比特幣」。</p>
+
+<p>吳忌寒和 CSW 這兩方昔日戰友在當初由 BTC 分叉出 BCH 時選擇站在一起，而現在因為雙方理念不合又將再次分家。除了「應用」與「擴容」的表面導火線外，背後其實還有更深的利益之戰。</p>
+
+<h2 id="你死我活的殊死戰">你死我活的殊死戰</h2>
+
+<h3 id="重放攻擊-replay-attact">重放攻擊（Replay Attact）</h3>
+
+<p>在區塊鏈的世界裡，重放攻擊（Replay Attact）指的是在一條鏈發生硬分叉之時，會發生的獨特攻擊方法。</p>
+
+<p>在硬分叉後的兩條鏈，因為是在同一條原始鏈上採用同一種演算法所計算出來的，所以是有可能產生一模一樣的地址、私鑰和交易格式的。這會造成其中一條鏈上的交易資訊在另外一條鏈上也會是完全合乎協議的。因此，只要有人拿這條鏈上已經完成的交易資訊，跑去另外一條鏈上廣播，此時因為同一筆交易資訊在兩條鏈上都是符合演算標準的，導致另一條鏈也會重複確認此筆交易，這就是重放攻擊。</p>
+
+<p>舉例來說，當現在原本的 A 鏈即將透過硬分叉成 B 和 C 兩條鏈，此時原本在 A 鏈上地址 X 的資產會在分叉之後各自在 A 鏈的 X 上和 B 鏈的 X 上各自分發，像是 BTC 分叉成 BCH 時，在 BCH 鏈上的同樣地址會分配到和原 BTC 地址裡相同數量的 BCH，如果原始地址有 10 BTC，則在分叉後也會同時擁有 10 BCH 。此時如果有人在 B 鏈上從地址 X 發送 10 單位的 B 幣到地址 Y，只要接收方拿這筆交易訊息到 C 鏈上進行全網廣播，基於和 B 相同協議的 C 鏈也會將鏈上的 X 地址裡的 10 單位 C 幣轉到地址 Y，這就是區塊鏈上的重放攻擊，相當於 C 鏈上 X 地址裡的 10 單位 C 幣在沒有「被交易」的情況下被直接轉走到地址 Y。</p>
+
+<h3 id="重放保護-replay-protection">重放保護（Replay Protection）</h3>
+
+<p>在 BCH 一開始和 BTC 分道揚鑣之際，為了避免重放攻擊的發生，BCH 特別在自己的演算法中的簽名末端<a href="https://github.com/Bitcoin-ABC/bitcoin-abc/blob/master/doc/abc/replay-protected-sighash.md">加入</a> <code>SIGHASH_TYPE_FORKID = 0x40</code> 的參數 。這使得所有在 BCH 鏈上的所有交易都有別於在 BTC 鏈上的交易。我們拿 BCH 鏈上的交易到 BTC 鏈上廣播，會因為多了 <code>SIGHASH_TYPE_FORKID=0x40</code> 這行參數而失效；相反的，拿 BTC 鏈上的交易到 BCH 鏈上廣播也會因為缺少 <code>SIGHASH_TYPE_FORKID=0x40</code> 而失敗。這樣就能成功實現 BCH 和 BTC 之間的雙向重放保護。</p>
+
+<p>也因為在自己的交易簽名裡做出重放保護相當於和原鏈做出「切割」、放棄原鏈上的所有生態，所以增加重放保護的那方幾乎都是「算力的弱勢方」，也就是從原鏈自行硬分叉出去的分叉幣，如上述所提的 BCH 也只能在硬分叉之後重新建立起自己的相關生態系。</p>
+
+<p>那如果不寫入重放保護的話呢？基於區塊鏈共識機制，演算法會將「擁有最多區塊」的「最長鏈」，也就是視「算力難度較高」的那條鏈為主鏈。如果當初 BCH 沒有主動寫入重放保護的話，因為 BTC 的全網算力遠多於 BCH 的全網算力， 沒有做出兩鏈差別的 BCH 將被區塊鏈共識機制視為「廢棄的鏈」，也沒辦法從 BTC 中獨立出來了。</p>
+
+<p>正是因為有了重放保護，BCH 在當初才能作為一種新的幣種從 BTC 中誕生。</p>
+
+<h3 id="誰才是-真正的-bch">誰才是「真正的 BCH」？</h3>
+
+<p>但因為這次 BCHABC 和 BCHSV 雙方都認為自己才是「真正的 BCH」，對方是「盜取 BCH 之名的偽鏈」，所以在分叉時都沒有加上重放保護。基於「最長鏈」為「主鏈」，這意味著這次 BCHABC 和 BCHSV 將只有其中一條鏈可以成為「真正的 BCH」，而如何存活下來的關鍵就在於何者的算力足以超越另外一邊，讓自己可以產生更多的區塊、成為更長的鏈。屆時，礦工可能會改挖「較長的鏈」，導致另一邊短鏈將失去全網算力的共識，沒有礦工幫忙認證，將意味著區塊鏈的停擺，價格也可能就此歸零。</p>
+
+<p>這就是為什麼這次 BCH 社群的分裂是一場算力殊死戰的原因，因為最終只會有一條鏈存活下來。</p>
+
+<h2 id="分差前夕">分差前夕</h2>
+
+<h3 id="算力">算力</h3>
+
+<p>單純從算力看，CSW 陣營遙遙領先比特大陸。在分叉前夕，BCHSV 陣營手上握有的總算力不斷攀升，與之相對應的價格也一路攀升。各大中立交易所預分叉的 BCHSV 價格從最低點飆升將近四倍，幾乎與 BCHABC 達到 1：1 的比例。</p>
+
+<p>但如果把擁有 SHA256 的算力全部集中起來（即挖 BTC 和 BCH 的總算力），握有全世界最大礦池和礦場的比特大陸所領導 BCHABC 將會遙遙領先 CSW。</p>
+
+<p>在硬分叉即將開始之前，比特大陸開始將陣營內 Bitcoin.com 礦池的 BTC 算力全部強制切換至 BCH，和 CSW 陣營的算力億比，形成了壓倒性的局面。在 16 日凌晨，比特大陸 Bitcoin.com 裡 BCH 算力從落後 CoinGeek （當時約 1000 PH/s）的 237 PH/S 突然暴增 1593.9% ，直逼 4081 PH/S；而同一礦池的 BTC 算力在短时間內大减 48.56％，降至 235.96 PH/S。</p>
+
+<h3 id="資金與決心">資金與決心</h3>
+
+<p>這場算力戰，正如同上面所提，是一場零和遊戲，最終一定會有一方會認輸。而戰爭的彈藥，無非是看誰握有的算力更多，或誰願意燒更多的錢繼續挖下去。</p>
+
+<p>主導 BCHABC 的比特大陸是全球最大的礦機製造商，同時也擁有全球最高比例的礦池和最大的礦場，甚至打算進行 IPO 上市，背後財力可見一方。但 BCHSV 方的 CoinGeek 礦池財力也相當雄厚，創辦人 Calvin Ayre 不但是 CSW 的好朋友，同時也是澳洲的賭場大亨。另外，CSW 背後的 nChain 公司也擁有數千個跟 Cryptocurrency 有關的專利，每年光是專利費用收入就超過數百萬美金，其資金實力也不言而喻。</p>
+
+<p>單從表面的資金看來，BCHABC 和 BCHSV 兩邊的財力其實相當。問題在於，吳忌寒和 CSW 兩方願意為了搶奪 BCH 之名「燒」多少錢？</p>
+
+<p>論決心來看，Bitcoin Cash 礦池畢竟只是比特大陸「生意」的一小部分，即使 BCHABC 真的成為廢鏈，比特大陸還有自己的 BTC、DASH、ETH、LTC 礦池與礦機，基本上壟斷了整個市場上礦機和礦池的統治地位，而 BCH 卻是 nChain 的全部。從背水一戰、你死我活的決心來看，似乎是 BCHSV 陣營多了一點。</p>
+
+<h3 id="交易所">交易所</h3>
+
+<p>各大交易所也在硬分叉前紛紛做出了選邊戰的表態。</p>
+
+<p>Bitfinex、Bibox、IDAX、Binance 等交易所交易所似乎在這場戰爭中選擇保持中立，大多「預分叉」的預先將 BCH 分成 BCHABC 和 BCHSV 兩種供市場提前交易。而 Bitstamp、Coinbase 和 Coinex 三家交易所已經明確的表態，將視 BCHABC 為正統的 BCH 繼續交易。相反的，Coinex 則表示將上架 BCHSV。</p>
+
+<h3 id="價格">價格</h3>
+
+<p>由於在硬分叉之後，原 BCH 的持有者將獲得 BCHABC（畢竟 BCHABC 是原鏈） ，同時也會以 1：1 的方式得到新的 BCHSV（如同當初 BTC 和 BCH ，因為硬分叉相當於複製了一份原鏈的帳本，BTC 的持有人也同樣獲得了等值的 BCH） 。在分叉前夕，BCH 從 425 美元大漲至將近 600 美元，整個市場一方面用看好戲的心情來看待未來兩邊的動向，一方面也想領取「糖果（因為在分叉後相當於隔空多出一種新的貨幣）」而購入 BCH。</p>
+
+<h2 id="走向分叉之路">走向分叉之路</h2>
+
+<blockquote>
+<p>算力戰爭是馬拉鬆比賽。</p>
+</blockquote>
+
+<h3 id="時程">時程</h3>
+
+<p>在 UTC+0 2018 年 11 月 15 日 16  點 40 分，也就是台灣時間（UTC+8） 11 月 16 日凌晨 0 點 40 分開始，BCH 0.18 版本開始進行網路升級，這場以算力為武器的殊死戰就此開始。</p>
+
+<p>對整個 Cryptocurrency 社群來說，這比世界杯還刺激。</p>
+
+<p>根據 BCH 原始協議，每筆交易要經過六個區塊的 confirm 後始被確認。也因此，雖然兩方會在區塊高度 556760 的地方進行分叉，但大約在實施升級後一小時（BCH 大約每十分鐘產出一個區塊）、直到區塊高度 556767 產出時才算正式完成硬分叉。</p>
+
+<p>在這場戰爭中，任何一方都可以率先低頭認輸，但是沒有人可以宣佈自己贏了。如果雙方互相妥協，彼此達成同一個共識，這場戰爭就算是結束了；一方認輸，選擇修改演算法或加回重放保護，那也算是打完了；又或者當一條鏈失去所有算力，那 BCH 之名將回歸另一方還活著的鏈。</p>
+
+<ul>
+<li><p>00:59，高度 556761 ，正式分叉前的第一個區塊，區塊大小 51.385 KB，由 CSW 陣營的 SVPool 產出。</p></li>
+
+<li><p>01:03，高度 556762 ，正式分叉前的第二個區塊，區塊大小 8.24 KB，由 CSW 陣營的 CoinGeek 產出。</p></li>
+
+<li><p>01:11，高度 556763 ，正式分叉前的第三個區塊，區塊大小 29.44 KB，由 CSW 陣營的 SVPool 產出。</p></li>
+
+<li><p>01:18，Bitcoin.com 算力突然增加，可能是比特大陸把原本用來挖 BTC 的算力全部切換到了 BCH。</p></li>
+</ul>
+
+<p><img src="https://www.ccvalue.cn/upload/default/20181116/798afb0d60879c8e3199beb41482571a.jpg" width="50%"  style="display:block; margin:auto;width:50%"></p>
+
+<ul>
+<li><p>01:24，高度 556764 ，正式分叉前的第四個區塊，區塊大小 57.11 KB，由吳忌寒陣營的 Bitcoin.com 產出。</p></li>
+
+<li><p>01:42，高度 556765 ，正式分叉前的第五個區塊，區塊大小 325.40 KB，由吳忌寒陣營的 ViaBTC 產出。</p></li>
+
+<li><p>01:55，高度 556766 ，正式分叉前的第六個區塊，區塊大小 2597.76 KB，由 CSW 陣營的 SVPool 產出。</p></li>
+</ul>
+
+<p>BCH 硬分叉在這裡正式開始，代表 BCHABC 與 BCHSV 從此以後將分道揚鑣。</p>
+
+<p><img src="https://dkyfoqsw29om1.cloudfront.net/2018/11/BCH-HF-5.png"  style="display:block; margin:auto;width:50%"></p>
+
+<p>02:07，BCHABC 高度 556767 ，正式分叉後的第一個區塊，同時也是 BCHABC 第一個區塊，區塊大小 3998.76 KB，由吳忌寒陣營的 Bitcoin.com 產出。</p>
+
+<p>BCHABC 高度 556768 ，正式分叉後的第二個區塊，區塊大小 3609.26 KB，由吳忌寒陣營的 Bitcoin.com 產出。</p>
+
+<p>02:24，BCHSV 高度 556767 ，正式分叉後的第三個區塊，同時也是 BCHSV 第一個區塊，區塊大小 13627 KB，由 CSW 陣營的 Mempool 產出。</p>
+
+<p><img src="http://i.imgur.com/0oi5QKp.jpg" style="display:block; margin:auto;width:50%"></p>
+
+<p><center>▲　BCHABC 和 BCHSV 算力之差（2018 年 11 月 29 日，<a href="https://cash.coin.dance/blocks/today">資料來源</a>）</center></p>
+
+<h3 id="市場反應">市場反應</h3>
+
+<p>從硬分叉之前所拉攏的交易所和過程來看，比特大陸方面的 BCHABC 在市場上似乎處於順風，但這也不能成為最後的定局。在分叉後的 16、36、100 小時，BCHABC 價格從 0.05068615 BTC 降到了 0.04554000 BTC 又微升到 0.04565488 BTC；而另一方面 BCHSV 的價格則是從 0.01908583 BTC 爬升到 0.02086860 BTC 隨後下降到 0.00999932 BTC。很明顯的，BCHABC 比起 BCHSV，似乎獲得更多的礦工以及使用者的支持。</p>
+
+<p>無論如何，在短期間內的價格來看， 1 BCHSV + 1 BCHABC = 1 BCH 。但價格不代表一切，正如同上面所說，「算力戰爭是馬拉鬆比賽。」誰能撐到最後才是真正的贏家。在這次分叉之後，兩方都面臨著算力下降的風險，這也使得被 51% 攻擊的難度降低，對兩方的鏈都具有一定的風險。</p>
+
+<h2 id="戰爭的結束">戰爭的結束</h2>
+
+<p>2018 年 11 月 26 日，CoinGeek 的創辦人 Calvin Ayre 宣佈 BCHSV 將放棄 BCH 之名，並以 BSV（Bitcoin SV） 重生，並呼籲 ABC 和 SV 雙方加上重放保護，以隔開兩種不同的區塊鏈。各大交易所也紛紛把 BCHABC 作為正統的 BCH，BSV 作為另外一種新的貨幣上架。這一次，比特大陸陣營保住了他們想要的名字。</p>
+
+<blockquote>
+<p>CoinGeek Mining is pleased to announce the original Bitcoin is back with Bitcoin SV (ticker: BSV). CoinGeek will support a permanent chain split from Bitcoin Cash (BCH), continue mining the BSV chain, and will work with others globally to establish a vibrant ecosystem for the BSV coin. This ends the on-going BCH hash war triggered by the November 15, 2018 network upgrade.</p>
+
+<p>CoinGeek founder Calvin Ayre comments :</p>
+
+<p>“The smart money is on BSV. <strong>Because it is the original Bitcoin, BSV will generate the future value that was always envisioned for Bitcoin.</strong> While the current market price is depressed for other cryptocurrencies, BSV is the only token postured to increase significantly in value because its roadmap plans for big enterprise usage. <strong>We’re excited to help fulfil the Satoshi Vision, and invite all Bitcoin believers to join the BSV journey.</strong>”</p>
+
+<p><em>──<a href="https://coingeek.com/original-bitcoin-reborn-bitcoin-sv-bsv-bch-hash-war-ends/">Original Bitcoin is Reborn with Bitcoin SV (BSV); BCH Hash War Ends</a></em></p>
+</blockquote>
+
+<p>儘管如此，Calvin Ayre 還是不斷強調 BSV 才是最初中本聰構思的 Bitcoin，並呼籲所有信仰 Bitcoin 的人應該轉而擁抱 BSV。</p>
+
+<p><img src="http://i.imgur.com/pFvQwhr.jpg"  style="display:block; margin:auto;width:50%"></p>
+
+<p><img src="https://i.imgur.com/tEyw6px.png"  style="display:block; margin:auto;width:50%"></p>
+
+<p>在寫完這篇文章之時，BCH 區塊高度來到 558645，而 BSV 則來到 558613。BCH 呈現領先狀態。而全網算力分配大約相當，但 BCH 似乎獲得了更多節點的支持。</p>
+
+<h2 id="寫在所有之後">寫在所有之後</h2>
+
+<p><img src="https://i.imgur.com/8XysRt2.png"  style="display:block; margin:auto;width:50%"></p>
+
+<p><center>▲　BCH 出礦分佈（2018 年 11 月 29 日，<a href="https://cash.coin.dance/blocks/today">資料來源</a>）</center></p>
+
+<p><img src="https://i.imgur.com/SkcAGjt.png"  style="display:block; margin:auto;width:50%"></p>
+
+<p><center>▲　BSV 出礦分佈（2018 年 11 月 29 日，<a href="https://cash.coin.dance/blocks/todaysv">資料來源</a>）</center></p>
+
+<p>無論如何，分家後的 BCH 和 BSV 都成了吳忌寒和 CSW 的一言堂。從算力分配來看，兩條鏈「中心化」的趨勢越來越明顯，雙方都背離了中本聰對於「去中心化」的想法。吳忌寒（比特大陸）擁有的 BTC.com 、 ViaBTC 和 AntPool 實質控制了 BCH 上接近 50% 的算力，而 CSW 陣營的 CoinGeek 和 SVPool 也擁有 BSV 全網算力的四成左右。雙方的一舉一動對 BCHABC 或是 BCHSV 而言，都充滿了變數。</p>
+
+<p>或許，BCH（即原本的 BCHABC） 與 BSV（即原本的 BSV） 之間沒有絕對的贏家和輸家。從技術角度來說，BCH 社群因為對未來展望的想法不同（BCHABC 主張引入智能合約，而 BCHSV 則主張更大的區塊上限）產生分歧、進而分裂，但硬分叉後的雙方也能沿著各自主張的技術路徑進行探索，對 BCH、甚至是整個 Cryptocurrency 未來的發展而言，或許也不是件壞事。但這次的社群分裂事件，很明顯的讓原本已經處於熊市的市場看空情緒繼續高漲：在 BCH 分叉之前， BTC 價格長期在 6500- 6300 美元間徘徊整盤，在分叉當晚，BCH 腰斬將近 1000 美元，觸底 5500 美元。11 月 20 日凌晨，BTC 連續叩關 5000、4900、4800、4700 美元關卡。11 月 25 日，BTC 迎來 3585 美元的低點，可以說跌回去年這波牛市的起漲點。</p>
+
+<p>雖然是市場大戶之間彼此的相爭，但受傷的卻永遠都是處於弱勢的散戶們。</p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="https://www.blocktempo.com/bch-hf-success/">https://www.blocktempo.com/bch-hf-success/</a></li>
+<li><a href="http://www.blocktimes.tw/index/news_details/id/823.html">http://www.blocktimes.tw/index/news_details/id/823.html</a></li>
+<li><a href="https://coinmarketcap.com/currencies/bitcoin/#charts">https://coinmarketcap.com/currencies/bitcoin/#charts</a></li>
+<li><a href="https://www.01caijing.com/article/31319.htm">https://www.01caijing.com/article/31319.htm</a></li>
+<li><a href="http://www.ittime.com.cn/news/news_25140.shtml">http://www.ittime.com.cn/news/news_25140.shtml</a></li>
+<li><a href="https://cash.coin.dance/">https://cash.coin.dance/</a></li>
+<li><a href="https://www.ccvalue.cn/show/431">https://www.ccvalue.cn/show/431</a></li>
+</ul>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/cryptocurrency" role="button">Cryptocurrency </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/bch" role="button">BCH </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E5%88%86%E5%8F%89" role="button">分叉 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/essay/2018-11-27-2018-%E5%85%AC%E6%8A%95%E4%B9%8B%E5%BE%8C%E6%8C%BA%E5%90%8C%E7%82%BA%E4%BB%80%E9%BA%BC%E6%9C%83%E5%A4%B1%E6%95%97/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>2018 公投之後：挺同為什麼會失敗？</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://rutopio.github.io/essay/2018-12-19-%E7%8E%A9%E5%85%B7%E5%8D%9A%E7%89%A9%E8%88%98%E8%AB%87%E7%8E%A9%E5%85%B7%E4%B9%8B%E6%96%BC%E4%BA%BA%E9%A1%9E%E7%A4%BE%E6%9C%83%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>玩具博物舘：談玩具之於人類社會的重要性</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%af%ab%e5%9c%a8%e6%89%80%e6%9c%89%e4%b9%8b%e5%89%8d">
+												 寫在所有之前
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#bch-%e7%a4%be%e7%be%a4%e7%9a%84%e5%88%86%e8%a3%82-abc-%e8%88%87-sv-%e7%89%88%e6%9c%ac%e4%b9%8b%e7%88%ad">
+												 BCH 社群的分裂：ABC 與 SV 版本之爭
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#bchabc">
+												 BCHABC
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#bchsv">
+												 BCHSV
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%bd%a0%e6%ad%bb%e6%88%91%e6%b4%bb%e7%9a%84%e6%ae%8a%e6%ad%bb%e6%88%b0">
+												 你死我活的殊死戰
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%87%8d%e6%94%be%e6%94%bb%e6%93%8a-replay-attact">
+												 重放攻擊（Replay Attact）
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%87%8d%e6%94%be%e4%bf%9d%e8%ad%b7-replay-protection">
+												 重放保護（Replay Protection）
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%aa%b0%e6%89%8d%e6%98%af-%e7%9c%9f%e6%ad%a3%e7%9a%84-bch">
+												 誰才是「真正的 BCH」？
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%88%86%e5%b7%ae%e5%89%8d%e5%a4%95">
+												 分差前夕
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%ae%97%e5%8a%9b">
+												 算力
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%b3%87%e9%87%91%e8%88%87%e6%b1%ba%e5%bf%83">
+												 資金與決心
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%ba%a4%e6%98%93%e6%89%80">
+												 交易所
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%83%b9%e6%a0%bc">
+												 價格
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%b5%b0%e5%90%91%e5%88%86%e5%8f%89%e4%b9%8b%e8%b7%af">
+												 走向分叉之路
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%99%82%e7%a8%8b">
+												 時程
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%b8%82%e5%a0%b4%e5%8f%8d%e6%87%89">
+												 市場反應
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%88%b0%e7%88%ad%e7%9a%84%e7%b5%90%e6%9d%9f">
+												 戰爭的結束
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%af%ab%e5%9c%a8%e6%89%80%e6%9c%89%e4%b9%8b%e5%be%8c">
+												 寫在所有之後
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#reference">
+												 Reference
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>地球圖輯隊 on Rutopio</title>
+    <link>https://rutopio.github.io/tags/%E5%9C%B0%E7%90%83%E5%9C%96%E8%BC%AF%E9%9A%8A/</link>
+    <description>Recent content in 地球圖輯隊 on Rutopio</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Mon, 22 Oct 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://rutopio.github.io/tags/%E5%9C%B0%E7%90%83%E5%9C%96%E8%BC%AF%E9%9A%8A/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Ｒ筆記] 爬蟲：以「地球圖輯隊」為例</title>
+      <link>https://rutopio.github.io/code/2018-10-22-%EF%BD%92%E7%AD%86%E8%A8%98-%E7%88%AC%E8%9F%B2%E4%BB%A5%E5%9C%B0%E7%90%83%E5%9C%96%E8%BC%AF%E9%9A%8A%E7%82%BA%E4%BE%8B/</link>
+      <pubDate>Mon, 22 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://rutopio.github.io/code/2018-10-22-%EF%BD%92%E7%AD%86%E8%A8%98-%E7%88%AC%E8%9F%B2%E4%BB%A5%E5%9C%B0%E7%90%83%E5%9C%96%E8%BC%AF%E9%9A%8A%E7%82%BA%E4%BE%8B/</guid>
+      <description>抓個不一樣一點的新聞網頁，「地球圖輯隊」大多是以報導國際間的新聞為主，如果受夠了爆料公社或是行車記錄器，還是看點國外的大事吧。 1. 引入該引的library。 有時候都想碎碎念說該引的太多了，不如引天吧。 library(tidyverse) library(rvest) library(httr) library(dplyr) options(stringsAsFactors = F) 2. 打開要抓的網頁看小秘密 按下F12。可以用右邊面板右上角的選取器，或是按下 Ctrl+Shift+C 點選我們要找的東西，此時會反藍，。 可以看到地球圖輯隊的新聞都被放在 div 的 class 名為「imgWrap masonry-br</description>
+    </item>
+    
+  </channel>
+</rss>

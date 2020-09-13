@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="python, Logistic Regression, 機器學習, 數學推導, Maching Learning, 羅吉斯回歸" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="介紹 Machine Learning 領域中最基礎的概念之一：Logistic Regression 的數學推導。">
+  
+  <meta property="og:title" content="[ML筆記] Logistic Regression" />
+<meta property="og:description" content="介紹 Machine Learning 領域中最基礎的概念之一：Logistic Regression 的數學推導。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/code/2019-03-10-ml%E7%AD%86%E8%A8%98-logistic-regression/" /><meta property="article:published_time" content="2019-03-10T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-10T00:00:00&#43;00:00"/><meta property="og:see_also" content="https://rutopio.github.io/code/2020-01-16-python%E7%AD%86%E8%A8%98-2020%E5%8F%B0%E7%81%A3%E9%81%B8%E8%88%89%E7%B5%90%E6%9E%9C%E7%88%AC%E8%9F%B2%E4%BB%A5%E4%B8%8D%E5%88%86%E5%8D%80%E6%94%BF%E9%BB%A8%E7%A5%A8%E7%82%BA%E4%BE%8B/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-10-14-python%E7%AD%86%E8%A8%98pigeonhole-problem%E9%B4%BF%E7%B1%A0%E5%95%8F%E9%A1%8C%E4%BB%A5-cnf-%E6%AA%94%E6%A1%88%E8%BC%B8%E5%87%BA/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-06-11-python%E7%AD%86%E8%A8%98%E5%9C%96%E7%89%87%E9%82%8A%E7%95%8C%E5%81%B5%E6%B8%AC%E4%BB%A5-pgm-%E6%AA%94%E6%A1%88%E7%82%BA%E4%BE%8B/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-09-ml%E7%AD%86%E8%A8%98adeline-%E8%88%87%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-08-ml%E7%AD%86%E8%A8%98rossenblatt-%E6%84%9F%E7%9F%A5%E5%99%A8/" />
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       [ML筆記] Logistic Regression | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/code/2019-03-10-ml%E7%AD%86%E8%A8%98-logistic-regression/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+      
+    
+    
+      
+        <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%E8%9B%87%E8%9B%87"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸蛇蛇</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">[ML筆記] Logistic Regression</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Mar 10, 2019</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>5 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<h1 id="scikit-learn">scikit-learn</h1>
+
+<h2 id="使用-scikit-learn-訓練一個感知器">使用 scikit-learn 訓練一個感知器</h2>
+
+<pre><code class="language-python">from sklearn import datasets
+import numpy as np
+
+iris = datasets.load_iris() # 就是那堆花
+X = iris.data[:, [2, 3]] # 選取花瓣長度(2)與花瓣寬度(3)當作特徵
+y = iris.target # 花的類別
+
+print('X:', X[1:5, ]) # 檢查print('Label:', np.unique(y))
+</code></pre>
+
+<p>終端輸出：</p>
+
+<pre><code class="language-terminal">&gt; X: [[1.4 0.2]
+ [1.3 0.2]
+ [1.5 0.2]
+ [1.4 0.2]]
+&gt; Label: [0 1 2]
+</code></pre>
+
+<p>在這裡的 X 代表了那堆花的特徵（features），這裡用的是花瓣長度([2])與花瓣寬度([3])當作分類時的特徵，而 y 則是花的類別（本來是 sentosa、versicolor、virginia，這裡用數字代替）。</p>
+
+<p>接著，我們把所有的資料分割成訓練用（train set）的與測試用（test set）的兩坨。使用的是 scikit-learn 裡的 train_test_split() 函式。這裡用的比例是 train set : test set = 3:7，當然要改成別的比例也可以，反正就是分成兩邊。</p>
+
+<pre><code class="language-python">from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1, stratify=y)
+</code></pre>
+
+<p>接著將資料標準化，用上 scikit-learn 裡的 StandardScaler() 函式。</p>
+
+<pre><code class="language-python">from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+sc.fit(X_train)
+X_train_std = sc.transform(X_train)
+X_test_std = sc.transform(X_test)
+</code></pre>
+
+<p>然後就可以開始訓練感知器惹。這個 scikit-learn 裡的 Perceptron() 函式用法和之前所說的感知器很接近，有一個學習速率（<code>eta0</code>）和迭代次數（<code>n_iter</code>）。</p>
+
+<pre><code class="language-python">from sklearn.linear_model import Perceptron
+ppn = Perceptron(n_iter = 40, eta0 = 0.1)
+ppn.fit(X_train_std, y_train)
+</code></pre>
+
+<p>這樣就分類完了，接下來檢查有幾個東西是「分類錯誤」的。</p>
+
+<pre><code class="language-python">y_pred = ppn.predict(X_test_std)
+print('分類錯誤的樣本: %d' % (y_test != y_pred).sum())
+</code></pre>
+
+<pre><code class="language-terminal">&gt; 分類錯誤的樣本: 9
+</code></pre>
+
+<p>還有分類準確率（accuracy rate）：</p>
+
+<pre><code class="language-python">from sklearn.metrics import accuracy_score
+print('準確率: %.2f' % accuracy_score(y_test, y_pred))
+</code></pre>
+
+<pre><code class="language-terminal">&gt; 準確率: 0.80
+</code></pre>
+
+<p>這個是這樣算出來的：</p>
+
+<p>
+\begin{equation}
+1 - \textrm{分類錯誤率} = 1 - \frac{9\textrm{（分類錯誤的樣本）}}{150\textrm{（總樣本數）} \times 0.3\textrm{（分割比例）}}=1-0.2=0.8=80\%
+\end{equation}
+</p>
+
+<h2 id="視覺化">視覺化</h2>
+
+<pre><code class="language-python">import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+
+def plot_decision_regions(X, y, classifier, test_idx=None, resolution = 0.02):
+	# 設定畫布
+    markers = ('s', 'x', 'o', '^', 'v')
+    colors = ('red', 'blue', 'lightgreen', 'gray', 'cyan')
+    cmap = ListedColormap(colors[:len(np.unique(y))])
+
+    x1_min, x1_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+    x2_min, x2_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+    xx1, xx2 = np.meshgrid(np.arange(x1_min, x1_max, resolution),
+                           np.arange(x2_min, x2_max, resolution))
+    Z = classifier.predict(np.array([xx1.ravel(), xx2.ravel()]).T)
+    Z = Z.reshape(xx1.shape)
+    plt.contourf(xx1, xx2, Z, alpha=0.3, cmap = cmap)
+    plt.xlim(xx1.min(), xx1.max())
+    plt.ylim(xx2.min(), xx2.max())
+
+    for idx, cl in enumerate(np.unique(y)):
+        plt.scatter(x = X[y == cl, 0], 
+                    y = X[y == cl, 1],
+                    alpha = 0.8, 
+                    c = colors[idx],
+                    marker = markers[idx], 
+                    label = cl, 
+                    edgecolor ='black')
+	
+	# 特別標出要預測的樣本，把他們用圈圈表示
+    if test_idx:
+        X_test, y_test = X[test_idx, :], y[test_idx]
+        plt.scatter(X_test[:, 0],
+                    X_test[:, 1],
+                    c='',
+                    edgecolor ='black',
+                    alpha = 1.0,
+                    linewidth = 1,
+                    marker = 'o',
+                    s = 100, 
+                    label = 'test set')
+
+X_combined_std = np.vstack((X_train_std, X_test_std))
+y_combined = np.hstack((y_train, y_test))
+
+plot_decision_regions(X = X_combined_std, y = y_combined, classifier = ppn, test_idx = range(105, 150))
+plt.xlabel('標準化後的花瓣長度')
+plt.ylabel('標準化後的花瓣長度')
+plt.legend(loc = 'upper left')
+
+plt.tight_layout()
+plt.show()
+</code></pre>
+
+<p><img src="https://i.imgur.com/uNF6ZAO.png"  style="display:block; margin:auto;width:80%"></p>
+
+<p>為什會有分類錯誤的漏網之魚呢？那是因為這個感知器最好是只應用於線性可分（linearly separable）的樣本的，對於線性不可分（linearly unseparable）的資料，自然會有沒辦法完美劃分的可能。畢竟線性感知器是最簡單的分類方法，所以實際上很少使用。</p>
+
+<h1 id="logistic-regression">Logistic Regression</h1>
+
+<p>這其實是一個取名的藝術，Logistic Regression 雖然美其名有的 Regression（回歸），但是他基本上更像是一種分類（Classification）的方法。Logistic Regression 的基本概念是把東西分成 $$1$$ 和 $$0$$ ，對所有的輸入而言，都只回得到兩種可能的輸出情況。</p>
+
+<p>舉例而言，「或許」我們可以透過身高和體重之間的關係（或許啦，我不確定），來判斷這個人是男生還是女生（二元變數，binary variable）。對於只有「身高」和「體重」兩種變數，如果我們把這散佈在二維平面圖上的關係點求出一條線性回歸（linear regression）線，然後用這條回歸線說未知的樣本是男還是女，那就可能出現這個人是「0.7 個男生 + 0.3個女生」這種事情。問題是，我們分類的目標就只有男生跟女生啊。</p>
+
+<p>又或者是我嘗試從今天的天氣判斷出巷口的麵店會不會開，實際上只會有「開」跟「不開」兩種可能性。其他像是「死了」跟「活著」、「生病了」跟「很健康」、「上漲」跟「下跌」，這些分類都是二元對立的。所以我們導入機率的概念，把迴歸係數的<a href="https://ryanisagoodguy.blogspot.com/2015/08/logistic-regression.html">解讀</a>為「<strong>當自變項增加一個單位，依變項</strong> <strong>A</strong> <strong>相對依變項</strong> <strong>B</strong> <strong>與</strong> <strong>C</strong> <strong>的機率以及依變項</strong> <strong>A</strong> <strong>與</strong> <strong>B</strong> <strong>相對依變項</strong> <strong>C</strong> <strong>的機率會增加幾倍</strong>」。</p>
+
+<h2 id="數學推導">數學推導</h2>
+
+<p>我覺得都還給計量老師惹&hellip;從條件機率開始吧，今天令條件機率等於一個 $F(\cdot)$ 函數：</p>
+
+<p>
+\begin{equation}
+\underbrace{P(Y=1 \vert X )
+=\frac{P(Y=1 \cap X)}{P(X)}}_{\textrm{條件機率定義}}
+\equiv F(w_{0}x_{0}+w_{1}x_{1}+\cdots+w_{n}x_{n})
+=F(\textbf{w}^\mathrm{T}\cdot\textbf{x})\\
+\textrm{其中，我們用兩個向量表示的話，分別令 }\mathbf{w} = \left(\begin{array}{ccc}  w_{0}\\w_{1}\\ \vdots \\ w_{n}\end{array}\right) ，
+\textbf{x} = \left(\begin{array}{ccc}x_{0}\\x_{1}\\ \vdots \\ x_{n}\end{array}\right)
+\end{equation}
+</p>
+
+<p>上面條件機率（conditional probability）的定義就是「在給定 $X$ 發生的情況之下，發生 $Y=1$ 的機率是多少」。</p>
+
+<p>而右式的 $F(\cdot)$ 我們定義其為：</p>
+
+<p>
+\begin{equation}
+F(\cdot)
+\equiv F(w_{0}x_{0}+w_{1}x_{1}+\cdots+w_{n}x_{n})=F(\textbf{w}^\mathrm{T}\cdot\textbf{x})
+=\frac{1}{1+e^{-(w_{0}x_{0}+w_{1}x_{1}+\cdots+w_{n}x_{n})}}
+=\frac{1}{1+e^{(-\mathbf{w}^\mathrm{T}\cdot\textbf{x})}}
+\end{equation}
+</p>
+
+<p>同理，如果把上面 $F(\cdot)$ 的函數輸入值改以一個淨輸入代替時，我們稱其為 <strong>Sigmoid 函數</strong>，Sigmoid 函數就是 Logistic Regression 的激勵函數：</p>
+
+<p>
+\begin{equation}
+\textrm{當我們令 }z = \textbf{w}^\mathrm{T}\cdot\textbf{x}=w_{0}x_{0}+w_{1}x_{1}+\cdots+w_{n}x_{n} \textrm{時，}
+\phi(z)=F(z)=\frac{1}{1+e^{-z}}\cdots \textrm{Sigmoid Function}
+\end{equation}
+</p>
+
+<p>因為我們的結果只有兩種（剛剛提到的二元對立），所以發生 $Y=0$ 的機率就是一減去 $Y=1$ 發生的機率：</p>
+
+<p>
+\begin{equation}
+P(Y=0\vert X)=1-P(Y=1\vert X)
+\end{equation}
+</p>
+
+<p>看到這裡，是不是覺得這個東西很伯努利分佈咧，都是：</p>
+
+<p>
+\begin{equation}
+\left\{
+\begin{array}{l}
+\textrm{發生 Y=1，或稱 target 時的機率} &= P(Y=1|X)\\ 
+\textrm{發生 Y=0，或稱 non-target 時的機率} &= P(Y=0|X) = 1-P(Y=1|X)\
+\end{array}
+\right .
+\end{equation}
+</p>
+
+<p>所以使用最大慨似估計（<em>maximum likelihood</em> estimation, MLE）進行估計：</p>
+
+<p>
+\begin{equation}
+\begin{split}
+\mathcal{L}(\mathbf{w})&=(F(z)^{y_{1}}(1-F(z))^{(1-y_{1})})\times(F(z)^{y_{2}}(1-F(z))^{(1-y_{2})})\times\cdots\times(F(z)^{y_{n}}(1-F(z))^{(1-y_{n})})\\
+&=\prod_{i=1}^{n} F(z)^{y_{i}}(1-F(z))^{1-y_{i}}\\
+\end{split}
+\end{equation}
+</p>
+
+<p>取自然對數 ln 後得到：</p>
+
+<p>
+\begin{equation}
+\begin{split}
+ln\mathcal{L}(\mathbf{w})\equiv \mathcal{l}(\mathbf{w})
+&=\ln \Big(\prod_{i=1}^{n} F(z)^{y_{i}}(1-F(z))^{1-y_{i}}\Big)\\
+&=\sum_{i=1}^{n}\ln \Big(F(z)^{y_{i}}(1-F(z))^{1-y_{i}}\Big)\\
+&=\sum_{i=1}^{n}\Big(\ln(F(z)^{y_{i}})+\ln((1-F(z))^{1-y_{i}}\Big)\\
+&=\sum_{i=1}^{n}\Big(y_{i}\ln(F(z))+(1-y_{i})\ln(1-F(z)\Big)\\
+&=\sum_{i=1}^{n}\Big(y_{i}\ln(F(z))+\ln(1-F(z)-y_{i}\ln(1-F(z)\Big)\cdots(*)\\
+&=\sum_{i=1}^{n}\Big(y_{i}\ln\frac{F(z)}{1-F(z)}+\ln(1-F(z)\Big)\\
+\end{split}
+\end{equation}
+</p>
+
+<p>接著，取導求極值，要 chain rule：</p>
+
+<p>
+\begin{equation}
+\begin{split}
+\frac{\partial\ln\mathcal{L}(\mathbf{w})}{\partial w_{i}}
+&=\frac{\partial\mathcal{l}(\mathbf{w})}{\partial w_{i}}
+=\Big(y_{i}\frac{1}{F(z)}-(1-y_{i})\frac{1}{1-F(z)}\Big)\frac{\partial F(z)}{\partial w_{i}}\\
+\textrm{其中，}&\frac{\partial F(z)}{\partial w_{i}}=\frac{\partial z}{\partial w_{i}}\frac{\partial}{\partial z}\Big(\frac{1}{1+e^{-z}}\Big)\\
+&=\frac{e^{-z}}{(1+e^{-z})^2}\frac{\partial z}{\partial w_{i}}
+=\Big(\frac{1}{1+e^{-z}}\Big)\Big(1-\frac{1}{1+e^{-z}}\Big)\frac{\partial z}{\partial w_{i}}\\&
+=F(z)(1-F(z))\frac{\partial z}{\partial w_{i}}\\
+\textrm{代回，}&\Big(y_{i}\frac{1}{F(z)}-(1-y_{i})\frac{1}{1-F(z)}\Big)\frac{\partial F(z)}{\partial w_{i}}\\
+&=\Big(y_{i}\frac{1}{F(z)}-(1-y_{i})\frac{1}{1-F(z)}\Big)\Big(F(z)(1-F(z)\Big)\frac{\partial z}{\partial w_{i}}\\
+&=\Big(y_{i}(1-F(z))-(1-y_{i}F(z)\Big)x_{i}\\
+&=\Big(y_{i}-F(z)\Big)x_{i}
+\end{split}
+\end{equation}
+</p>
+
+<p>我們的目標是讓最大慨似估計最大化的權重值，所以在得到導數後可以加總權重。</p>
+
+<p>
+\begin{equation}
+w_{i}:=w_{i}+\eta \underbrace {\sum_{i=1}^{n}(y_{i}-F(z))x_i}_{\equiv \Delta w_{i}}
+\end{equation}
+</p>
+
+<p>也可以一次更新所有的權重，得到</p>
+
+<p>
+\begin{equation}
+\mathbf{w}:=\mathbf{w}+\Delta\mathbf{w}=\mathbf{w}+\eta\nabla\mathcal{l}(\mathbf{w})
+\end{equation}
+</p>
+
+<p>剛好等價於梯度下降的權重更新公式！</p>
+
+<p>而代價函數則可以用 $-(*)$ 來表示：</p>
+
+<p>
+\begin{equation}
+J(\mathbf{w})=-\sum_{i}(y_{i}\ln(F(z))+\ln((1-F(z))-y_{i}\ln((1-F(z)))
+\end{equation}
+</p>
+
+<h2 id="畫出來">畫出來！</h2>
+
+<p>嘗試畫一個 Sigmoid 函數。</p>
+
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+def sigmoid(z):
+    return 1.0 / (1.0 + np.exp(-z))
+
+z = np.arange(-7, 7, 0.1)
+phi_z = sigmoid(z)
+
+plt.plot(z, phi_z)
+plt.axvline(0.0, color = 'k')
+plt.ylim(-0.1, 1.1)
+plt.xlabel('z')
+plt.ylabel('$\phi (z)$')
+
+# y 軸標出 y = 0, 0.5, 1 的線
+plt.yticks([0.0, 0.5, 1.0])
+ax = plt.gca()
+ax.yaxis.grid(True)
+
+plt.tight_layout()
+plt.show()
+</code></pre>
+
+<p><img src="https://i.imgur.com/uHJxfh4.png" style="display:block; margin:auto;width:80%"></p>
+
+<h2 id="訓練">訓練</h2>
+
+<p>這裡直接使用 sklearn.linear_model 內建的 LogisticRegression 函式。</p>
+
+<pre><code class="language-python">from sklearn.linear_model import LogisticRegression
+
+lr = LogisticRegression(C = 100.0, random_state = 1)
+lr.fit(X_train_std, y_train)
+
+plot_decision_regions(X_combined_std, y_combined,
+                      classifier = lr, test_idx = range(105, 150))
+plt.xlabel('標準化後的花瓣長度')
+plt.ylabel('標準化後的花瓣長度')
+plt.legend(loc = 'upper left')
+plt.tight_layout()
+plt.show()
+</code></pre>
+
+<p><img src="https://i.imgur.com/tKOol5o.png" style="display:block; margin:auto;width:80%"></p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/python" role="button">Python </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92" role="button">機器學習 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%95%B8%E5%AD%B8%E6%8E%A8%E5%B0%8E" role="button">數學推導 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/code/2019-03-09-ml%E7%AD%86%E8%A8%98adeline-%E8%88%87%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>[ML筆記]Adeline 與梯度下降</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://rutopio.github.io/code/2019-06-11-python%E7%AD%86%E8%A8%98%E5%9C%96%E7%89%87%E9%82%8A%E7%95%8C%E5%81%B5%E6%B8%AC%E4%BB%A5-pgm-%E6%AA%94%E6%A1%88%E7%82%BA%E4%BE%8B/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>[Python筆記]圖片邊界偵測，以 PGM 檔案為例</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#scikit-learn">
+												 scikit-learn
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%bd%bf%e7%94%a8-scikit-learn-%e8%a8%93%e7%b7%b4%e4%b8%80%e5%80%8b%e6%84%9f%e7%9f%a5%e5%99%a8">
+												 使用 scikit-learn 訓練一個感知器
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%a6%96%e8%a6%ba%e5%8c%96">
+												 視覺化
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#logistic-regression">
+												 Logistic Regression
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%95%b8%e5%ad%b8%e6%8e%a8%e5%b0%8e">
+												 數學推導
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%95%ab%e5%87%ba%e4%be%86">
+												 畫出來！
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%a8%93%e7%b7%b4">
+												 訓練
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

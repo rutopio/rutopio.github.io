@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="python, Rossenblatt, 機器學習, 數學推導, Maching Learning, 感知器" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="介紹 Machine Learning 領域中最基礎的概念之一：Rossenblatt 感知器的數學推導。">
+  
+  <meta property="og:title" content="[ML筆記]Rossenblatt 感知器" />
+<meta property="og:description" content="介紹 Machine Learning 領域中最基礎的概念之一：Rossenblatt 感知器的數學推導。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/code/2019-03-08-ml%E7%AD%86%E8%A8%98rossenblatt-%E6%84%9F%E7%9F%A5%E5%99%A8/" /><meta property="article:published_time" content="2019-03-08T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-08T00:00:00&#43;00:00"/><meta property="og:see_also" content="https://rutopio.github.io/code/2020-01-16-python%E7%AD%86%E8%A8%98-2020%E5%8F%B0%E7%81%A3%E9%81%B8%E8%88%89%E7%B5%90%E6%9E%9C%E7%88%AC%E8%9F%B2%E4%BB%A5%E4%B8%8D%E5%88%86%E5%8D%80%E6%94%BF%E9%BB%A8%E7%A5%A8%E7%82%BA%E4%BE%8B/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-10-14-python%E7%AD%86%E8%A8%98pigeonhole-problem%E9%B4%BF%E7%B1%A0%E5%95%8F%E9%A1%8C%E4%BB%A5-cnf-%E6%AA%94%E6%A1%88%E8%BC%B8%E5%87%BA/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-06-11-python%E7%AD%86%E8%A8%98%E5%9C%96%E7%89%87%E9%82%8A%E7%95%8C%E5%81%B5%E6%B8%AC%E4%BB%A5-pgm-%E6%AA%94%E6%A1%88%E7%82%BA%E4%BE%8B/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-10-ml%E7%AD%86%E8%A8%98-logistic-regression/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-09-ml%E7%AD%86%E8%A8%98adeline-%E8%88%87%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" />
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       [ML筆記]Rossenblatt 感知器 | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/code/2019-03-08-ml%E7%AD%86%E8%A8%98rossenblatt-%E6%84%9F%E7%9F%A5%E5%99%A8/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+      
+    
+    
+      
+        <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%E8%9B%87%E8%9B%87"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸蛇蛇</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">[ML筆記]Rossenblatt 感知器</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Mar 8, 2019</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>7 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<h1 id="rossenblatt-感知器-rossenblatt-perceptron">Rossenblatt 感知器（Rossenblatt Perceptron）</h1>
+
+<h2 id="人造神經元">人造神經元</h2>
+
+<p>想像一個生物的神經元（neuron），他有一個輸入端和一個輸出端，化學反應訊號透過不同的樹突（dendrites）由別的細胞接收而來，經過細胞核、由軸突（axon）末端傳送到另外一個神經元（可參見 <a href="https://en.wikipedia.org/wiki/Artificial_neuron">McCulloch-Pitts neuron</a>）。那如果我們把他想像成一個二元的邏輯閥，多個訊號由遠處傳送到這個神經元，神經元可以選擇要不要再傳送到別的神經元。試想，如果任何的化學訊號都要反應、傳送一次，我們走在空氣中撞到塵埃就會痛一次，所以神經元必須決定這件事情是不是該傳送下去。而它所決定的「要（T）跟不要（F）」就形成了一個分類（classification）方法。</p>
+
+<h2 id="感知器">感知器</h2>
+
+<p>換句話說，我們可以把這樣的問題想成一個分類的問題，這個訊號是要讓他通過（T）呢？還是不讓他通過（F）呢？就像這個樣本是該讓他分去這邊（$+1$，正類別）呢？還是那邊（$-1$，負類別）呢？</p>
+
+<p>在這裡，我們定義一個激勵函數（activation function）<span>$\phi (z)$</span>，這個 <span>$z$</span> 被稱作淨輸入（net input），是多個輸入的值（input） <span>$\textbf{x}$ </span> 和每個輸入值的權重（weight） <span>$\textbf{w}$</span> 的線性組合（linear combination）。為什麼要是線性組合？那是因為一個神經元可以有很多個樹突接收不同的訊號，但每個訊號對於我們要做的決定「份量」不一定都一樣重要。</p>
+
+<p>舉「我等一下要吃什麼」當例子，雖然「今天是雨是晴」可能會跟我等一下要吃什麼有關係，但比起「我中午已經吃什麼」而言，看起來似乎就沒那麼重要了，所以後者在這個淨輸入中所佔的權重會大於前者。</p>
+
+<h2 id="數學推導">數學推導</h2>
+
+<p>
+\begin{equation}
+z = w_{1}x_{1} + w_{2}x_{2}+ \dots + w_{n}x_{n}=\textbf{w}^{\mathrm{T}}\cdot\textbf{x}
+\end{equation}
+</p>
+
+<p>其中，可以用矩陣表達：</p>
+
+<p>
+\begin{equation}
+\textbf{w} = \left(\begin{array}{ccc}w_{1} \\ w_{2} \\ \vdots \\ w_{n}\end{array}\right) ，
+\textbf{x} = \left(\begin{array}{ccc}x_{1} \\ x_{2} \\ \vdots \\ x_{n}\end{array}\right)
+\end{equation}
+</p>
+
+<p>而這個激勵函數 <span>$\phi (z)$</span>，我們定義他當我們的淨輸入 <span>$z$</span> 瀕臨某個臨界值時，例如 <span>$\theta$</span>，我們會把這個輸入訊號劃分到正類別（$+1$），反之，則把他會分到負類別（$-1$），也就是說這個函數可以從輸入的值大小判斷要把他分到哪裡去。也就是說，</p>
+
+<p>
+\begin{equation}
+\phi (z) = \phi (\textbf{w}^\mathrm{T} \cdot \textbf{x}) = \phi (w_{1}x_{1}+w_{2}x_{2}+ \dots +w_{n}x_{n}) = \left\{ \begin{array}{ll}
++1 & {z \geq \theta}\\
+-1 & \textrm{otherwise}\\
+\end{array} \right.
+\end{equation}
+</p>
+
+<p>其實Rossenblatt 感知器的激勵函數就是單位階梯函數（unit step function），對，就是拉普拉斯轉換的那個 <span>$u(\cdot)$</span>。</p>
+
+<p>跟腦內神經元決定要不要「傳送訊息」的概念一樣，Rossenblatt 感知器也是一種判斷是否「啟動分類」的東西。而他的迭代（iteration）的原則就是：</p>
+
+<ul>
+<li>把權重先預設為零，或是一個很小小的隨機數字。</li>
+<li>迭代出所有給定的樣本 <span>$x_{i}$</span>，計算輸出值 <span>$\hat{y}$</span>，並更新一次權重。</li>
+</ul>
+
+<p>這裡的輸出（output）<span>$\hat{y}$</span>，是指分出來的類別（也就是正類別或是負類別），之所以給他袋上帽子（hat），是因為這是我們預計出來的值而非真正的值（統計學常常這樣用，因為真正的值是 <span>$y$</span>）。而每次對於權重的更新方法是：</p>
+
+<p>
+\begin{equation}
+w_{i}:=w_{i}+\Delta w_{i}
+\end{equation}
+</p>
+
+<p>這裡(4)的 <span>$:=$</span> 就是 assign（指派） 的意思，就是把等號右邊的值更新到等號左邊（就是大部份程式語言裡 = 的功能），那這個 <span>$\Delta w_{j}$</span> 又是怎麼得到的呢？</p>
+
+<p>
+\begin{equation}
+\Delta w_{i} = \eta (y_{i}-\hat{y_{i}})x_{i}
+\end{equation}
+</p>
+
+<p>中間的 <span>$(y_{j}-\hat{y_{j}})$</span> 就是每次計算出的類別（<span>$\hat{y_{j}}$</span>）和實際類別（<span>$y_{j}$</span>）的誤差，而<span>$\eta$</span>則是學習速率，介於零與一之間，我們可以控制他每次應該要改變多少權重，如果要敏感一點就調高這個值，反之則調低。有了上面的通式(5)我們很快可以推到：</p>
+
+<p>
+\begin{equation}
+\Delta w_{1} = \eta (y_{1}-\hat{y_{1}})x_{1}\\
+\Delta w_{2} = \eta (y_{2}-\hat{y_{2}})x_{2}\\
+\vdots
+\end{equation}
+</p>
+
+<p>舉例而言，我們試算「分類正確」下的結果，會發現只要分類正確，則權重不會更新。</p>
+
+<p>
+\begin{equation}
+\textrm{都是負類別的情況} ：\Delta w_{i} = \eta （({-1})-({-1}))x_{i}=0\\
+\textrm{都是正類別的情況} ：\Delta w_{j} = \eta (1-1)x_{2}=0\\
+\end{equation}
+</p>
+
+<p>而「分類錯誤」的話呢？我們會發現權重會被更新往正確類別的方向：</p>
+
+<p>
+\begin{equation}
+\textrm{應是正類別卻分到負類別的情況，往正類別移動} ：\Delta w_{i} = \eta （{1}-({-1}))x_{i}=\eta(2)x_{i}\\
+\textrm{應是負類別卻分到正類別的情況，往負類別移動} ：\Delta w_{j} = \eta (1-(-1))x_{2}=\eta(-2)x_{j}\\
+\end{equation}
+</p>
+
+<p>接著帶入其他值試試看，我們假定學習速率 <span>$\eta = 1$</span> 而 <span>$x_{i}=0.5$</span>，分類器誤把正類別分到負類別，即 <span>$y_{i}=+1$</span>、<span>$\hat{y_i}={-1}$</span>，則根據通式權重會增加 1 ，以保證以後如果以後又出現，會正確的分類到正類別（$+1$）。</p>
+
+<p>
+\begin{equation}
+\Delta w_{i} = \eta (y_{i}-\hat{y_{i}})x_{i} = 1 \cdot (1-(-1)) \cdot 0.5 = 1\\
+\end{equation}
+</p>
+
+<p>若今天的 $x_{i}=2$ 呢？我們會發現權重更新的更快，代表邊界現更大幅度的移動了，因為權重的更新速度和 <span>$x_{i}$</span> 呈正比，以保證下次能正確的分類。</p>
+
+<p>
+\begin{equation}
+\Delta w_{i} = \eta (y_{i}-\hat{y_{i}})x_{i} = 1 \cdot (1-(-1)) \cdot 2 = 4\\
+\end{equation}
+</p>
+
+<h1 id="雛型">雛型</h1>
+
+<p>好了，知道背後的數學意義之後，我們來寫一個 Rossenblatt 感知器的雛型ㄅ。</p>
+
+<pre><code class="language-python">class Rossenblatt_Perceptron(object):
+	def __init__(self, eta, n_iteration):
+		self.eta = eta # 學習速率，介於 0 與 1
+		self.n_iteration = n_iteration # 迭代次數，為了避免線性不可分永遠的不到解，設置一個上限
+		# 初始化這個感知器class
+		
+	def fit(self,X,y):
+		&quot;&quot;&quot;
+		這邊定義一下X和y啊
+		X（矩陣用大寫）：一個 nxn 二維的array，訓練用的，[n_sample（就是x_{i}）,n_feature（就是y_{i}）]
+		y（清單用小寫）：一個 n 一維的list，目標[n_sample]
+		&quot;&quot;&quot;
+		slef.weight_ = np.zeros(1 + x.shape[1]) # 權重初始化成一個零向量
+		self.errors_ = [] 
+		# 每次迭代中，「分類錯誤」的樣本我們把他集中在一起，最後可以用來判斷這個感知器的精準度
+        for ct in range(self.n_iteration): # 在限定的次數上限中迭代
+            errors = 0
+            for x_i, target in zip(X, y):
+                update = self.eta * (target - self.perdict(x_i))
+                self.weight_[1:] = self.weight_[1:] + update*x_i
+                # 以上兩行就是(5)式，其實也可以寫成一行
+                self.weight_[0] = self.weight_[0] + update
+                # (4)式，更新權重
+                errors = errors + int(update != 0)
+            self.errors_.append(errors)
+        return self
+	
+	def net_input(self, X):
+		return np.dot(X, self.weight_[1:] + self.w[0])
+		# 一開始說了激勵函數可以用x和w的矩陣表示之，所以這裡計算矩陣內積
+        # a.dot(b) 和 np.dot(a,b) 和 sum(i*j for i,j in zip(a,b)) 是一樣的概念
+		
+	def predict(self, X):
+		return np.where(self.net_input(X) &gt;= 0, 1, -1)
+		# 預測未知資料的類別，這個就是最前面的激勵函數
+		# np.where的用法是（條件，滿足前面條件輸出的值，不滿足前面時輸出的值）
+</code></pre>
+
+<h1 id="又要來分iris惹">又要來分iris惹！</h1>
+
+<p>有了以上的感知器，就可以來分東西了。</p>
+
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+df = pd.read_csv(&quot;./iris.data&quot;, header = None)
+</code></pre>
+
+<p>我們抓前 100 筆花的資料，其中有 50 個 setosa（山鳶尾）、50 個 versicolor（變色鳶尾）。我們讓 +1 代表變色鳶尾，讓 -1 代表山鳶尾，用第一行的花萼長度當作 y 軸、第三行的花瓣長度當作 x 軸，並合併成矩陣X。</p>
+
+<p>然後把他畫出來。</p>
+
+<pre><code class="language-python"># 抓出兩種花
+y = df.iloc[0:100, 4].values # iloc 取位置
+y = np.where(y == 'Iris-setosa', -1, 1) # np.where 用法上面提過了
+
+# 取出花萼長度（第一行 = row 0）和花瓣長度（第三行 = row 2）
+X = df.iloc[0:100, [0, 2]].values
+
+# 畫出散佈圖
+plt.scatter(X[:50, 0], X[:50, 1],
+            color = 'red', marker = 'o', label = 'setosa')
+plt.scatter(X[50:100, 0], X[50:100, 1],
+            color = 'blue', marker = 'x', label = 'versicolor')
+# 補上兩軸標籤
+plt.xlabel('花瓣長度（公分）)
+plt.ylabel('花萼長度（公分）')
+plt.legend(loc = 'upper left')
+plt.show()
+</code></pre>
+
+<p><img src="https://i.imgur.com/Y5AryLu.png"  style="display:block; margin:auto;width:80%"></p>
+
+<p>很明顯，這是一個線性可分的東西，可以看出分成兩坨東西在左上跟右下。所以我們可以嘗試使用我們的感知器了。</p>
+
+<pre><code class="language-python">ppn = Rossenblatt_Perceptron(eta = 0.1, n_iteration = 10)
+# 創立一個class
+
+ppn.fit(X, y)
+# 計算(1)(2)式
+
+plt.plot(range(1, len(ppn.errors_) + 1), ppn.errors_, marker = 'o')
+plt.ylabel('分類錯誤的數量')
+plt.xlabel('迭代次數')
+plt.show()
+</code></pre>
+
+<p><img src="https://i.imgur.com/gkz84Dz.png"  style="display:block; margin:auto;width:80%"></p>
+
+<p>會發現到了第六次之後，就再也沒有分類錯誤的數量了，此時可以視為一個收斂。這個感知器成功的把東西分成兩邊了。但是怎麼分的？我們把這條分類的楚河漢界畫出來。</p>
+
+<pre><code class="language-python"># 一個畫畫的東西
+from matplotlib.colors import ListedColormap
+
+def plot_decision_regions(X, y, classifier, resolution = 0.02):
+    # 決定會用到的標記 maker 和符號 colors
+    markers = ('s', 'x', 'o', '^', 'v')
+    colors = ('red', 'blue', 'lightgreen', 'gray', 'cyan')
+    cmap = ListedColormap(colors[:len(np.unique(y))])
+    # np.unique() 會自動刪掉重複的東西，並且重新排列回傳
+
+    # 為了不讓圖看起來很擠或是太散，決定畫布邊界的最大值和最小值
+    # 不然如果太偏一邊，可能整張圖只有右下角有圖之類的
+    x1_min = X[:, 0].min() - 1
+    x1_max = X[:, 0].max() + 1
+    x2_min = X[:, 1].min() - 1
+    x2_max = X[:, 1].max() + 1
+
+    # np.meshgrid() 生成二維的格子點
+    xx1, xx2 = np.meshgrid(np.arange(x1_min, x1_max, resolution),
+                           np.arange(x2_min, x2_max, resolution))
+    # np.arange(1,2,0,2)會生成1, 1.2, 1.4, 1.6,1.8
+
+    # 做出預測
+    Z = classifier.predict(np.array([xx1.ravel(), xx2.ravel()]).T)
+    Z = Z.reshape(xx1.shape)
+
+    # 畫圖
+    plt.contourf(xx1, xx2, Z, alpha=0.3, cmap = cmap)
+
+    # 設置座標軸範圍
+    plt.xlim(xx1.min(), xx1.max())
+    plt.ylim(xx2.min(), xx2.max())
+    for idx, cl in enumerate(np.unique(y)):
+        plt.scatter(x=X[y == cl, 0], 
+                    y=X[y == cl, 1],
+                    alpha = 0.8, 
+                    c = colors[idx],
+                    marker = markers[idx], 
+                    label = cl, 
+                    edgecolor = 'black')
+
+plot_decision_regions(X, y, classifier=ppn)
+plt.xlabel('花瓣長度（公分）')
+plt.ylabel('花萼長度（公分）')
+plt.legend(loc = 'upper left')
+plt.show()
+</code></pre>
+
+<p><img src="https://i.imgur.com/IfmRpHS.png"  style="display:block; margin:auto;width:80%"></p>
+
+<h2 id="應用上的限制">應用上的限制</h2>
+
+<p>要注意的是，Rossenblatt 感知器的收斂前提（也就是最終得到一條分類邊界）是兩個類別必須是線性可分的，否則如果樣本們沒辦法透過一個線性決策進行線性劃分，上面權重的通式會不停的更新，永遠停不下來。</p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/python" role="button">Python </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92" role="button">機器學習 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E6%95%B8%E5%AD%B8%E6%8E%A8%E5%B0%8E" role="button">數學推導 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/code/2019-01-14-python%E7%AD%86%E8%A8%98%E6%88%91%E5%80%91%E8%83%BD%E9%A0%90%E6%B8%AC%E9%A8%99%E7%B7%9A%E7%9A%84%E7%99%BC%E7%94%9F%E5%97%8E/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>[Python筆記]我們能預測騙線的發生嗎？</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://rutopio.github.io/code/2019-03-09-ml%E7%AD%86%E8%A8%98adeline-%E8%88%87%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>[ML筆記]Adeline 與梯度下降</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#rossenblatt-%e6%84%9f%e7%9f%a5%e5%99%a8-rossenblatt-perceptron">
+												 Rossenblatt 感知器（Rossenblatt Perceptron）
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%ba%ba%e9%80%a0%e7%a5%9e%e7%b6%93%e5%85%83">
+												 人造神經元
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%84%9f%e7%9f%a5%e5%99%a8">
+												 感知器
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%95%b8%e5%ad%b8%e6%8e%a8%e5%b0%8e">
+												 數學推導
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%9b%9b%e5%9e%8b">
+												 雛型
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%8f%88%e8%a6%81%e4%be%86%e5%88%86iris%e6%83%b9">
+												 又要來分iris惹！
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e6%87%89%e7%94%a8%e4%b8%8a%e7%9a%84%e9%99%90%e5%88%b6">
+												 應用上的限制
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

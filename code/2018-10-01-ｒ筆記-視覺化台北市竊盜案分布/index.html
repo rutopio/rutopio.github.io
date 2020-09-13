@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="R語言, R Language, 資料視覺化, 台北市竊盜案, 視覺化, 教學" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="介紹 R 語言中最基本的視覺化工具，以台北市竊盜案分布為例。">
+  
+  <meta property="og:title" content="[Ｒ筆記] 視覺化：台北市竊盜案分布" />
+<meta property="og:description" content="介紹 R 語言中最基本的視覺化工具，以台北市竊盜案分布為例。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/code/2018-10-01-%EF%BD%92%E7%AD%86%E8%A8%98-%E8%A6%96%E8%A6%BA%E5%8C%96%E5%8F%B0%E5%8C%97%E5%B8%82%E7%AB%8A%E7%9B%9C%E6%A1%88%E5%88%86%E5%B8%83/" /><meta property="article:published_time" content="2018-10-01T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-10-01T00:00:00&#43;00:00"/>
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       [Ｒ筆記] 視覺化：台北市竊盜案分布 | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/code/2018-10-01-%EF%BD%92%E7%AD%86%E8%A8%98-%E8%A6%96%E8%A6%BA%E5%8C%96%E5%8F%B0%E5%8C%97%E5%B8%82%E7%AB%8A%E7%9B%9C%E6%A1%88%E5%88%86%E5%B8%83/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+      
+    
+    
+      
+        <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%EF%BD%92"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸Ｒ</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">[Ｒ筆記] 視覺化：台北市竊盜案分布</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Oct 1, 2018</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>2 minutes read</li>
+    
+  </ul>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<h2 id="1-先引入資料">1. 先引入資料</h2>
+
+<p>這裡用的是台北市政府的公開資料。</p>
+
+<pre><code class="language-r">url &lt;- &quot;http://data.taipei/opendata/datalist/datasetMeta/download?id=68785231-d6c5-47a1-b001-77eec70bec02&amp;rid=34a4a431-f04d-474a-8e72-8d3f586db3df&quot;
+df &lt;- read.csv(url, fileEncoding = &quot;big5&quot;)
+
+# 只拿我們要的東西
+df$time &lt;- substr(df$發生時段, 1, 2)
+df$region &lt;- substr(df$發生.現.地點, 4, 5)
+</code></pre>
+
+<h2 id="2-畫出馬賽克圖表-mosaicplot">2. 畫出馬賽克圖表（mosaicplot）</h2>
+
+<h3 id="原始資料-以橫軸為時間-縱軸為地點">原始資料：以橫軸為時間，縱軸為地點</h3>
+
+<pre><code class="language-r">res &lt;- tapply(df$編號, list(df$time, df$region), length, default = 0)
+mosaicplot(res, main = &quot;台北市竊盜率（以橫軸為時間，縱軸為地點）&quot;, xlab = &quot;時間&quot;, ylab = &quot;地點&quot;)
+</code></pre>
+
+<p><img src="https://i.imgur.com/MyBfQwM.png"  style="display:block; margin:auto;width:90%"></p>
+
+<p>發現這樣其實很難看的懂，所以我們交換兩軸。</p>
+
+<h3 id="交換資料-以橫軸為地點-縱軸為時間">交換資料：以橫軸為地點，縱軸為時間</h3>
+
+<pre><code class="language-r">res_swap &lt;- tapply(df$編號, list(df$region, df$time), length, default = 0)
+mosaicplot(res_swap, border=0, main = &quot;台北市竊盜率（以橫軸為地點，縱軸為時間）&quot;, ylab = &quot;時間&quot;, xlab = &quot;地點&quot;)
+</code></pre>
+
+<p><img src="http://i.imgur.com/44xT7qv.jpg"  style="display:block; margin:auto;width:90%"></p>
+
+<p>這樣有稍微好一點了。</p>
+
+<hr />
+
+<h2 id="3-改以月分為縱軸">3. 改以月分為縱軸</h2>
+
+<p>前面我們用的是時間，現在改用月份來分析看看。</p>
+
+<pre><code class="language-r"># Use stringr function
+library(&quot;stringr&quot;)
+x &lt;- df$發生.現.日期
+
+# Month
+df$month &lt;- str_sub(x, -4, -3) 
+
+res2 &lt;- tapply(df$編號, list(df$month, df$region), length,default = 0)
+res2 &lt;- tapply(df$編號, list(df$region, df$month), length,default = 0)
+
+# Mosaicplot
+mosaicplot(res2, border=0, off = 3, main = &quot;台北市竊盜率（以橫軸為地點，縱軸為月份）&quot;, ylab = &quot;月份&quot;, xlab = &quot;地點&quot;)
+
+</code></pre>
+
+<p><img src="https://i.imgur.com/AitpeN8.png"  style="display:block; margin:auto;width:90%"></p>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/r" role="button">R </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%B5%B1%E8%A8%88" role="button">統計 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E8%A6%96%E8%A6%BA%E5%8C%96" role="button">視覺化 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%AB%8A%E7%9B%9C%E6%A1%88" role="button">竊盜案 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/code/2018-10-01-%EF%BD%92%E7%AD%86%E8%A8%98-%E8%A6%96%E8%A6%BA%E5%8C%96%E5%B7%9D%E6%99%AE%E7%9A%84%E6%8E%A8%E7%89%B9%E6%84%9B%E5%BF%83%E6%95%B8%E5%88%86%E6%9E%90/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>[Ｒ筆記] 視覺化：川普的推特愛心數分析</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+                <a href=https://rutopio.github.io/code/2018-10-01-%EF%BD%92%E7%AD%86%E8%A8%98-%E6%9C%80%E5%9F%BA%E6%9C%AC%E7%9A%84%E7%95%AB%E5%9C%96%E5%92%8C%E7%B5%B1%E8%A8%88/ class="post-meta">Next
+                  <div class="pt-2 pb-5 flex-reverse">
+                    <i class="fas fa-angle-right text-grey font-weight-bold ml-2 active-color"></i>
+                    <span>[Ｒ筆記] 最基本的畫圖和統計</span>
+                  </div>
+                </a>
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#1-%e5%85%88%e5%bc%95%e5%85%a5%e8%b3%87%e6%96%99">
+												 1. 先引入資料
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#2-%e7%95%ab%e5%87%ba%e9%a6%ac%e8%b3%bd%e5%85%8b%e5%9c%96%e8%a1%a8-mosaicplot">
+												 2. 畫出馬賽克圖表（mosaicplot）
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%8e%9f%e5%a7%8b%e8%b3%87%e6%96%99-%e4%bb%a5%e6%a9%ab%e8%bb%b8%e7%82%ba%e6%99%82%e9%96%93-%e7%b8%b1%e8%bb%b8%e7%82%ba%e5%9c%b0%e9%bb%9e">
+												 原始資料：以橫軸為時間，縱軸為地點
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%ba%a4%e6%8f%9b%e8%b3%87%e6%96%99-%e4%bb%a5%e6%a9%ab%e8%bb%b8%e7%82%ba%e5%9c%b0%e9%bb%9e-%e7%b8%b1%e8%bb%b8%e7%82%ba%e6%99%82%e9%96%93">
+												 交換資料：以橫軸為地點，縱軸為時間
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#3-%e6%94%b9%e4%bb%a5%e6%9c%88%e5%88%86%e7%82%ba%e7%b8%b1%e8%bb%b8">
+												 3. 改以月分為縱軸
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>

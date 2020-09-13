@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta content="python, python教學, 爬蟲, 不分區政黨票, python爬蟲, 2020不分區" name="keywords">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1" />
+  <meta name="author" content="ChingRu">
+  <meta name="description" content="以 Python 實現 2020 年台灣選舉結果不分區政黨票結果的爬蟲。">
+  
+  <meta property="og:title" content="[Python筆記] 2020台灣選舉結果爬蟲：以不分區政黨票為例" />
+<meta property="og:description" content="以 Python 實現 2020 年台灣選舉結果不分區政黨票結果的爬蟲。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rutopio.github.io/code/2020-01-16-python%E7%AD%86%E8%A8%98-2020%E5%8F%B0%E7%81%A3%E9%81%B8%E8%88%89%E7%B5%90%E6%9E%9C%E7%88%AC%E8%9F%B2%E4%BB%A5%E4%B8%8D%E5%88%86%E5%8D%80%E6%94%BF%E9%BB%A8%E7%A5%A8%E7%82%BA%E4%BE%8B/" /><meta property="article:published_time" content="2020-01-16T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2020-01-16T00:00:00&#43;00:00"/><meta property="og:see_also" content="https://rutopio.github.io/code/2019-10-14-python%E7%AD%86%E8%A8%98pigeonhole-problem%E9%B4%BF%E7%B1%A0%E5%95%8F%E9%A1%8C%E4%BB%A5-cnf-%E6%AA%94%E6%A1%88%E8%BC%B8%E5%87%BA/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-06-11-python%E7%AD%86%E8%A8%98%E5%9C%96%E7%89%87%E9%82%8A%E7%95%8C%E5%81%B5%E6%B8%AC%E4%BB%A5-pgm-%E6%AA%94%E6%A1%88%E7%82%BA%E4%BE%8B/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-10-ml%E7%AD%86%E8%A8%98-logistic-regression/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-09-ml%E7%AD%86%E8%A8%98adeline-%E8%88%87%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" /><meta property="og:see_also" content="https://rutopio.github.io/code/2019-03-08-ml%E7%AD%86%E8%A8%98rossenblatt-%E6%84%9F%E7%9F%A5%E5%99%A8/" />
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104402545-3"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-104402545-3');
+    </script>
+
+  <title>
+  
+       [Python筆記] 2020台灣選舉結果爬蟲：以不分區政黨票為例 | Rutopio 
+  
+  </title>
+
+  <link rel="canonical" href="https://rutopio.github.io/code/2020-01-16-python%E7%AD%86%E8%A8%98-2020%E5%8F%B0%E7%81%A3%E9%81%B8%E8%88%89%E7%B5%90%E6%9E%9C%E7%88%AC%E8%9F%B2%E4%BB%A5%E4%B8%8D%E5%88%86%E5%8D%80%E6%94%BF%E9%BB%A8%E7%A5%A8%E7%82%BA%E4%BE%8B/">
+
+  
+  
+
+  
+  <link href="https://rutopio.github.io/css/vendors-extensions/fontawesome/all.min.css" rel="stylesheet">
+
+  
+  <link href="https://rutopio.github.io/css/font.css" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;subset=chinese-traditional,japanese" rel="stylesheet">
+    
+  
+  <link href="https://rutopio.github.io/css/vendors/bootstrap4/bootstrap.min.css" rel="stylesheet">
+  <link href="https://rutopio.github.io/css/vendors-extensions/mdb/mdb.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/vendors/mdb/style.min.css" rel="stylesheet"> 
+  <link href="https://rutopio.github.io/css/main.css" rel="stylesheet">
+
+  
+  <link rel="shortcut icon"
+  
+      href="https://rutopio.github.io/img/quotes_1808603.png"
+  
+  >
+  
+  
+   <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+  });
+  MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+
+  MathJax.Hub.Config({
+  
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+  });
+  </script>
+
+  
+    
+    <link rel="stylesheet" href="https://rutopio.github.io/css/vendors/highlight/github-gist.css">
+  
+
+  
+
+</head>
+
+  <body class="bg-light" data-spy="scroll" data-target="#page-scrollspy" data-offset="90">
+  
+    
+    
+
+    
+      
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+    <div class="container">
+      
+      
+      <a class="navbar-brand" href="https://rutopio.github.io">
+        <strong> Rutopio </strong>
+      </a>
+
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        
+        <ul class="navbar-nav mr-auto ">
+          <li class="nav-item ">
+            <a class="nav-link" href="https://rutopio.github.io">Home</a>
+          </li>
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/blog/" >Blogs  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/essay/" >Essays  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/code/" >Codes  </a>
+            </li>
+          
+             
+            <li class="nav-item ">
+              <a class="nav-link" href="https://rutopio.github.io/about/" >Contacts  </a>
+            </li>
+          
+          
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  
+ 
+      
+ 
+
+
+
+
+
+
+<div id="site-header" class="carousel slide carousel-fade" data-ride="carousel" style="height: 18rem;" >  
+
+  
+  
+  
+
+  
+  <div class="carousel-inner" role="listbox">
+    
+      
+
+        
+        <div class="carousel-item active">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides/pexels-gru-937766.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+              
+              
+              
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-henry-&amp;-co-2886015.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+      
+
+        
+        <div class="carousel-item">
+          <div class="view" style="background-image: url('https://rutopio.github.io/img/header-slides//pexels-johannes-rapprich-2508810.jpg'); background-repeat: no-repeat; background-size: cover;">
+
+            
+            <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
+
+            
+
+            </div>
+            
+
+          </div>
+        </div>
+        
+      
+    
+
+  
+  </div>
+  
+
+  
+  <div class="carousel-content text-center white-text wow fadeIn">
+    <div class="row mx-0 headfont mt-3 pt-4">
+      
+      <div class="col-12 col-sm-5 align-middle">
+        <a href="https://rutopio.github.io">
+          
+            <img class="pull-right avatar avatar-md" src="https://rutopio.github.io/img/avatar.png" alt="" >
+          
+        </a>
+      </div>
+      
+      <div class="col-12 col-sm-7 text-left pl-2">
+        <a href="https://rutopio.github.io">
+          <h1 class="mb-2 h1" style="font-weight: 300;" >
+            <strong>ChingRu</strong>
+          </h1>
+        </a>
+        
+
+             
+        <div class="mt-2" style="font-size: 1rem; color: white;">
+            
+            
+
+            
+
+            
+
+            
+
+            
+        
+            
+                <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open pr-1" aria-hidden="true"></i></a>
+            
+    
+            
+
+            
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  
+  
+  
+
+</div>
+  
+    
+
+    
+  
+  <main class="post-main-wrapper">
+    
+    
+    <div class="row">
+
+      
+
+      
+      <div class="col-md-10">
+      
+
+        
+        <div class="maincontent z-depth-1  post-wrapper white-bg single-post">
+
+          <div class="post-header text-center" >
+  <ul class="post-meta li-x">
+    
+      
+        <li><a href="https://rutopio.github.io/categories/%E9%9B%9C%E6%8A%80%E6%B7%BA%E5%9A%90"><i class="fas fa-folder-open pr-1" aria-hidden="true"></i> 雜技淺嚐 </a></li>
+      
+    
+    
+      
+        <li><a href="https://rutopio.github.io/series/%E6%91%B8%E6%91%B8%E8%9B%87%E8%9B%87"><i class="fas fa-bookmark pr-1" aria-hidden="true"></i>摸摸蛇蛇</a></li>
+      
+    
+  </ul>
+
+  <div class="px-4 post-heading">[Python筆記] 2020台灣選舉結果爬蟲：以不分區政黨票為例</div>
+
+  <ul class="post-meta li-x mt-1">
+    
+      <li>Jan 16, 2020</li>
+    
+
+    
+      <li class="middot"></li>
+      <li>9 minutes read</li>
+    
+  </ul>
+  
+    <div class="view">
+      <img src="https://i.imgur.com/W2EqJXi.png" />
+    </div>
+  
+
+</div>
+
+
+          <div class="maincontent post-content markdown">
+            
+
+<h2 id="1-一樣先偷看中選會的小秘密">1. 一樣先偷看中選會的小秘密</h2>
+
+<p>先打開中選會的網站，點到<a href="https://www.cec.gov.tw/pc/zh_TW/IDX/indexT.html">立法委員選舉</a>下面的<a href="https://www.cec.gov.tw/pc/zh_TW/L4/n00000000000000000.html">政黨得票數 (不分區及僑居國外國民立法委員)</a>然後按 F12 查看小秘密^Q\^。</p>
+
+<p><img src="https://i.imgur.com/n1Wp3OZ.png"  style="display:block; margin:auto;width:80%"></p>
+
+<p>這時候就可以從 tag 裡面找到一個規律啦～然後如果又把每個縣市點開來，也會發現像是：</p>
+
+<p><img src="https://i.imgur.com/WN2E1c5.png" style="display:block; margin:auto;width:50%"></p>
+
+<ul>
+<li>「<strong>id=&ldquo;folder1260&rdquo;</strong>」就是「<strong>政黨得票數 (不分區及僑居國外國民立法委員)</strong>」</li>
+<li>「<strong>id=&ldquo;folder1261&rdquo;</strong>」就是「<strong>臺北市</strong>」
+
+<ul>
+<li>「<strong>id=&ldquo;item1262&rdquo;</strong>」就是「<strong>松山區</strong>」</li>
+<li>「<strong>id=&ldquo;item1263&rdquo;</strong>」就是「<strong>信義區</strong>」</li>
+<li>「<strong>id=&ldquo;item1264&rdquo;</strong>」就是「<strong>大安區</strong>」</li>
+<li>&hellip;</li>
+<li>「<strong>id=&ldquo;item1273&rdquo;</strong>」就是「<strong>北投區</strong>」</li>
+</ul></li>
+<li>「<strong>id=&ldquo;folder1274&rdquo;</strong>」就是「<strong>新北市</strong>」</li>
+<li>「<strong>id=&ldquo;folder1304&rdquo;</strong>」就是「<strong>桃園市</strong>」</li>
+<li>&hellip;</li>
+<li>「<strong>id=&ldquo;folder1648&rdquo;</strong>」就是「<strong>嘉義市</strong>」</li>
+<li>反正「<strong>id=&ldquo;folder___&rdquo;</strong>」就是「<strong>某某縣市</strong>」，而「<strong>id=&ldquo;item___&rdquo;</strong>」就是「鄉鎮市區」</li>
+</ul>
+
+<p>接下來就開始實作囉。</p>
+
+<h3 id="一樣先import會用到的library">一樣先import會用到的library</h3>
+
+<ul>
+<li><code>pandas</code>: 處理Dataframe</li>
+<li><code>os</code>: 處理輸出的檔案路徑</li>
+<li><code>html5lib</code>, <code>bs4</code>, <code>selenium</code>, <code>requests</code>: 處理網頁跟爬蟲</li>
+</ul>
+
+<pre><code class="language-python">import pandas
+import html5lib
+import os
+from bs4 import BeautifulSoup
+import requests
+from selenium import webdriver
+</code></pre>
+
+<h3 id="處理點擊-click-問題">處理點擊（click）問題</h3>
+
+<p>如果直接打開中選會的那個網站齁，會發現他把旁邊的地區都縮起來了，只有用滑鼠去「點擊」那個+，才會展開來，所以我們要去模擬把它「點開來」。</p>
+
+<pre><code class="language-python">main_website_url = 'https://www.cec.gov.tw/pc/zh_TW/L4/n00000000000000000.html'
+# 這個就是中選會關於立法委員的網址
+
+domain_prefix = 'https://www.cec.gov.tw/pc/zh_TW/'
+# 補個網址前輟，等下會用到
+
+driver = webdriver.Chrome('C:\selenium_driver_chrome\chromedriver.exe')
+driver.get(main_website_url)
+# 使用selenium去模擬chrome，記得先去下載chromedriver
+# 解壓縮後習慣放到C:\selenium_driver_chrome\chromedriver.exe之下
+
+driver.find_element_by_id('folder1260').click()
+# 用find_element_by_id去尋找id='folder1260'的「政黨得票數 (不分區及僑居國外國民立法委員)」
+# 然後用.click()模擬滑鼠去「點擊」「政黨得票數 (不分區及僑居國外國民立法委員)」
+</code></pre>
+
+<h3 id="開撈網址">開撈網址</h3>
+
+<pre><code class="language-python">soup = BeautifulSoup(driver.page_source, 'lxml')
+
+links = soup.select('div[id^=folder] a')
+# select div標籤裡的id，開頭（^=就是尋找開頭）為folder的所有東西，並列出&lt;a&gt;&lt;/a&gt;
+</code></pre>
+
+<p>這個時候如果把links印出來，會發現長這樣又臭又長。我打算要抓<code>javascript:clickOnNode()</code>裡面的數字（像是1261, 1274, 1304等等），所以是從「第五列」到「倒數第十列」當中的「<strong>偶數</strong>行」。</p>
+
+<pre><code class="language-terminal">$ links
+&gt; [&lt;a&gt;查詢項目 (立法委員)&lt;/a&gt;,
+ &lt;a href='javascript:clickOnNode(&quot;1&quot;)'&gt;&lt;img border=&quot;0&quot; height=&quot;22&quot; id=&quot;nodeIcon1&quot; name=&quot;nodeIcon1&quot; src=&quot;../images/ftv2pnode.gif&quot; width=&quot;16&quot;/&gt;&lt;/a&gt;,
+ &lt;a&gt;候選人得票數&lt;/a&gt;,
+ &lt;a href='javascript:clickOnNode(&quot;1260&quot;)'&gt;&lt;img border=&quot;0&quot; height=&quot;22&quot; id=&quot;nodeIcon1260&quot; name=&quot;nodeIcon1260&quot; src=&quot;../images/ftv2mnode.gif&quot; width=&quot;16&quot;/&gt;&lt;/a&gt;,
+ &lt;a href=&quot;../L4/n00000000000000000.html&quot; id=&quot;itemTextLink1260&quot; onclick='javascript:clickOnFolder(&quot;1260&quot;)' style=&quot;color: white; background-color: rgb(255, 127, 0);&quot; target=&quot;_top&quot;&gt;政黨得票數 (不分區及僑居國外國民立法委員)&lt;/a&gt;,
+ &lt;a href='javascript:clickOnNode(&quot;1261&quot;)'&gt;&lt;img border=&quot;0&quot; height=&quot;22&quot; id=&quot;nodeIcon1261&quot; name=&quot;nodeIcon1261&quot; src=&quot;../images/ftv2pnode.gif&quot; width=&quot;16&quot;/&gt;&lt;/a&gt;,
+ &lt;a href=&quot;../L4/n63000000000000000.html&quot; id=&quot;itemTextLink1261&quot; onclick='javascript:clickOnFolder(&quot;1261&quot;)' target=&quot;_top&quot;&gt;臺北市&lt;/a&gt;,
+ &lt;a href='javascript:clickOnNode(&quot;1274&quot;)'&gt;&lt;img border=&quot;0&quot; height=&quot;22&quot; id=&quot;nodeIcon1274&quot; name=&quot;nodeIcon1274&quot; src=&quot;../images/ftv2pnode.gif&quot; width=&quot;16&quot;/&gt;&lt;/a&gt;,
+ &lt;a href=&quot;../L4/n65000000000000000.html&quot; id=&quot;itemTextLink1274&quot; onclick='javascript:clickOnFolder(&quot;1274&quot;)' target=&quot;_top&quot;&gt;新北市&lt;/a&gt;,
+ &lt;a href='javascript:clickOnNode(&quot;1304&quot;)'&gt;&lt;img border=&quot;0&quot; height=&quot;22&quot; id=&quot;nodeIcon1304&quot; name=&quot;nodeIcon1304&quot; src=&quot;../images/ftv2pnode.gif&quot; width=&quot;16&quot;/&gt;&lt;/a&gt;,
+... 
+</code></pre>
+
+<p>所以補上[5:-10]跟取偶數列的[::2]就會跑出我們要的東西。</p>
+
+<pre><code class="language-python">links = soup.select('div[id^=folder] a')[5:-10][::2]
+</code></pre>
+
+<pre><code class="language-terminal">$ links
+&gt; [&lt;a href='javascript:clickOnNode(&quot;1261&quot;)'&gt;&lt;img border=&quot;0&quot; height=&quot;22&quot; id=&quot;nodeIcon1261&quot; name=&quot;nodeIcon1261&quot; src=&quot;../images/ftv2pnode.gif&quot; width=&quot;16&quot;/&gt;&lt;/a&gt;,
+ &lt;a href='javascript:clickOnNode(&quot;1274&quot;)'&gt;&lt;img border=&quot;0&quot; height=&quot;22&quot; id=&quot;nodeIcon1274&quot; name=&quot;nodeIcon1274&quot; src=&quot;../images/ftv2pnode.gif&quot; width=&quot;16&quot;/&gt;&lt;/a&gt;,
+ &lt;a href='javascript:clickOnNode(&quot;1304&quot;)'&gt;&lt;img border=&quot;0&quot; height=&quot;22&quot; id=&quot;nodeIcon1304&quot; name=&quot;nodeIcon1304&quot; src=&quot;../images/ftv2pnode.gif&quot; width=&quot;16&quot;/&gt;&lt;/a&gt;,
+ &lt;a href='javascript:clickOnNode(&quot;1318&quot;)'&gt;&lt;img border=&quot;0&quot; height=&quot;22&quot; id=&quot;nodeIcon1318&quot; name=&quot;nodeIcon1318&quot; src=&quot;../images/ftv2pnode.gif&quot; width=&quot;16&quot;/&gt;&lt;/a&gt;,
+ ...
+</code></pre>
+
+<p>然後抓出 href 裡面的東西，就是<code>javascript:clickOnNode()</code>，數字的部分都是固定的四位數，所以是取「倒數第六個」到「倒數第二個」的部分，所以取出[-6:-2]的部分，把這些縣市的（folder=&lsquo;XXXX&rsquo;的部份）放到country_code裡面。</p>
+
+<pre><code class="language-python">country_code = []
+# 縣市的代碼
+
+for ele in links:
+    country_code.append(ele.get('href')[-6:-2])
+    # 用.get抓出href的部份，接著抓出數字
+</code></pre>
+
+<pre><code class="language-terminal">$ country_code # 檢查一下是否從1261的臺北市抓到1648的嘉義市
+&gt; 1261
+1274
+1304
+1318
+1348
+1386
+1425
+1439
+1458
+1485
+1499
+1520
+1539
+1573
+1586
+1600
+1617
+1624
+1631
+1636
+1644
+1648
+</code></pre>
+
+<h3 id="用跟上面一樣的方法抓出鄉鎮市區的網址">用跟上面一樣的方法抓出鄉鎮市區的網址</h3>
+
+<pre><code class="language-python">districts_website_url = []
+# 用來存放所有鄉鎮市區的的網址
+
+for ele in range(len(country_code)):
+    driver.get(main_website_url)
+    driver.find_element_by_id('folder' + country_code[ele]).click()
+    # 跟上面一樣，去模擬點擊，把每個縣市下面的鄉鎮市區抓出來
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+    links = soup.select('div[id^=item] a')
+    # select div標籤裡的id，開頭（^=就是尋找開頭）為item的所有東西，並列出&lt;a&gt;&lt;/a&gt;
+    for i in links:
+        districts_website_url.append(domain_prefix + i.get('href')[3:])
+        # 用.get抓出href的部份，接著抓出item後的數字，並組合成網頁
+</code></pre>
+
+<p>到這裡之後，如果有抓到全部鄉鎮市區的網址，就算成功一半了</p>
+
+<pre><code class="language-terminal">$ website_url
+&gt; ['https://www.cec.gov.tw/pc/zh_TW/L4/n63000000100000000.html',
+ 'https://www.cec.gov.tw/pc/zh_TW/L4/n63000000200000000.html',
+ 'https://www.cec.gov.tw/pc/zh_TW/L4/n63000000300000000.html',
+ 'https://www.cec.gov.tw/pc/zh_TW/L4/n63000000400000000.html',
+ 'https://www.cec.gov.tw/pc/zh_TW/L4/n63000000500000000.html',
+ 'https://www.cec.gov.tw/pc/zh_TW/L4/n63000000600000000.html',
+ 'https://www.cec.gov.tw/pc/zh_TW/L4/n63000000700000000.html',
+ 'https://www.cec.gov.tw/pc/zh_TW/L4/n63000000800000000.html',
+ ...
+</code></pre>
+
+<h2 id="2-對表格開刀">2. 對表格開刀</h2>
+
+<p>以<a href="https://www.cec.gov.tw/pc/zh_TW/L4/n63000000100000000.html">臺北市松山區的選舉結果</a>為例，我們可以先讀出這個網頁</p>
+
+<pre><code class="language-python">site = 'https://www.cec.gov.tw/pc/zh_TW/L4/n63000000100000000.html'
+dfs = pandas.read_html(site)
+</code></pre>
+
+<h3 id="判別哪個表格才是我們要的">判別哪個表格才是我們要的</h3>
+
+<pre><code class="language-terminal">$ len(dfs)
+&gt; 6
+</code></pre>
+
+<p>所以這個網站裡面齁，共有6個表格，可以一一用<code>dfs[0]</code>, <code>dfs[1]</code>, <code>dfs[2]</code>, <code>dfs[3]</code>, <code>dfs[4]</code>, <code>dfs[5]</code>去找哪個才是我們要的。最後我覺得<code>dfs[3]</code>才是我要ㄉ。有fu!</p>
+
+<pre><code class="language-terminal">$ dfs[3]
+&gt;   0   1   2   3
+0   號次  政黨  得票數 得票率 %
+1   1   合一行動聯盟  54  0.0430
+2   2   中華統一促進黨 147 0.1170
+3   3   親民黨 4947    3.9376
+4   4   安定力量    1041    0.8286
+5   5   台灣基進    2648    2.1077
+6   6   時代力量    10187   8.1085
+7   7   新黨  3284    2.6139
+8   8   喜樂島聯盟   218 0.1735
+9   9   中國國民黨   45629   36.3190
+10  10  一邊一國行動黨 474 0.3773
+11  11  勞動黨 63  0.0501
+12  12  綠黨  4468    3.5564
+13  13  宗教聯盟    122 0.0971
+14  14  民主進步黨   36313   28.9038
+15  15  台灣民眾黨   15352   12.2196
+16  16  台灣維新    67  0.0533
+17  17  台澎黨 29  0.0231
+18  18  國會政黨聯盟  376 0.2993
+19  19  台灣團結聯盟  215 0.1711
+20  NaN NaN NaN NaN
+</code></pre>
+
+<p><img src="https://i.imgur.com/k1rD5oK.png"  style="display:block; margin:auto;width:50%"></p>
+
+<h3 id="再處裡表格ㄛ">再處裡表格ㄛ</h3>
+
+<pre><code class="language-python">votes = dfs[3]
+# 第四個表格才是我們要ㄉ！
+
+votes.columns = votes.loc[0]
+# 把第0列，視為表格的欄名
+
+votes = votes.drop([0,20])
+# 刪掉沒用的第0和第20列
+
+votes.reset_index(drop=True, inplace=True)
+# 重設index，其實也可以最後再統一一起做
+
+areacode = site.split('/')[6].split('.')[0]
+# 這其實就是分割出網頁最後的幾碼，我稱它為areacode
+# 像是 https://www.cec.gov.tw/pc/zh_TW/L4/n63000000100000000.html
+# 就是要取出n63000000100000000
+
+areaname = dfs[1].iloc[0,0][17:-6]
+# 去抓出「臺北市松山區」這幾個字，就是每個行政區的名字
+
+countryname = areaname[:3]
+districtname = areaname[3:]
+# 分割出「臺北市」和「松山區」
+
+if site[-9:-5] == '0000':
+    voteplace = countryname + districtname + '總票數'
+else:
+    voteplace = countryname + '第 ' + site[-9:-5] + ' 號投開票所'
+    # 像是https://www.cec.gov.tw/pc/zh_TW/L4/n63000000100000000.html
+    # 就是臺北市松山區得總的票數（n63000000100000000）
+    # 如果是https://www.cec.gov.tw/pc/zh_TW/L4/n63000000100000573.html
+    # 就是臺北市松山區第0573投票所（n63000000100000573）
+    
+votes['投開票所縣市'] = countryname
+votes['投開票所鄉鎮市區'] = districtname
+votes['投開票所'] = voteplace
+votes['投開票所代號'] = areacode[1:]
+# 再把這些資料補上去
+</code></pre>
+
+<p>然後檢查！</p>
+
+<pre><code class="language-terminal">$ votes
+&gt;   號次  政黨  得票數 得票率 %   投開票所縣市  投開票所鄉鎮市區    投開票所    投開票所代號
+0   1   合一行動聯盟  54  0.0430  臺北市 松山區 臺北市松山區總票數   63000000100000000
+1   2   中華統一促進黨 147 0.1170  臺北市 松山區 臺北市松山區總票數   63000000100000000
+2   3   親民黨 4947    3.9376  臺北市 松山區 臺北市松山區總票數   63000000100000000
+3   4   安定力量    1041    0.8286  臺北市 松山區 臺北市松山區總票數   63000000100000000
+4   5   台灣基進    2648    2.1077  臺北市 松山區 臺北市松山區總票數   63000000100000000
+5   6   時代力量    10187   8.1085  臺北市 松山區 臺北市松山區總票數   63000000100000000
+6   7   新黨  3284    2.6139  臺北市 松山區 臺北市松山區總票數   63000000100000000
+7   8   喜樂島聯盟   218 0.1735  臺北市 松山區 臺北市松山區總票數   63000000100000000
+8   9   中國國民黨   45629   36.3190 臺北市 松山區 臺北市松山區總票數   63000000100000000
+9   10  一邊一國行動黨 474 0.3773  臺北市 松山區 臺北市松山區總票數   63000000100000000
+10  11  勞動黨 63  0.0501  臺北市 松山區 臺北市松山區總票數   63000000100000000
+11  12  綠黨  4468    3.5564  臺北市 松山區 臺北市松山區總票數   63000000100000000
+12  13  宗教聯盟    122 0.0971  臺北市 松山區 臺北市松山區總票數   63000000100000000
+13  14  民主進步黨   36313   28.9038 臺北市 松山區 臺北市松山區總票數   63000000100000000
+14  15  台灣民眾黨   15352   12.2196 臺北市 松山區 臺北市松山區總票數   63000000100000000
+15  16  台灣維新    67  0.0533  臺北市 松山區 臺北市松山區總票數   63000000100000000
+16  17  台澎黨 29  0.0231  臺北市 松山區 臺北市松山區總票數   63000000100000000
+17  18  國會政黨聯盟  376 0.2993  臺北市 松山區 臺北市松山區總票數   63000000100000000
+18  19  台灣團結聯盟  215 0.1711  臺北市 松山區 臺北市松山區總票數   63000000100000000
+</code></pre>
+
+<p><img src="https://i.imgur.com/JEDhace.png" style="display:block; margin:auto;width:80%"></p>
+
+<p>然後把上面一整個寫成function，名為getpartyvotes()，讓他可以自動化處理每個網址。</p>
+
+<h2 id="3-再區分成各個投開票所">3. 再區分成各個投開票所！</h2>
+
+<p>繼續挖小祕密齁。</p>
+
+<p><img src="https://i.imgur.com/LhRt8tO.png" style="display:block; margin:auto;width:80%"></p>
+
+<p>會發現第幾投開票所咧，其實就藏在這個<option></option>tag的value值裡面，當有人選取的時候，就會自動跳到這個網頁裡。所以在這裡，我們要抓個鄉鎮市區網址的概念也是一樣。</p>
+
+<pre><code class="language-python">votes_result = []
+# 用來放結果的
+
+for ct in range(len(districts_website_url)):
+    driver.get(districts_website_url[ct])
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+    links = soup.select('option[value]')
+    # select出option標籤裡的value齁，像是n63000000100000573.html這一個部份
+    
+    for ele in links:
+        try:
+            votes_result.append(getpartyvotes(domain_prefix + 'L4/' + ele.get('value')))
+            # 把每個網址，帶入上面抓表格的function，嘗試得到向上面那樣的結果。
+            # 然後用.append的方式把新的DataFrame併入到原本的DataFrame後面
+        except:
+            continue
+            # 以下除錯用，如果想知道有哪些網站沒抓好，就把他們print出來。
+            # print(domain_prefix + 'L4/' + ele.get('value'))
+    print(ct+1, ' / ', len(districts_website_url), ' is DONE.')
+    # 單純用來表示說完成幾個鄉鎮市區
+    
+votes_result = pandas.concat(votes_result)
+votes_result.reset_index(drop = True, inplace = True)
+votes_result = pandas.DataFrame(votes_result) 
+# 整理表格、重新給定index、強制轉為DataFrame
+</code></pre>
+
+<p>到此，votes_result就是最終結果了，要進行分析的話可以再透過這個DataFrame處理。</p>
+
+<p><img src="https://i.imgur.com/DGFJCv0.png" style="display:block; margin:auto;width:80%"></p>
+
+<h2 id="附錄-完整-code">附錄：完整 code</h2>
+
+<pre><code class="language-python">import pandas
+import html5lib
+import os
+from bs4 import BeautifulSoup
+import requests
+from selenium import webdriver
+
+def getpartyvotes(url):
+    site = url
+    dfs = pandas.read_html(site)
+    votes = dfs[3]
+    votes.columns = votes.loc[0]
+    votes = votes.drop([0,20])
+    votes.reset_index(drop=True, inplace=True)
+    areacode = site.split('/')[6].split('.')[0]
+    areaname = dfs[1].iloc[0,0][17:-6]
+    countryname = areaname[:3]
+    districtname = areaname[3:]
+    if site[-9:-5] == '0000':
+        voteplace = countryname + districtname + '總票數'
+    else:
+        voteplace = countryname + '第 ' + site[-9:-5] + ' 號投開票所'
+    votes['投開票所縣市'] = countryname
+    votes['投開票所鄉鎮市區'] = districtname
+    votes['投開票所'] = voteplace
+    votes['投開票所代號'] = areacode[1:]
+    return votes
+
+main_website_url = 'https://www.cec.gov.tw/pc/zh_TW/L4/n00000000000000000.html'
+domain_prefix = 'https://www.cec.gov.tw/pc/zh_TW/'
+driver = webdriver.Chrome('C:\selenium_driver_chrome\chromedriver.exe')
+driver.get(main_website_url)
+driver.find_element_by_id('folder1260').click()
+# 政黨得票數 (不分區及僑居國外國民立法委員)
+
+soup = BeautifulSoup(driver.page_source, 'lxml')
+links = soup.select('div[id^=folder] a')[5:-10][::2]
+country_code = []
+
+for ele in links:
+    # print(ele.get('href')[-6:-2])
+    country_code.append(ele.get('href')[-6:-2])
+
+districts_website_url = []
+driver.get(main_website_url)
+
+for ele in range(len(country_code)):
+    driver.get(main_website_url)
+    # print('folder' + country_code[ele])  
+    driver.find_element_by_id('folder' + country_code[ele]).click()
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+    links = soup.select('div[id^=item] a')
+    for i in links:
+        districts_website_url.append(domain_prefix + i.get('href')[3:])
+
+votes_result = []
+print('')
+print('******************************************')
+print('*                                        *')
+print('*  2020_Taiwan_Election_Results_Crawler  *')
+print('* Party-list proportional representation *')
+print('*            不分區立委政黨票             *')
+print('*                                        *')
+print('******************************************')
+print('')
+print('There are total ', len(districts_website_url), 'districts during 2020 Taiwan election.')
+print('')
+
+#for ct in range(len(districts_website_url)):
+for ct in range(2):
+    driver.get(districts_website_url[ct])
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+    links = soup.select('option[value]')
+    for ele in links:
+        try:
+            votes_result.append(getpartyvotes(domain_prefix + 'L4/' + ele.get('value')))
+        except:
+            continue
+            # 以下除錯用，如果想知道有哪些網站沒抓好就print出來。
+            # print(domain_prefix + 'L4/' + ele.get('value'))
+    print(ct+1, ' / ', len(districts_website_url), ' is DONE.')
+votes_result = pandas.concat(votes_result)
+votes_result.reset_index(drop = True, inplace = True)
+votes_result = pandas.DataFrame(votes_result)     
+
+#print(votes_result)
+print('')
+print('SUCCESS, ready to output as a .csv file')
+father_path = os.getcwd()
+file_name = input(&quot;input the file name you wish: &quot;)
+path_csv = father_path + '\\' + file_name + '.csv'
+votes_result.to_csv(path_csv, encoding = 'utf-8') # 編碼可以自行設定
+print('')
+print('Ouput Success, the file is in ' + path_csv)
+print('')
+</code></pre>
+
+          </div>
+
+          
+          <div class="row">
+            <div class="col-md-8">
+            
+              <div class="mb-5">
+                
+<div class="li-x div-x post-meta">
+  <li class="pr-0"><a href="https://rutopio.github.io/tags/"><i class="fas fa-tags"></i></a></li>
+  <div class="tags-sm">
+    
+      <li><a href="https://rutopio.github.io/tags/%E7%88%AC%E8%9F%B2" role="button">爬蟲 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/python" role="button">Python </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E9%81%B8%E8%88%89" role="button">選舉 </a></li>
+      
+    
+      <li><a href="https://rutopio.github.io/tags/%E5%8F%B0%E7%81%A3" role="button">台灣 </a></li>
+      
+    
+  </div>
+</div>
+              </div>
+            
+            </div>
+            
+          </div>
+          
+
+          
+          <div class="row pt-3">
+            <div class="col-md-6">
+              
+                <a href=https://rutopio.github.io/code/2019-10-14-python%E7%AD%86%E8%A8%98pigeonhole-problem%E9%B4%BF%E7%B1%A0%E5%95%8F%E9%A1%8C%E4%BB%A5-cnf-%E6%AA%94%E6%A1%88%E8%BC%B8%E5%87%BA/ class="post-meta">Previous
+                  <div class="pt-2 pb-5 d-flex">
+                    <i class="fas fa-angle-left text-grey font-weight-bold mr-2 active-color"></i>
+                    <span>[Python筆記]Pigeonhole Problem（鴿籠問題）以 CNF 檔案輸出</span>
+                  </div>
+                </a>
+              
+            </div>
+            
+            <div class="col-md-6 text-right" >
+              
+            </div>
+          </div>
+
+          
+
+        </div>
+        
+
+      </div>
+      
+
+      
+	
+	
+	
+	
+		
+		
+		
+	
+
+		
+		<div class="col-md-2 pl-0">
+
+			
+			<div id="page-scrollspy" class="toc-nav">
+				
+				<ul class="nav nav-pills ml-0">
+					
+					<li class="nav-item pb-3 text-center">
+						<span class="font-weight-bold mb-2">- INDEX - </span>
+					</li>
+
+					
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#1-%e4%b8%80%e6%a8%a3%e5%85%88%e5%81%b7%e7%9c%8b%e4%b8%ad%e9%81%b8%e6%9c%83%e7%9a%84%e5%b0%8f%e7%a7%98%e5%af%86">
+												 1. 一樣先偷看中選會的小秘密
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e4%b8%80%e6%a8%a3%e5%85%88import%e6%9c%83%e7%94%a8%e5%88%b0%e7%9a%84library">
+												 一樣先import會用到的library
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e8%99%95%e7%90%86%e9%bb%9e%e6%93%8a-click-%e5%95%8f%e9%a1%8c">
+												 處理點擊（click）問題
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%96%8b%e6%92%88%e7%b6%b2%e5%9d%80">
+												 開撈網址
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e7%94%a8%e8%b7%9f%e4%b8%8a%e9%9d%a2%e4%b8%80%e6%a8%a3%e7%9a%84%e6%96%b9%e6%b3%95%e6%8a%93%e5%87%ba%e9%84%89%e9%8e%ae%e5%b8%82%e5%8d%80%e7%9a%84%e7%b6%b2%e5%9d%80">
+												 用跟上面一樣的方法抓出鄉鎮市區的網址
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#2-%e5%b0%8d%e8%a1%a8%e6%a0%bc%e9%96%8b%e5%88%80">
+												 2. 對表格開刀
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%88%a4%e5%88%a5%e5%93%aa%e5%80%8b%e8%a1%a8%e6%a0%bc%e6%89%8d%e6%98%af%e6%88%91%e5%80%91%e8%a6%81%e7%9a%84">
+												 判別哪個表格才是我們要的
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e5%86%8d%e8%99%95%e8%a3%a1%e8%a1%a8%e6%a0%bc%e3%84%9b">
+												 再處裡表格ㄛ
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#3-%e5%86%8d%e5%8d%80%e5%88%86%e6%88%90%e5%90%84%e5%80%8b%e6%8a%95%e9%96%8b%e7%a5%a8%e6%89%80">
+												 3. 再區分成各個投開票所！
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+						
+						
+							
+								
+								
+									<ul class="nav">
+								
+								
+
+										<li class="nav-item">
+						 					<a class="nav-link" href="#%e9%99%84%e9%8c%84-%e5%ae%8c%e6%95%b4-code">
+												 附錄：完整 code
+											</a>
+										</li>
+						 
+								
+								
+									</ul>
+								
+							
+						
+				 
+
+				</ul>
+			</div>
+			
+
+		</div>
+		
+	
+
+    </div>
+    
+
+
+  </main>
+  
+
+
+    
+    
+
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+
+  
+  <div class="pb-2 mt-5 pt-5">
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="mailto:contact@chingru.me"><i class="far fa-envelope-open mr-3" aria-hidden="true"></i></a>
+    
+
+    
+
+    
+
+  </div>
+  
+
+  
+  <div class="copyright py-4">
+    <div>部分引用請標註來源；而未經本人許可，請勿全文轉載。</div>
+    
+    <div>&copy; 1998 - 2020 | Customized by <a href="mailto:contact@chingru.me">ChingRu</a></div>
+    
+  </div>
+  
+
+</footer>
+
+
+    
+
+
+
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/jquery/jquery.smooth-scroll.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/popper.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/holder.min.js"></script>
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors-extensions/bootstrap4/bootstrap.js" ></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/vendors/mdb/mdb.min.js"></script>
+
+<script type="text/javascript" src="https://rutopio.github.io/js/main.js"></script>
+
+
+
+  
+  <script src="https://rutopio.github.io/js/vendors/highlight.pack.js"> </script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+ 
+  <script src="https://rutopio.github.io/js/vendors/katex/katex.min.js"> </script>
+  <script src="https://rutopio.github.io/js/vendors/katex/contrib/auto-render.min.js"></script>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          renderMathInElement(document.body);
+      });
+  </script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  
+  new WOW().init();
+</script>
+
+
+
+
+  </body>
+</html>
