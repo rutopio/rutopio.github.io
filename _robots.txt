@@ -1,12 +1,12 @@
 User-agent: *
 Disallow: /blog/2016-01-29-池上永一香格里拉
 Disallow: /blog/2017-02-03-藤まる我將在明日逝去而妳將死而復生
-Disallow: /blog/2017-02-15-使用漢字的語言不該被視為中文
+Disallow: /blog/2017-02-15-蓋時有古今地有南北字有更革音有轉移亦勢所必至
 Disallow: /blog/2018-06-09-mili-live-tour-2018-at-taipei
 Disallow: /blog/2018-06-25-つくみず少女終末旅行
 Disallow: /blog/2018-09-29-鴨志田一青春豬頭少年
 Disallow: /blog/2019-02-24-還願devotion
-Disallow: /blog/2019-09-19-天氣之子當世界迎接終末之際
+Disallow: /blog/2019-09-19-新海誠天氣之子於是終末到臨之時
 Disallow: /blog/2020-04-08-數位列寧階級鬥爭下的內鬥悲劇
 Disallow: /blog/2020-04-17-數位拿香莊子逍遙遊與安定
 Disallow: /essay/2016-12-08-大東亞主義談後現代主義在東亞社會的發展
