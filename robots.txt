@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /blog/2016-01-29-池上永一香格里拉
+
+User-agent: Googlebot-Image
+Disallow: /img/
+Disallow:/*.jpg$
+Disallow:/*.png$
+
+Sitemap: http://chingru.me/sitemap.xml
