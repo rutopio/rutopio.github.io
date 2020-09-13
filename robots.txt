@@ -15,9 +15,6 @@ Disallow: /essay/2018-11-20-2018年九合一大選暨公投案前夜心得
 Disallow: /tags/*
 Disallow: /categories/*
 Disallow: /series/*
-Disallow: /code/
-Disallow: /essay/
-Disallow: /blog/
 Disallow: /about/
 Disallow: /translation/*
 
